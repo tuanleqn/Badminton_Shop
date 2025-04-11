@@ -1,9 +1,9 @@
 <?php
 class App
 { 
-    protected $controller = 'home';
+    protected $controller = '';
 
-    protected $method = 'index';
+    protected $method = '';
 
     protected $param = [];
 
@@ -31,12 +31,9 @@ class App
 
     public function parseUrl() 
     {
-        if(isset($_GET['url'])){
-            $url = rtrim($_GET['url'], '/');
-            $url = filter_var($url, FILTER_SANITIZE_URL);
-            $url = explode('/', $url);
-            return $url;
-        }
+            if( isset($_GET["url"]) ){
+                return explode("/", filter_var(trim($_GET["url"], "/")));
+            }
 
     }
 }
