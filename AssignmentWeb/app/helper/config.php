@@ -1,15 +1,23 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
+class db {
+    public $connect;
+    protected $servername = "localhost";
+    protected $username = "root";
+    protected $password = "";
+    protected $dbname = "shopVNB";
 
-$DBConnect = mysqli_connect($servername, $username, $password);
+    function __construct() {
+        $this->connect = mysqli_connect($this->servername, $this->username, $this->password);
+        if (!$this->connect) {
+            die("Connection failed: " . mysqli_connect_error());
+        }
+        
+        mysqli_select_db($this->connect, $this->dbname);
+        mysqli_query($this->connect, "SET NAMES 'utf8'");
+    }
+}
 
-if (!$DBConnect) {
-    die("Connection failed: " . mysqli_connect_error());
-}
-$shop_DB = mysqli_select_db($DBConnect, "shopVNB");
-if (!shop_DB) {
-    die("Database selection failed: " . mysqli_error($DBConnect));
-}
+// Create a single instance of the database connection
+$db = new db();
+$DBConnect = $db->connect;
 ?>
