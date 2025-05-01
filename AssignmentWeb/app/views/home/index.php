@@ -1,9 +1,10 @@
+<?php require_once __DIR__ . '/../../helper/URL.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo URL::asset('css/style.css'); ?>">
     <title>Sports Shop - Trang Chủ</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
@@ -42,8 +43,16 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="top-contact">
-                            <span><i class="fas fa-envelope"></i> info@sportsshop.com</span>
-                            <span><i class="fas fa-phone-alt"></i> 0123456789</span>
+                            <span><i class="fas fa-envelope"></i><?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Email shop'): ?>
+                                        <?php echo $info['description']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?> </span>
+                            <span><i class="fas fa-phone-alt"></i><?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Hotline'): ?>
+                                        <?php echo $info['description']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?> </span></span>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -87,10 +96,31 @@
                     <div class="col-lg-4 col-md-8 col-6">
                         <div class="header-actions">
                             <div class="header-action-item">
-                                <a href="#" class="action-link">
-                                    <i class="fas fa-user-circle"></i>
-                                    <span class="d-none d-md-inline">Tài khoản</span>
-                                </a>
+                                <?php if(isset($data['user'])): ?>
+                                    <div class="dropdown">
+                                        <a href="#" class="action-link dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="fas fa-user-circle"></i>
+                                            <span class="d-none d-md-inline"><?php echo $data['user']['name']; ?></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                                            <li><a class="dropdown-item" href="#">Đơn hàng của tôi</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="<?php echo URL::to('public/auth/logout'); ?>">Đăng xuất</a></li>
+                                        </ul>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="auth-buttons">
+                                        <a href="<?php echo URL::to('public/auth/login'); ?>" class="action-link">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="d-none d-md-inline">Đăng nhập</span>
+                                        </a>
+                                        <a href="<?php echo URL::to('public/auth/register'); ?>" class="action-link ms-3">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span class="d-none d-md-inline">Đăng ký</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                             <div class="header-action-item">
                                 <a href="#" class="action-link">
@@ -159,7 +189,11 @@
         <!-- Hero Slider -->
         <div class="hero-slider">
             <div class="hero-slide">
-                <img src="../../assets/images/1000z-launch-website-banner_1695177885.webp" alt="banner" class="img-fluid">
+                <?php foreach($data['formalInfo'] as $info): ?>
+                    <?php if($info['name'] == 'banner'): ?>
+                        <img src="<?php echo $info['description']; ?>" alt="banner" class="img-fluid">
+                    <?php endif; ?>
+                    <?php endforeach; ?>
                 <div class="hero-content">
                     <div class="container">
                         <div class="hero-text">
@@ -186,7 +220,11 @@
                             </div>
                             <div class="feature-content">
                                 <h4>Giao hàng miễn phí</h4>
-                                <p>Cho đơn hàng từ 500K</p>
+                                <?php foreach($data['formalInfo'] as $info): ?>
+                                <?php if($info['name'] == 'Shipping benefit'): ?>
+                                    <p><?php echo $info['description']; ?> </p>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -197,7 +235,11 @@
                             </div>
                             <div class="feature-content">
                                 <h4>Đổi trả dễ dàng</h4>
-                                <p>Trong vòng 7 ngày</p>
+                                <?php foreach($data['formalInfo'] as $info): ?>
+                                <?php if($info['name'] == 'Refund'): ?>
+                                    <p><?php echo $info['description']; ?> </p>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
                             </div>
                         </div>
                     </div>
@@ -238,7 +280,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/1.1.webp" class="card-img-top" alt="Vợt cầu lông">
+                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" class="card-img-top" alt="Vợt cầu lông">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -252,7 +294,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/2_1.webp" class="card-img-top" alt="Giày cầu lông">
+                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" class="card-img-top" alt="Giày cầu lông">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -266,7 +308,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/3_1.webp" class="card-img-top" alt="Áo cầu lông">
+                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" class="card-img-top" alt="Áo cầu lông">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -280,7 +322,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/4.webp" class="card-img-top" alt="Quần cầu lông">
+                                <img src="<?php echo URL::asset('images/4.webp'); ?>" class="card-img-top" alt="Quần cầu lông">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -294,7 +336,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/5.webp" class="card-img-top" alt="Túi vợt">
+                                <img src="<?php echo URL::asset('images/5.webp'); ?>" class="card-img-top" alt="Túi vợt">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -308,7 +350,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/6.webp" class="card-img-top" alt="Balo thể thao">
+                                <img src="<?php echo URL::asset('images/6.webp'); ?>" class="card-img-top" alt="Balo thể thao">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -322,7 +364,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/7.webp" class="card-img-top" alt="Phụ kiện">
+                                <img src="<?php echo URL::asset('images/7.webp'); ?>" class="card-img-top" alt="Phụ kiện">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -336,7 +378,7 @@
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="../../assets/images/8.webp" class="card-img-top" alt="Quả cầu">
+                                <img src="<?php echo URL::asset('images/8.webp'); ?>" class="card-img-top" alt="Quả cầu">
                                 <div class="category-overlay">
                                     <a href="#" class="btn-view">Xem ngay</a>
                                 </div>
@@ -381,7 +423,7 @@
                         <div class="product-card">
                             <div class="sale-badge">-30%</div>
                             <div class="product-img">
-                                <img src="../../assets/images/1.1.webp" alt="Vợt cầu lông">
+                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Vợt cầu lông">
                                 <div class="product-actions">
                                     <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
@@ -419,7 +461,7 @@
                         <div class="product-card">
                             <div class="sale-badge">-25%</div>
                             <div class="product-img">
-                                <img src="../../assets/images/2_1.webp" alt="Giày cầu lông">
+                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Giày cầu lông">
                                 <div class="product-actions">
                                     <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
@@ -457,7 +499,7 @@
                         <div class="product-card">
                             <div class="sale-badge">-40%</div>
                             <div class="product-img">
-                                <img src="../../assets/images/3_1.webp" alt="Áo cầu lông">
+                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" alt="Áo cầu lông">
                                 <div class="product-actions">
                                     <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
@@ -495,7 +537,7 @@
                         <div class="product-card">
                             <div class="sale-badge">-20%</div>
                             <div class="product-img">
-                                <img src="../../assets/images/4.webp" alt="Quần cầu lông">
+                                <img src="<?php echo URL::asset('images/4.webp'); ?>" alt="Quần cầu lông">
                                 <div class="product-actions">
                                     <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
@@ -542,7 +584,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="promo-banner">
-                            <img src="../../assets/images/1.1.webp" alt="Promo Banner">
+                            <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Promo Banner">
                             <div class="banner-content">
                                 <h3>Vợt cầu lông cao cấp</h3>
                                 <p>Giảm đến 30% cho tất cả vợt Yonex</p>
@@ -552,7 +594,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="promo-banner">
-                            <img src="../../assets/images/2_1.webp" alt="Promo Banner">
+                            <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Promo Banner">
                             <div class="banner-content">
                                 <h3>Giày cầu lông chính hãng</h3>
                                 <p>Bộ sưu tập mới nhất từ Li-Ning</p>
@@ -575,7 +617,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="news-card">
                             <div class="news-img">
-                                <img src="../../assets/images/1.1.webp" alt="Tin tức">
+                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Tin tức">
                                 <div class="news-date">
                                     <span class="day">15</span>
                                     <span class="month">Tháng 4</span>
@@ -595,7 +637,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="news-card">
                             <div class="news-img">
-                                <img src="../../assets/images/2_1.webp" alt="Tin tức">
+                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Tin tức">
                                 <div class="news-date">
                                     <span class="day">12</span>
                                     <span class="month">Tháng 4</span>
@@ -615,7 +657,7 @@
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="news-card">
                             <div class="news-img">
-                                <img src="../../assets/images/3_1.webp" alt="Tin tức">
+                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" alt="Tin tức">
                                 <div class="news-date">
                                     <span class="day">10</span>
                                     <span class="month">Tháng 4</span>
@@ -648,19 +690,19 @@
                 </div>
                 <div class="brands-slider">
                     <div class="brand-item">
-                        <img src="../../assets/images/logo-web.png" alt="Brand">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
                     </div>
                     <div class="brand-item">
-                        <img src="../../assets/images/logo-web.png" alt="Brand">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
                     </div>
                     <div class="brand-item">
-                        <img src="../../assets/images/logo-web.png" alt="Brand">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
                     </div>
                     <div class="brand-item">
-                        <img src="../../assets/images/logo-web.png" alt="Brand">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
                     </div>
                     <div class="brand-item">
-                        <img src="../../assets/images/logo-web.png" alt="Brand">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
                     </div>
                 </div>
             </div>
@@ -692,7 +734,7 @@
                         <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
                             <div class="footer-widget">
                                 <div class="footer-logo">
-                                    <img src="../../assets/images/logo-web.png" alt="Logo">
+                                    <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Logo">
                                 </div>
                                 <p>Sports là hệ thống cửa hàng cầu lông với hơn 50 chi nhánh trên toàn quốc, cung cấp sỉ và lẻ các mặt hàng dụng cụ cầu lông từ phong trào tới chuyên nghiệp.</p>
                                 <div class="social-links">
@@ -750,7 +792,7 @@
                         <div class="col-md-6 text-end">
                             <div class="payment-methods">
                                 <span>Phương thức thanh toán:</span>
-                                <img src="../../assets/images/logo-web.png" alt="Payment Methods" class="payment-img">
+                                <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Payment Methods" class="payment-img">
                             </div>
                         </div>
                     </div>
@@ -774,7 +816,7 @@
             // Time calculations for days, hours, minutes and seconds
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
             // Display the result

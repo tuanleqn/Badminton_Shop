@@ -1,7 +1,13 @@
-Options -MultiViews
+Options -Indexes -MultiViews
 RewriteEngine On
-RewriteBase /Shop-Badminton/AssignmentWeb/public/
+RewriteBase /Shop-badminton/AssignmentWeb/public/
 
+# Only rewrite if the requested path is not a directory
 RewriteCond %{REQUEST_FILENAME} !-d
+# Only rewrite if the requested path is not a file
 RewriteCond %{REQUEST_FILENAME} !-f
+# Rewrite all other requests to index.php
 RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]
+
+# Prevent directory redirects
+DirectorySlash Off

@@ -20,7 +20,11 @@
                             <div class="hotline">
                                 <i class="fas fa-phone-alt text-primary"></i>
                                 <span class="fw-bold">HOTLINE:</span> 
-                                <span class="text-primary">0123456789</span>
+                                <span><?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Hotline'): ?>
+                                        <?php echo $info['description']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?> </span>
                             </div>
                         </div>
                     </div>
@@ -29,14 +33,25 @@
                     </div>
                     <div class="col-lg-4 col-md-6 col-sm-12">
                         <div class="header-actions">
-                            <div class="store-system">
-                                <i class="fas fa-store"></i>
-                                <span class="fw-bold">HỆ THỐNG CỬA HÀNG</span>
-                            </div>
-                            <div class="auth-buttons">
-                                <button class="btn btn-outline-primary">Đăng nhập</button>
-                                <button class="btn btn-primary">Đăng ký</button>
-                            </div>
+                            <?php if(isset($data['user'])): ?>
+                                <div class="dropdown">
+                                    <a href="#" class="action-link dropdown-toggle" data-bs-toggle="dropdown">
+                                        <i class="fas fa-user-circle"></i>
+                                        <span class="d-none d-md-inline"><?php echo $data['user']['name']; ?></span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                                        <li><a class="dropdown-item" href="#">Đơn hàng của tôi</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item" href="<?php echo URL::to('public/auth/logout'); ?>">Đăng xuất</a></li>
+                                    </ul>
+                                </div>
+                            <?php else: ?>
+                                <div class="auth-buttons">
+                                    <a href="<?php echo URL::to('public/auth/login'); ?>" class="btn btn-outline-primary">Đăng nhập</a>
+                                    <a href="<?php echo URL::to('public/auth/register'); ?>" class="btn btn-primary">Đăng ký</a>
+                                </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
@@ -67,7 +82,7 @@
                                 <a class="nav-link" href="#">KHUYẾN MÃI</a>
                             </li>
                             <li class="nav-item active">
-                                <a class="nav-link" href="<?php echo URL::to('home/contract'); ?>">LIÊN HỆ</a>
+                                <a class="nav-link" href="<?php echo URL::to('public/home/contract'); ?>">LIÊN HỆ</a>
                             </li>
                         </ul>
                     </div>
@@ -87,14 +102,22 @@
                                     <i class="fas fa-phone-alt"></i>
                                     <div>
                                         <h5>Hotline</h5>
-                                        <p>0123456789</p>
+                                        <?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Hotline'): ?>
+                                       <p> <?php echo $info['description']; ?></p>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                                     </div>
                                 </div>
                                 <div class="contact-item">
                                     <i class="fas fa-envelope"></i>
                                     <div>
                                         <h5>Email</h5>
-                                        <p>info@gmail.com</p>
+                                        <?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Email shop'): ?>
+                                       <p> <?php echo $info['description']; ?></p>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
                                     </div>
                                 </div>
                                 <div class="contact-item">
@@ -124,24 +147,24 @@
                         <div class="contact-form-box">
                             <h3>GỬI THÔNG TIN LIÊN HỆ</h3>
                             <p>Vui lòng điền đầy đủ thông tin bên dưới, chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất</p>
-                            <form class="contact-form">
+                            <form class="contact-form" method="POST" id="contactForm" onsubmit="return handleSubmit(event)">
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
                                         <label for="first-name">Họ và tên đệm</label>
-                                        <input type="text" id="first-name" class="form-control" placeholder="Họ và tên đệm">
+                                        <input type="text" id="first-name" name="firstName" class="form-control" placeholder="Họ và tên đệm" required>
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="last-name">Tên</label>
-                                        <input type="text" id="last-name" class="form-control" placeholder="Tên">
+                                        <input type="text" id="last-name" name="lastName" class="form-control" placeholder="Tên" required>
                                     </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="email">Email</label>
-                                    <input type="email" id="email" class="form-control" placeholder="Email">
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="message">Nội dung phản hồi</label>
-                                    <textarea id="message" class="form-control" rows="5" placeholder="Nội dung"></textarea>
+                                    <textarea id="message" name="content" class="form-control" rows="5" placeholder="Nội dung" required></textarea>
                                 </div>
                                 <div class="text-end">
                                     <button type="submit" class="btn btn-primary">Gửi</button>
@@ -236,7 +259,58 @@
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- <script src="./js/index.js"></script> -->
+    <script src="assets/extensions/parsleyjs/parsley.min.js"></script>
+    <script>
+        function handleSubmit(event) {
+            event.preventDefault();
+            
+            const form = document.getElementById('contactForm');
+            const formData = new FormData(form);
+
+            fetch(window.location.href, {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    showAlert('success', 'Cảm ơn bạn đã gửi thông tin! Chúng tôi sẽ liên hệ với bạn sớm nhất có thể.');
+                    form.reset();
+                } else {
+                    showAlert('danger', 'Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại sau.');
+                }
+            })
+            .catch(error => {
+                showAlert('danger', 'Có lỗi xảy ra khi gửi thông tin. Vui lòng thử lại sau.');
+            });
+
+            return false;
+        }
+
+        function showAlert(type, message) {
+            // Remove any existing alerts
+            const existingAlerts = document.querySelectorAll('.alert');
+            existingAlerts.forEach(alert => alert.remove());
+
+            // Create new alert
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.role = 'alert';
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+
+            // Insert alert before the form
+            const form = document.getElementById('contactForm');
+            form.parentNode.insertBefore(alertDiv, form);
+
+            // Auto-dismiss after 5 seconds
+            setTimeout(() => {
+                alertDiv.classList.remove('show');
+                setTimeout(() => alertDiv.remove(), 150);
+            }, 5000);
+        }
+    </script>
 </body>
 </html>
 

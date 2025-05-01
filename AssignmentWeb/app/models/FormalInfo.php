@@ -2,13 +2,15 @@
 require_once __DIR__ . '/../helper/config.php';
 
 // Class FormalInfo
-class FormalInfo {
-    private $db;
-    public $conn;
+class FormalInfo extends db {
+    protected $conn;
 
     public function __construct() {
-        $this->db = new db();
-        $this->conn = $this->db->connect;
+        parent::__construct();
+        $this->conn = $this->connect;
+        if (!$this->conn) {
+            die("Connection failed in FormalInfo model");
+        }
     }
     
     public function getAllFormalInfo() {
@@ -20,7 +22,7 @@ class FormalInfo {
         $result = mysqli_query($this->conn, $query);
         
         if (!$result) {
-            return false;
+            die("Query failed: " . mysqli_error($this->conn));
         }
         
         $formalInfoList = array();
@@ -30,9 +32,26 @@ class FormalInfo {
         
         return $formalInfoList;
     }
-    public function closeConnection() {
-        if ($this->conn) {
-            mysqli_close($this->conn);
+
+    public function modifyFormalInfo($data) {
+        if (!$this->conn) {
+            return false;
         }
+        
+        $success = true;
+        foreach ($data as $item) {
+            $query = "UPDATE `Formal inf` SET description = ? WHERE name = ?";
+            $stmt = mysqli_prepare($this->conn, $query);
+            mysqli_stmt_bind_param($stmt, "ss", $item['description'], $item['name']);
+            
+            if (!mysqli_stmt_execute($stmt)) {
+                $success = false;
+                break;
+            }
+        }
+        
+        return $success;
     }
+    
+    // No need for closeConnection method as it's handled by db class destructor
 }
