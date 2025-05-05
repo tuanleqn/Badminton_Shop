@@ -101,9 +101,9 @@ class ProductController {
 
         // Redirect after successful update
         if ($updateResult) {
-            header("Location: /Shop-badminton/AssignmentWeb/app/views/admin/product/list.php?success=Product updated successfully");
+            header("Location: /Shop-badminton/AssignmentWeb/public/admin/productlist?success=Product updated successfully");
         } else {
-            header("Location: /Shop-badminton/AssignmentWeb/app/views/admin/product/list.php?error=Failed to update product");
+            header("Location: /Shop-badminton/AssignmentWeb/public/admin/productlist?error=Failed to update product");
         }
         exit;
     }

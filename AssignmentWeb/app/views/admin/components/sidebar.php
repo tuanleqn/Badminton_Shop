@@ -107,7 +107,7 @@
                         <li class="submenu-item <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/productadd') ||  isMenuActive('/admin/productedit') || isMenuActive('/admin/productdelete') ? 'active' : ''; ?>">
                             <a href="<?= URL::to('public/admin/productlist') ?>" class="submenu-link">Danh sách sản phẩm</a>
                         </li>
-                        <li class="submenu-item <?php isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
+                        <li class="submenu-item <?php echo isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
                             <a href="<?= URL::to('public/admin/reviews'); ?>" class="submenu-link">Quản lí bình luận</a>
                         </li>
                         

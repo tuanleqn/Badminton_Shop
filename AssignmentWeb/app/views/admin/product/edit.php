@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../../../helper/config.php';
 require_once __DIR__ . '/../../../controllers/ProductController.php';
 require_once __DIR__ . '/../../../models/SiteModel.php';
+require_once '../app/helper/URL.php';
 
 $productId = isset($_GET['id']) ? intval($_GET['id']) : 0;
 $controller = new ProductController();
@@ -24,10 +25,10 @@ if (!$product) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chỉnh sửa sản phẩm</title>
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/simple-datatables/style.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/table-datatable.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/app.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/app-dark.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/table-datatable.css'); ?>">
+    <link rel="shortcut icon" href="data:image/svg+xml,%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2033%2034'%20fill-rule='evenodd'%20stroke-linejoin='round'%20stroke-miterlimit='2'%20xmlns:v='https://vecta.io/nano'%3e%3cpath%20d='M3%2027.472c0%204.409%206.18%205.552%2013.5%205.552%207.281%200%2013.5-1.103%2013.5-5.513s-6.179-5.552-13.5-5.552c-7.281%200-13.5%201.103-13.5%205.513z'%20fill='%23435ebe'%20fill-rule='nonzero'/%3e%3ccircle%20cx='16.5'%20cy='8.8'%20r='8.8'%20fill='%2341bbdd'/%3e%3c/svg%3e" type="image/x-icon">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app-dark.css'); ?>">
     <link rel="stylesheet" href="<?php echo URL::to('asset/css/product/a.css'); ?>" />
 </head>
 <body>
@@ -132,7 +133,7 @@ if (!$product) {
                     </div>
                 </div>
                 <button type="submit" class="btn btn-primary">Cập nhật sản phẩm</button>
-                <a href="list.php" class="btn btn-secondary">Quay lại</a>
+                <a href="<?php echo URL::to('public/admin/productlist'); ?>" class="btn btn-secondary">Quay lại</a>
             </form>
         </div>
     </div>
@@ -162,12 +163,10 @@ if (!$product) {
 });
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
-
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/static/js/initTheme.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/js/app.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/static/js/pages/simple-datatables.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/static/js/components/dark.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/compiled/js/app.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/extensions/simple-datatables/umd/simple-datatables.js'); ?>"></script>
 <script src="<?php echo URL::to('asset/js/admin.js'); ?>"></script>
 </body>
 </html>

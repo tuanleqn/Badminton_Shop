@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../../helper/config.php';
 require_once __DIR__ . '/../../../controllers/ProductController.php';
+require_once '../app/helper/URL.php';
 
 $db = new db();
 $DBConnect = $db->connect;
@@ -25,10 +26,10 @@ $currentPage = $data['currentPage'];
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Reviews</title>
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/simple-datatables/style.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/table-datatable.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/app.css'); ?>">
-    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/css/app-dark.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/extensions/simple-datatables/style.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/table-datatable.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app.css'); ?>">
+    <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app-dark.css'); ?>">
     <link rel="stylesheet" href="<?php echo URL::to('asset/css/product/a.css'); ?>" />
 </head>
 <body>
@@ -139,10 +140,11 @@ $currentPage = $data['currentPage'];
     
 </div>
     
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/compiled/js/app.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/extensions/simple-datatables/umd/simple-datatables.js'); ?>"></script>
-<script src="<?php echo URL::to('app/views/admin/template/dist/assets/static/js/pages/simple-datatables.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/static/js/components/dark.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/compiled/js/app.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/extensions/simple-datatables/umd/simple-datatables.js'); ?>"></script>
+<script src="<?php echo URL::to('app/views/admin/assets/static/js/pages/simple-datatables.js'); ?>"></script>
 <script>
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.update-status-btn').forEach(button => {
@@ -154,18 +156,26 @@ document.addEventListener('DOMContentLoaded', function() {
             fetch('<?php echo URL::to("app/controllers/update_review.php"); ?>', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
+                    'Content-Type': 'application/json',
                 },
-                body: `review_id=${reviewId}&status=${status}`
+                body: JSON.stringify({
+                    id: reviewId,
+                    status: status
+                })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 if (data.success) {
                     document.getElementById(`review-status-${reviewId}`).textContent = status.charAt(0).toUpperCase() + status.slice(1);
                     // Reload the page to update the UI
                     location.reload();
                 } else {
-                    alert('Failed to update status');
+                    alert(data.message || 'Failed to update status');
                 }
             })
             .catch(error => {

@@ -55,6 +55,27 @@ class SiteModel {
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
+
+    public function updateProduct($productId, $data) {
+        $sql = "
+            UPDATE product 
+            SET name = ?, description = ?, price = ?, category = ?, color = ?, size = ?, branchId = ?
+            WHERE id = ?
+        ";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bind_param(
+            'ssdsssii',
+            $data['name'],
+            $data['description'],
+            $data['price'],
+            $data['category'],
+            $data['color'],
+            $data['size'],
+            $data['branchId'],
+            $productId
+        );
+        return $stmt->execute();
+    }
     
 
     public function getAverageRating($productId) {
