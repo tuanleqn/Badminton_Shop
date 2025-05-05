@@ -1,1 +1,0 @@
-Hello <?= $data['name'] ?> welcome to <?= $data['title'] ?> page 
