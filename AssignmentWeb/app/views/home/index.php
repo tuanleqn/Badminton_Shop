@@ -200,8 +200,7 @@
                             <h1 class="animated-text">THIẾT BỊ CẦU LÔNG CHÍNH HÃNG</h1>
                             <p>Sản phẩm chất lượng cao từ các thương hiệu hàng đầu</p>
                             <div class="hero-buttons">
-                                <a href="#" class="btn btn-primary btn-lg">Mua ngay</a>
-                                <a href="#" class="btn btn-outline-light btn-lg">Khám phá</a>
+                                <a href="<?= URL::to('public/ProductSite/index'); ?>" class="btn btn-primary btn-lg">Mua ngay</a>
                             </div>
                         </div>
                     </div>
@@ -397,183 +396,58 @@
         <section class="sale-products">
             <div class="container">
                 <div class="section-header">
-                    <h2>FLASH SALE</h2>
-                    <p>Ưu đãi giới hạn - Nhanh tay mua ngay</p>
-                    <div class="countdown">
-                        <div class="countdown-item">
-                            <span id="days">00</span>
-                            <p>Ngày</p>
-                        </div>
-                        <div class="countdown-item">
-                            <span id="hours">00</span>
-                            <p>Giờ</p>
-                        </div>
-                        <div class="countdown-item">
-                            <span id="minutes">00</span>
-                            <p>Phút</p>
-                        </div>
-                        <div class="countdown-item">
-                            <span id="seconds">00</span>
-                            <p>Giây</p>
-                        </div>
-                    </div>
+                    <h2>Sản phẩm mới nhất</h2>
+                    <p>Khám phá những sản phẩm mới về của chúng tôi</p>
                 </div>
                 <div class="row">
+                <?php
+                    $newestProducts = $data['siteModel']->getNewestProducts(4);
+                    foreach($newestProducts as $product):
+                        $averageRating = round($product['average_rating'], 1);
+                        $fullStars = floor($averageRating);
+                        $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
+                        $emptyStars = 5 - ($fullStars + $halfStar);
+                ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                        <div class="product-card">
-                            <div class="sale-badge">-30%</div>
+                        <div class="product-card card h-100 d-flex flex-column" data-id="<?php echo $product['id']; ?>" data-price="<?php echo $product['price']; ?>" data-rating="<?php echo $averageRating; ?>" data-category="<?php echo strtolower($product['category']); ?>">
+                            <div class="sale-badge">NEW</div>
                             <div class="product-img">
-                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Vợt cầu lông">
+                                <img src="/Shop-badminton/AssignmentWeb/app/<?php echo $product['image_path']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="card-img-top img-fluid" style="width: 250px; height: 300px; object-fit: cover; align-self: center;">
                                 <div class="product-actions">
-                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="/Shop-badminton/AssignmentWeb/app/views/product_site/product_detail.php?id=<?php echo $product['id']; ?>" class="btn-action"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
                                     <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
                                 </div>
-                                <div class="product-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p>Đã bán: 15/20</p>
-                                </div>
                             </div>
-                            <div class="product-info">
-                                <div class="product-brand">Yonex</div>
-                                <h3 class="product-title">Vợt Cầu Lông Yonex Astrox 100ZZ</h3>
-                                <div class="product-price">
-                                    <span class="old-price">4.500.000₫</span>
-                                    <span class="current-price">3.150.000₫</span>
+                            <div class="product-info card-body">
+                                <div class="product-brand"><?php echo ucfirst($product['category']); ?></div>
+                                <h3 class="product-title card-title"><?php echo htmlspecialchars($product['name']); ?></h3>
+                                <div class="product-price card-text">
+                                    <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</span>
                                 </div>
                                 <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                    <span>(25)</span>
+                                    <?php
+                                        for ($i = 0; $i < $fullStars; $i++) {
+                                            echo '<i class="fas fa-star text-warning"></i>';
+                                        }
+                                        if ($halfStar) {
+                                            echo '<i class="fas fa-star-half-alt text-warning"></i>';
+                                        }
+                                        for ($i = 0; $i < $emptyStars; $i++) {
+                                            echo '<i class="far fa-star text-warning"></i>';
+                                        }
+                                    ?>
                                 </div>
                             </div>
-                            <div class="add-to-cart">
-                                <button class="btn-add-cart">Thêm vào giỏ</button>
+                            <div class="add-to-cart mt-auto">
+                                <a href="<?php echo URL::to('public/ProductSite/productdetail?id=' . $product['id']); ?>" class="btn btn-custom btn-add-cart">Mua ngay</a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                        <div class="product-card">
-                            <div class="sale-badge">-25%</div>
-                            <div class="product-img">
-                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Giày cầu lông">
-                                <div class="product-actions">
-                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <div class="product-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p>Đã bán: 12/20</p>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-brand">Li-Ning</div>
-                                <h3 class="product-title">Giày Cầu Lông Lining AYAQ019-2</h3>
-                                <div class="product-price">
-                                    <span class="old-price">2.800.000₫</span>
-                                    <span class="current-price">2.100.000₫</span>
-                                </div>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="far fa-star"></i>
-                                    <span>(18)</span>
-                                </div>
-                            </div>
-                            <div class="add-to-cart">
-                                <button class="btn-add-cart">Thêm vào giỏ</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                        <div class="product-card">
-                            <div class="sale-badge">-40%</div>
-                            <div class="product-img">
-                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" alt="Áo cầu lông">
-                                <div class="product-actions">
-                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <div class="product-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p>Đã bán: 18/20</p>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-brand">Yonex</div>
-                                <h3 class="product-title">Áo Cầu Lông Yonex 2023 - Xanh</h3>
-                                <div class="product-price">
-                                    <span class="old-price">650.000₫</span>
-                                    <span class="current-price">390.000₫</span>
-                                </div>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <span>(32)</span>
-                                </div>
-                            </div>
-                            <div class="add-to-cart">
-                                <button class="btn-add-cart">Thêm vào giỏ</button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
-                        <div class="product-card">
-                            <div class="sale-badge">-20%</div>
-                            <div class="product-img">
-                                <img src="<?php echo URL::asset('images/4.webp'); ?>" alt="Quần cầu lông">
-                                <div class="product-actions">
-                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
-                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
-                                </div>
-                                <div class="product-progress">
-                                    <div class="progress">
-                                        <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p>Đã bán: 9/20</p>
-                                </div>
-                            </div>
-                            <div class="product-info">
-                                <div class="product-brand">Victor</div>
-                                <h3 class="product-title">Quần Cầu Lông Victor 2023 - Đen</h3>
-                                <div class="product-price">
-                                    <span class="old-price">450.000₫</span>
-                                    <span class="current-price">360.000₫</span>
-                                </div>
-                                <div class="product-rating">
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star"></i>
-                                    <i class="fas fa-star-half-alt"></i>
-                                    <i class="far fa-star"></i>
-                                    <span>(14)</span>
-                                </div>
-                            </div>
-                            <div class="add-to-cart">
-                                <button class="btn-add-cart">Thêm vào giỏ</button>
-                            </div>
-                        </div>
-                    </div>
+                <?php endforeach; ?>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="#" class="btn-view-all">Xem tất cả sản phẩm giảm giá <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?= URL::to('public/ProductSite/index'); ?>" class="btn-view-all">Xem tất cả sản phẩm <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
@@ -587,7 +461,7 @@
                             <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Promo Banner">
                             <div class="banner-content">
                                 <h3>Vợt cầu lông cao cấp</h3>
-                                <p>Giảm đến 30% cho tất cả vợt Yonex</p>
+                                <p>Bộ sưu tập tất cả vợt Yonex</p>
                                 <a href="#" class="btn-shop-now">Mua ngay</a>
                             </div>
                         </div>

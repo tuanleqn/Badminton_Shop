@@ -238,38 +238,38 @@ class SiteModel {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-  
+    public function getNewestProducts($limit = 4) {
+        $query = "
+        SELECT 
+            p.id, 
+            p.name, 
+            p.price, 
+            p.category, 
+            p.description, 
+            COALESCE(pr.average_rating, 0) AS average_rating, 
+            (SELECT image_path 
+             FROM product_images 
+             WHERE product_images.product_id = p.id 
+             ORDER BY image_order ASC LIMIT 1) AS image_path
+        FROM product p
+        LEFT JOIN product_ratings pr ON p.id = pr.product_id
+        ORDER BY p.createdDate DESC
+        LIMIT ?";
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $limit);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $products = [];
+        while ($row = $result->fetch_assoc()) {
+            $products[] = $row;
+        }
+        return $products;
+    }
+
     public function deleteProductById($productId) {
         $query = "DELETE FROM product WHERE id = ?";
-        $stmt = $this->db->prepare($query);
-        $stmt->bind_param("i", $productId);
-
-        return $stmt->execute();
-    }
-
-    public function updateProduct($productId, $data) {
-        $sql = "
-            UPDATE product 
-            SET name = ?, description = ?, price = ?, category = ?, color = ?, size = ?, branchId = ?
-            WHERE id = ?
-        ";
-        $stmt = $this->db->prepare($sql);
-        $stmt->bind_param(
-            'ssdsssii',
-            $data['name'],
-            $data['description'],
-            $data['price'],
-            $data['category'],
-            $data['color'],
-            $data['size'],
-            $data['branchId'],
-            $productId
-        );
-        return $stmt->execute();
-    }
-
-    public function updateImageOrder($imageOrder) {
-        $orderArray = explode(',', $imageOrder);
         foreach ($orderArray as $order => $imageId) {
             $sql = "UPDATE product_images SET image_order = ? WHERE id = ?";
             $stmt = $this->db->prepare($sql);

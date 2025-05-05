@@ -61,7 +61,7 @@ function sortProducts(criteria) {
                         <p class='card-text'>$${price}</p>
                         <div>Rating: ${starsHTML} (${rating.toFixed(1)})</div>
                         <p class='card-text'>Category: ${category}</p>
-                        <a href='/Shop-badminton/AssignmentWeb/app/views/product_site/product_detail.php?id=${id}' class='btn btn-custom'>Buy Now</a>
+                        <a href='product_detail.php?id=${id}' class='btn btn-custom' >Buy Now</a>
                     </div>
                 </div>
             </div>

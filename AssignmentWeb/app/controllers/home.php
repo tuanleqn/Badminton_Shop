@@ -2,10 +2,12 @@
 class Home extends Controller
 {
     private $session;
+    private $siteModel;
 
     public function __construct()
     {
         $this->session = Session::getInstance();
+        $this->siteModel = $this->model('SiteModel');
     }
 
     public function index()
@@ -28,7 +30,8 @@ class Home extends Controller
 
         $data = [
             'user' => $userData,
-            'formalInfo' => $formalInfoList
+            'formalInfo' => $formalInfoList,
+            'siteModel' => $this->siteModel
         ];
 
         $this->view('home/index', $data);

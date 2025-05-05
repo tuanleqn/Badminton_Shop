@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../models/SiteModel.php';
+require_once __DIR__ . '/../models/site_model.php';
 require_once __DIR__ . '/../controllers/ProductController.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
