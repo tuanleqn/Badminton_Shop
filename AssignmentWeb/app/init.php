@@ -6,7 +6,7 @@ require_once "helper/config.php";
 require_once "helper/session.php";
 
 // Initialize session
-Session::init();
+$session = Session::getInstance();
 
 $app = new App();
 

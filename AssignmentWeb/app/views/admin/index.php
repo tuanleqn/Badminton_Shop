@@ -1,5 +1,7 @@
 <?php 
 require_once '../app/helper/URL.php';
+require_once '../app/helper/session.php';
+$session = Session::getInstance();
 ?>
 <!DOCTYPE html>
 <html lang="en">

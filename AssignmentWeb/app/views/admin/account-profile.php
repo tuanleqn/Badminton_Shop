@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../../helper/session.php';
+$session = Session::getInstance();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -40,14 +44,14 @@
                     </div>
                 </div>
 
-                <?php if(Session::get('error')): ?>
+                <?php if($session->get('error')): ?>
                 <div class="alert alert-danger">
-                    <?= Session::get('error') ?>
+                    <?= $session->get('error') ?>
                 </div>
                 <?php endif; ?>
-                <?php if(Session::get('message')): ?>
+                <?php if($session->get('message')): ?>
                 <div class="alert alert-success">
-                    <?= Session::get('message') ?>
+                    <?= $session->get('message') ?>
                 </div>
                 <?php endif; ?>
 

@@ -46,6 +46,19 @@ class Response extends db {
         return $responses;
     }
 
+    public function getResponseById($id) {
+        $query = "SELECT * FROM `Response` WHERE id = ?";
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "i", $id);
+        
+        if (!mysqli_stmt_execute($stmt)) {
+            return false;
+        }
+        
+        $result = mysqli_stmt_get_result($stmt);
+        return mysqli_fetch_assoc($result);
+    }
+
     public function updateStatus($id, $status) {
         $validStatuses = ['read', 'unread', 'responsed'];
         if (!in_array($status, $validStatuses)) {

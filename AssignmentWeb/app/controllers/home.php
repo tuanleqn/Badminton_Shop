@@ -1,15 +1,17 @@
 <?php
 class Home extends Controller
 {
+    private $session;
+
     public function __construct()
     {
-        Session::init();
+        $this->session = Session::getInstance();
     }
 
     public function index()
     {
         // Get user info from session if logged in
-        $userData = Session::get('user');
+        $userData = $this->session->get('user');
         if ($userData === false) {
             $userData = null;
         }
@@ -34,7 +36,7 @@ class Home extends Controller
 
     public function contract()
     {
-        $userData = Session::get('user');
+        $userData = $this->session->get('user');
         if ($userData === false) {
             $userData = null;
         }

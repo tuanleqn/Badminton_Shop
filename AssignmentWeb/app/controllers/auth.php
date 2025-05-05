@@ -1,9 +1,11 @@
 <?php
 class Auth extends Controller {
     private $userAuth;
+    private $session;
 
     public function __construct() {
         $this->userAuth = $this->model("UserAuth");
+        $this->session = Session::getInstance();
     }
 
     public function login() {
@@ -14,8 +16,8 @@ class Auth extends Controller {
             $user = $this->userAuth->login($email, $password);
             
             if ($user) {
-                Session::set('login', true);
-                Session::set('user', $user);
+                $this->session->set('login', true);
+                $this->session->set('user', $user);
                 
                 if ($user['role'] === 'admin') {
                     header("Location: ../admin/index");
@@ -57,14 +59,8 @@ class Auth extends Controller {
         }
     }
 
-    // public function index() {
-    //     // Redirect to home if someone tries to access auth directly
-    //     header("Location: ../home/index");
-    //     exit();
-    // }
-
     public function logout() {
-        Session::destroy();
+        $this->session->destroy();
         header("Location: /Shop-badminton/AssignmentWeb/public/home/index");
         exit();
     }

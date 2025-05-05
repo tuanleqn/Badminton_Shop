@@ -1,9 +1,11 @@
 <?php
 class Admin extends Controller {
+    private $session;
+    
     public function __construct() {
-        Session::init();
+        $this->session = Session::getInstance();
         // Check if user is logged in and is an admin
-        $userData = Session::get('user');
+        $userData = $this->session->get('user');
         if (!$userData || $userData['role'] !== 'admin') {
             header('Location: ' . URL::to('public/auth/login'));
             exit();
@@ -11,8 +13,8 @@ class Admin extends Controller {
     }
 
     public function index() {
-        Session::checkSession();
-        $userData = Session::get('user');
+        $this->session->checkSession();
+        $userData = $this->session->get('user');
         $user = $this->model('User');
         $customer = $user->getAllCustomer();
         $response = $this->model('Response');
@@ -45,9 +47,9 @@ class Admin extends Controller {
             }
             
             if ($formalInfo->modifyFormalInfo($data)) {
-                Session::set('message', 'Information updated successfully');
+                $this->session->set('message', 'Information updated successfully');
             } else {
-                Session::set('error', 'Failed to update information');
+                $this->session->set('error', 'Failed to update information');
             }
             
             header('Location: ' . URL::to('public/admin/formValidation'));
@@ -58,9 +60,10 @@ class Admin extends Controller {
         $formalInfoList = $formalInfo->getAllFormalInfo();
         $this->view('admin/form-validation-parsley', ['formalInfo' => $formalInfoList]);
     }
+
     public function profile() {
-        Session::checkSession();
-        $userData = Session::get('user');
+        $this->session->checkSession();
+        $userData = $this->session->get('user');
         $user = $this->model('User');
         
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -90,39 +93,54 @@ class Admin extends Controller {
                 if ($user->updateUser($userData['id'], $updateData)) {
                     // Update session data only after successful database update
                     $userData = array_merge($userData, $updateData);
-                    Session::set('user', $userData);
-                    Session::set('message', 'Profile updated successfully');
+                    $this->session->set('user', $userData);
+                    $this->session->set('message', 'Profile updated successfully');
                     header('Location: ' . URL::to('public/admin/profile'));
                     exit();
                 } else {
-                    Session::set('error', 'Failed to update profile');
+                    $this->session->set('error', 'Failed to update profile');
                 }
             } else {
-                Session::set('error', implode(', ', $errors));
+                $this->session->set('error', implode(', ', $errors));
             }
         }
         
         $this->view("admin/account-profile", ['user' => $userData]);
     }
-    public function response() {
+
+    public function response($id = null) {
         $response = $this->model('Response');
-        $responseData = $response->getAllResponses();
         
+        // Handle GET request for specific response
+        if ($_SERVER['REQUEST_METHOD'] === 'GET' && $id !== null) {
+            $responseData = $response->getResponseById($id);
+            header('Content-Type: application/json');
+            if ($responseData) {
+                echo json_encode(['success' => true, 'response' => $responseData]);
+            } else {
+                http_response_code(404);
+                echo json_encode(['success' => false, 'message' => 'Response not found']);
+            }
+            exit();
+        }
+        
+        // Handle POST request for status update
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $id = isset($_POST['id']) ? (int)$_POST['id'] : 0;
-            $status = isset($_POST['status']) ? $_POST['status'] : '';
-    
+            // Get JSON data
+            $jsonData = json_decode(file_get_contents('php://input'), true);
+            $id = isset($jsonData['id']) ? (int)$jsonData['id'] : 0;
+            $status = isset($jsonData['status']) ? $jsonData['status'] : '';
+            
             if (!$id || !$status) {
                 header('Content-Type: application/json');
                 http_response_code(400);
                 echo json_encode(['success' => false, 'message' => 'Invalid input']);
                 exit();
             }
-    
+            
             // Update the status
-            $responseModel = $this->model('Response');
-            $success = $responseModel->updateStatus($id, $status);
-    
+            $success = $response->updateStatus($id, $status);
+            
             // Send response
             header('Content-Type: application/json');
             if ($success) {
@@ -134,34 +152,124 @@ class Admin extends Controller {
             exit();
         }
 
-        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-            header('Content-Type: application/json');
-            // Read raw input for DELETE requests
-            $input = file_get_contents('php://input');
-            $data = json_decode($input, true);
-            
-            if (!isset($data['id'])) {
-                http_response_code(400);
-                echo json_encode(['success' => false, 'message' => 'Response ID is required']);
-                exit();
-            }
+        // Default: show all responses
+        $responseData = $response->getAllResponses();
+        $this->view('admin/view-response', ['responses' => $responseData]);
+    }
 
-            try {
-                $deleted = $response->deleteResponse($data['id']);
-                if ($deleted) {
-                    echo json_encode(['success' => true]);
-                } else {
-                    http_response_code(500);
-                    echo json_encode(['success' => false, 'message' => 'Failed to delete response']);
-                }
-            } catch (Exception $e) {
-                http_response_code(500);
-                echo json_encode(['success' => false, 'message' => 'An error occurred']);
-            }
+    public function sendMail() {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header('Content-Type: application/json');
+            http_response_code(405);
+            echo json_encode(['success' => false, 'message' => 'Method not allowed']);
             exit();
         }
 
-        // Load the view with the response data
-        $this->view('admin/view-response', ['responses' => $responseData]);
+        // Get JSON data
+        $data = json_decode(file_get_contents('php://input'), true);
+        
+        if (!isset($data['to']) || !isset($data['subject']) || !isset($data['message'])) {
+            header('Content-Type: application/json');
+            http_response_code(400);
+            echo json_encode(['success' => false, 'message' => 'Missing required fields']);
+            exit();
+        }
+
+        $to = $data['to'];
+        $subject = $data['subject'];
+        $message = $data['message'];
+        
+        // Headers
+        $headers = 'MIME-Version: 1.0' . "\r\n";
+        $headers .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+        $headers .= 'From: ' . $this->session->get('user')['email'] . "\r\n";
+        
+        $mailSent = mail($to, $subject, $message, $headers);
+
+        header('Content-Type: application/json');
+        if ($mailSent) {
+            // Update response status if mail sent successfully
+            if (isset($data['responseId'])) {
+                $response = $this->model('Response');
+                $response->updateStatus($data['responseId'], 'responsed');
+            }
+            echo json_encode(['success' => true]);
+        } else {
+            http_response_code(500);
+            echo json_encode(['success' => false, 'message' => 'Failed to send email']);
+        }
+        exit();
+    }
+
+    public function viewBranch() {
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+            // Prevent any output before our JSON response
+            ob_clean();
+            header('Content-Type: application/json');
+            
+            try {
+                // Get DELETE data
+                $input = file_get_contents('php://input');
+                if ($input === false) {
+                    throw new Exception('Failed to read request data');
+                }
+                
+                $data = json_decode($input, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new Exception('Invalid JSON input: ' . json_last_error_msg());
+                }
+                
+                $branchId = isset($data['id']) ? (int)$data['id'] : 0;
+                if (!$branchId) {
+                    throw new Exception('Invalid branch ID');
+                }
+
+                $getBranch = $this->model('Branch');
+                if ($getBranch->deleteBranch($branchId)) {
+                    echo json_encode(['success' => true]);
+                }
+            } catch (Exception $e) {
+                error_log('Error deleting branch: ' . $e->getMessage());
+                http_response_code(500);
+                echo json_encode([
+                    'success' => false, 
+                    'message' => 'Error deleting branch: ' . $e->getMessage()
+                ]);
+            }
+            exit();
+        }
+        
+        // Handle GET request
+        $getBranch = $this->model('Branch');
+        $branchData = $getBranch->getAllBranches();
+        
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (isset($_POST['action']) && $_POST['action'] === 'add') {
+                $branchName = $_POST['branchName'];
+                $branchAddress = $_POST['branchAddress'];
+                
+                if ($getBranch->addBranch($branchName, $branchAddress)) {
+                    $this->session->set('message', 'Branch added successfully');
+                } else {
+                    $this->session->set('error', 'Failed to add branch');
+                }
+                header('Location: ' . URL::to('public/admin/viewBranch'));
+                exit;
+            }
+
+            $branchName = $_POST['branchName'];
+            $branchAddress = $_POST['branchAddress'];
+            $branchId = $_POST['branchid'];
+
+            if ($getBranch->updateBranch($branchId, $branchName, $branchAddress)) {
+                $this->session->set('message', 'Branch updated successfully');
+            } else {
+                $this->session->set('error', 'Failed to update branch');
+            }
+            header('Location: ' . URL::to('public/admin/viewBranch'));
+            exit();
+        }
+        
+        $this->view('admin/view-branch', ['branches' => $branchData]);
     }
 }

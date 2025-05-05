@@ -1,5 +1,7 @@
 <?php 
 require_once '../app/helper/URL.php';
+require_once '../app/helper/session.php';
+$session = Session::getInstance();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -62,18 +64,18 @@ require_once '../app/helper/URL.php';
           </div>
           <div class="card-content">
             <div class="card-body">
-              <?php if (Session::get('message')): ?>
+              <?php if ($session->get('message')): ?>
                 <div class="alert alert-success">
                     <?php 
-                        echo Session::get('message');
+                        echo $session->get('message');
                         unset($_SESSION['message']);
                     ?>
                 </div>
               <?php endif; ?>
-              <?php if (Session::get('error')): ?>
+              <?php if ($session->get('error')): ?>
                 <div class="alert alert-danger">
                     <?php 
-                        echo Session::get('error');
+                        echo $session->get('error');
                         unset($_SESSION['error']);
                     ?>
                 </div>

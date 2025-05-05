@@ -127,6 +127,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item <?php echo isMenuActive('/admin/viewBranch') ? 'active' : ''; ?>">
+                    <a href="<?= URL::to('public/admin/viewBranch') ?>" class='sidebar-link'>
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Branch</span>
+                    </a>
+                </li>
+                
                 <li class="sidebar-item <?php echo isMenuActive('/auth/logout') ? 'active' : ''; ?>">
                     <a href="<?= URL::to('public/auth/logout') ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-right"></i>

@@ -1,6 +1,6 @@
 <?php
 require_once __DIR__ . '/../../helper/session.php';
-Session::init();
+$session = Session::getInstance();
 ?>
 <!DOCTYPE html>
 <html lang="en">
