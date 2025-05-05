@@ -1,0 +1,75 @@
+<footer class="footer py-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <h5 class="mb-3">VỀ CHÚNG TÔI</h5>
+        <p>VNB SPORTS - Hệ thống shop cầu lông hàng đầu Việt Nam với hơn 1 Super Center, 5 shop Premium và 66 chi
+          nhánh trên toàn quốc.</p>
+        <div class="social-icons mt-3">
+          <a href="" class="me-2"><i class="fab fa-facebook-f"></i></a>
+          <a href="" class="me-2"><i class="fab fa-youtube"></i></a>
+          <a href="" class="me-2"><i class="fab fa-instagram"></i></a>
+          <a href="" class="me-2"><i class="fab fa-tiktok"></i></a>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
+        <h5 class="mb-3">LIÊN HỆ</h5>
+        <ul class="footer-links list-unstyled">
+          <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 390/2 Hà Huy Giáp, P. Thạnh Lộc, Q.12, TP.HCM</li>
+          <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> 0936155994</li>
+          <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@shopvnb.com</li>
+          <li class="mb-2"><i class="fas fa-globe me-2"></i> www.shopvnb.com</li>
+        </ul>
+      </div>
+
+      <div class="col-lg-4 col-md-12 col-sm-12 mb-4">
+        <h5 class="mb-3">ĐĂNG KÝ NHẬN TIN</h5>
+        <p>Đăng ký nhận thông tin khuyến mãi và sản phẩm mới nhất từ VNB SPORTS</p>
+        <div class="input-group mb-3">
+          <input type="email" class="form-control" placeholder="Email của bạn">
+          <button class="btn btn-primary" type="button">Đăng ký</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="copyright text-center mt-3">
+      <p class="mb-0">&copy; 2025 VNB SPORTS. Tất cả quyền được bảo lưu.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+  // Mobile Navigation
+  const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+  const mobileNav = document.getElementById('mobile-nav');
+  const mobileNavOverlay = document.getElementById('mobile-nav-overlay');
+  const mobileNavClose = document.getElementById('mobile-nav-close');
+
+  if (mobileMenuToggle && mobileNav && mobileNavOverlay && mobileNavClose) {
+    mobileMenuToggle.addEventListener('click', function () {
+      mobileNav.classList.add('active');
+      mobileNavOverlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    });
+
+    function closeMobileNav() {
+      mobileNav.classList.remove('active');
+      mobileNavOverlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    mobileNavClose.addEventListener('click', closeMobileNav);
+    mobileNavOverlay.addEventListener('click', closeMobileNav);
+
+    window.addEventListener('resize', function () {
+      if (window.innerWidth >= 768) {
+        closeMobileNav();
+      }
+    });
+  }
+</script>
+</body>
+
+</html>
