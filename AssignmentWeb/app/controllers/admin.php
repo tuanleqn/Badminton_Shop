@@ -24,17 +24,18 @@ class Admin extends Controller {
             'customer' => $customer,
             'response' => $responseData
         ];
-        
+
         $this->view('admin/index', $data);
     }
-    
-    public function formValidation() {
+
+    public function formValidation()
+    {
         $formalInfo = $this->model('FormalInfo');
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $data = [];
             $currentInfo = $formalInfo->getAllFormalInfo();
-            
+
             // Build data array from POST data
             foreach ($currentInfo as $info) {
                 $fieldName = str_replace(' ', '_', strtolower($info['name'])) . '-column';
@@ -45,17 +46,17 @@ class Admin extends Controller {
                     ];
                 }
             }
-            
+
             if ($formalInfo->modifyFormalInfo($data)) {
                 $this->session->setFlash('message', 'Information updated successfully');
             } else {
                 $this->session->setFlash('error', 'Failed to update information');
             }
-            
+
             header('Location: ' . URL::to('public/admin/formValidation'));
             exit();
         }
-        
+
         // Get current formal info for displaying in the form
         $formalInfoList = $formalInfo->getAllFormalInfo();
         $this->view('admin/form-validation-parsley', ['formalInfo' => $formalInfoList]);
@@ -65,23 +66,23 @@ class Admin extends Controller {
         $this->session->checkSession();
         $userData = $this->session->get('user');
         $user = $this->model('User');
-        
+
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validate required fields
             $requiredFields = ['name', 'email', 'phone', 'address'];
             $errors = [];
-            
+
             foreach ($requiredFields as $field) {
                 if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
                     $errors[] = ucfirst($field) . ' is required';
                 }
             }
-            
+
             // Validate email format
             if (!empty($_POST['email']) && !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors[] = 'Invalid email format';
             }
-            
+
             if (empty($errors)) {
                 $updateData = [
                     'id' => $userData['id'],
@@ -105,7 +106,7 @@ class Admin extends Controller {
                 $this->session->setFlash('error', implode(', ', $errors));
             }
         }
-        
+
         $this->view("admin/account-profile", ['user' => $userData]);
     }
 
@@ -302,37 +303,184 @@ class Admin extends Controller {
                 exit;
             }
 
-            if ($_POST['branchid'] && $_POST['branchName'] && $_POST['branchAddress']) {
-                $branchName = $_POST['branchName'];
-                $branchAddress = $_POST['branchAddress'];
-                $branchId = $_POST['branchid'];
+            $branchName = $_POST['branchName'];
+            $branchAddress = $_POST['branchAddress'];
+            $branchId = $_POST['branchid'];
 
-                if ($getBranch->updateBranch($branchId, $branchName, $branchAddress)) {
-                    $this->session->setFlash('message', 'Branch updated successfully');
-                } else {
-                    $this->session->setFlash('error', 'Failed to update branch');
-                }
-                header('Location: ' . URL::to('public/admin/viewBranch'));
-                exit();
+            if ($getBranch->updateBranch($branchId, $branchName, $branchAddress)) {
+                $this->session->set('message', 'Branch updated successfully');
+            } else {
+                $this->session->set('error', 'Failed to update branch');
             }
+            header('Location: ' . URL::to('public/admin/viewBranch'));
+            exit();
         }
-        
+
         $this->view('admin/view-branch', ['branches' => $branchData]);
     }
 
-    public function productlist(){
+    public function productlist()
+    {
         $this->view('admin/product/list');
     }
-    public function productadd(){
+    public function productadd()
+    {
         $this->view('admin/product/add');
     }
-    public function productedit(){
+    public function productedit()
+    {
         $this->view('admin/product/edit');
     }
-    public function productdelete(){
+    public function productdelete()
+    {
         $this->view('admin/product/delete');
     }
-    public function reviews(){
+    public function reviews()
+    {
         $this->view('admin/product/manage_reviews');
+    }
+
+    public function introduce()
+    {
+        $introduceModel = $this->model('IntroduceIntro');
+
+        // Xử lý DELETE request (AJAX)
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+            ob_clean();
+            header('Content-Type: application/json');
+            try {
+                $input = file_get_contents('php://input');
+                if ($input === false) {
+                    throw new Exception('Failed to read request data');
+                }
+                $data = json_decode($input, true);
+                if (json_last_error() !== JSON_ERROR_NONE) {
+                    throw new Exception('Invalid JSON input: ' . json_last_error_msg());
+                }
+                $id = isset($data['id']) ? (int) $data['id'] : 0;
+                if (!$id) {
+                    throw new Exception('Invalid introduce ID');
+                }
+                if ($introduceModel->deleteIntroduce($id)) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    throw new Exception('Delete operation failed');
+                }
+            } catch (Exception $e) {
+                error_log('Error deleting introduce: ' . $e->getMessage());
+                http_response_code(500);
+                echo json_encode([
+                    'success' => false,
+                    'message' => 'Error deleting introduce: ' . $e->getMessage()
+                ]);
+            }
+            exit();
+        }
+
+        // Xử lý POST request
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Nếu là thêm mới
+            if (isset($_POST['action']) && $_POST['action'] === 'add') {
+                $section = trim($_POST['section']);
+                $content = trim($_POST['content']);
+                $note = trim($_POST['note']);
+
+                $data = ['section' => $section, 'content' => $content, 'note' => $note];
+                if ($introduceModel->createIntroduce($data)) {
+                    $this->session->set('message', 'Introduce added successfully');
+                } else {
+                    $this->session->set('error', 'Failed to add introduce');
+                }
+                header('Location: ' . URL::to('public/admin/introduce'));
+                exit();
+            }
+
+            // Nếu là cập nhật
+            $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+            $section = trim($_POST['section']);
+            $content = trim($_POST['content']);
+            $note = trim($_POST['note']);
+
+            if ($id > 0) {
+                $data = ['section' => $section, 'content' => $content, 'note' => $note];
+                if ($introduceModel->updateIntroduce($id, $data)) {
+                    $this->session->set('message', 'Introduce updated successfully');
+                } else {
+                    $this->session->set('error', 'Failed to update introduce');
+                }
+            } else {
+                $this->session->set('error', 'Invalid introduce ID for update');
+            }
+            header('Location: ' . URL::to('public/admin/introduce'));
+            exit();
+        }
+
+        // Default: GET request, hiển thị danh sách
+        $allIntroduce = $introduceModel->getAllValues();
+        $this->view('admin/introduce', [
+            'introduces' => $allIntroduce
+        ]);
+    }
+
+    public function qaa()
+    {
+        $qaaModel = $this->model('Qaam');
+
+        // Xử lý DELETE AJAX
+        if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+            ob_clean();
+            header('Content-Type: application/json');
+            try {
+                $input = file_get_contents('php://input');
+                $data = json_decode($input, true);
+                $id = isset($data['id']) ? (int) $data['id'] : 0;
+                if (!$id)
+                    throw new Exception('Invalid Q&A ID');
+                if ($qaaModel->deleteQaa($id)) {
+                    echo json_encode(['success' => true]);
+                } else {
+                    throw new Exception('Delete operation failed');
+                }
+            } catch (Exception $e) {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+            }
+            exit();
+        }
+
+        // Xử lý POST (add/update)
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $id = isset($_POST['id']) ? (int) $_POST['id'] : 0;
+            $data = [
+                'category' => trim($_POST['category']),
+                'question' => trim($_POST['question']),
+                'answer' => trim($_POST['answer']),
+                'name' => trim($_POST['name']),
+                'email' => trim($_POST['email']),
+                'phone' => trim($_POST['phone']),
+                'displayOrder' => isset($_POST['displayOrder']) ? (int) $_POST['displayOrder'] : 1
+            ];
+
+            if (isset($_POST['action']) && $_POST['action'] === 'add') {
+                if ($qaaModel->createQaa($data)) {
+                    $this->session->set('message', 'Q&A added successfully');
+                } else {
+                    $this->session->set('error', 'Failed to add Q&A');
+                }
+            } else {
+                if ($id && $qaaModel->updateQaa($id, $data)) {
+                    $this->session->set('message', 'Q&A updated successfully');
+                } else {
+                    $this->session->set('error', 'Failed to update Q&A');
+                }
+            }
+
+            header('Location: ' . URL::to('public/admin/qaa'));
+            exit();
+        }
+
+        // GET: hiển thị danh sách Q&A
+        $allQaa = $qaaModel->getAllQaa();
+        $this->view('admin/qaa', ['qaas' => $allQaa]);
     }
 }

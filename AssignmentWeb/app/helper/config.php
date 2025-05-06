@@ -1,15 +1,17 @@
 <?php
-class db {
+class db
+{
     public $connect;
     protected $servername = "localhost";
     protected $username = "root";
-    protected $password = "";
+    protected $password = "123456";
     protected $dbname = "shopVNB";
 
-    function __construct() {
+    function __construct()
+    {
         // Enable error reporting for mysqli
         mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-        
+
         try {
             // Connect to MySQL
             $this->connect = mysqli_connect($this->servername, $this->username, $this->password);
@@ -29,17 +31,14 @@ class db {
 
             // Set timezone
             mysqli_query($this->connect, "SET time_zone = '+07:00'");
-            
+
         } catch (Exception $e) {
             die("Database Error: " . $e->getMessage());
         }
     }
 
-    function __destruct() {
-        if ($this->connect) {
-            mysqli_close($this->connect);
-        }
-    }
+    // Remove automatic connection closing in destructor to prevent premature closing
+    // Connection will be closed explicitly when needed
 }
 
 // Create a single instance of the database connection
