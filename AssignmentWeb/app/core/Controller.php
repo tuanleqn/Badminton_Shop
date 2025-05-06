@@ -1,5 +1,10 @@
 <?php
 class Controller {
+    protected function loadFormalInfo() {
+        $formalInfo = $this->model('FormalInfo');
+        return $formalInfo->getAllFormalInfo();
+    }
+
     public function model($model) {
         $modelPath = __DIR__ . '/../models/' . $model . '.php';
         if (!file_exists($modelPath)) {
@@ -14,6 +19,11 @@ class Controller {
         // Add .php extension if not present
         if (!pathinfo($viewPath, PATHINFO_EXTENSION)) {
             $viewPath .= '.php';
+        }
+        
+        // Load formal info if not already present in data
+        if (!isset($data['formalInfo'])) {
+            $data['formalInfo'] = $this->loadFormalInfo();
         }
         
         if (file_exists($viewPath)) {
