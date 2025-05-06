@@ -302,7 +302,7 @@ $session = Session::getInstance();
             <div class="dropdown">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <?php echo htmlspecialchars($session->get('user')['NAME']); ?>
+                <?php echo htmlspecialchars($session->get('user')['name']); ?>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>

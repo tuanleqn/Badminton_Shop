@@ -2,11 +2,13 @@
 <div id="sidebar" class="active">
     <div class="sidebar-wrapper active">
         <?php
-        
+
         // Helper function to check if a menu item is active
-        function isMenuActive($path) {
+        function isMenuActive($path)
+        {
             $currentPath = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-            if (empty($currentPath)) return false;
+            if (empty($currentPath))
+                return false;
             // Remove leading slash if exists for consistent compariso
             return strpos($currentPath, $path) !== false;
         }
@@ -19,8 +21,8 @@
                     </a>
                 </div>
                 <div class="theme-toggle d-flex gap-2 align-items-center mt-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                        role="img" class="iconify iconify--system-uicons" width="20" height="20"
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" role="img" class="iconify iconify--system-uicons" width="20" height="20"
                         preserveAspectRatio="xMidYMid meet" viewBox="0 0 21 21">
                         <g fill="none" fill-rule="evenodd" stroke="currentColor" stroke-linecap="round"
                             stroke-linejoin="round">
@@ -38,9 +40,9 @@
                         <input class="form-check-input me-0" type="checkbox" id="toggle-dark" style="cursor: pointer">
                         <label class="form-check-label"></label>
                     </div>
-                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
-                        role="img" class="iconify iconify--mdi" width="20" height="20" preserveAspectRatio="xMidYMid meet"
-                        viewBox="0 0 24 24">
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                        aria-hidden="true" role="img" class="iconify iconify--mdi" width="20" height="20"
+                        preserveAspectRatio="xMidYMid meet" viewBox="0 0 24 24">
                         <path fill="currentColor"
                             d="m17.75 4.09l-2.53 1.94l.91 3.06l-2.63-1.81l-2.63 1.81l.91-3.06l-2.53-1.94L12.44 4l1.06-3l1.06 3l3.19.09m3.5 6.91l-1.64 1.25l.59 1.98l-1.7-1.17l-1.7 1.17l.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95l2.06.05m-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85c-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14c.4-.4.82-.76 1.27-1.08c.75-.53 1.93.36 1.85 1.19c-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82c-2.81 3.14-2.7 7.96.31 10.98c3.02 3.01 7.84 3.12 10.98.31Z">
                         </path>
@@ -54,7 +56,7 @@
         <div class="sidebar-menu">
             <ul class="menu">
                 <li class="sidebar-title">Menu</li>
-                
+
                 <li class="sidebar-item <?php echo isMenuActive('/admin/index') ? 'active' : ''; ?>">
                     <a href="<?= URL::to('public/admin/index') ?>" class='sidebar-link'>
                         <i class="bi bi-grid-fill"></i>
@@ -62,12 +64,14 @@
                     </a>
                 </li>
 
-                <li class="sidebar-item has-sub <?php echo isMenuActive('/admin/profile') || isMenuActive('/admin/security') ? 'active' : ''; ?>">
+                <li
+                    class="sidebar-item has-sub <?php echo isMenuActive('/admin/profile') || isMenuActive('/admin/security') ? 'active' : ''; ?>">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-hexagon-fill"></i>
                         <span>Account</span>
                     </a>
-                    <ul class="submenu <?php echo isMenuActive('/admin/profile') || isMenuActive('/admin/security')  ? 'active' : ''; ?>">
+                    <ul
+                        class="submenu <?php echo isMenuActive('/admin/profile') || isMenuActive('/admin/security') ? 'active' : ''; ?>">
                         <li class="submenu-item <?php echo isMenuActive('/admin/profile') ? 'active' : ''; ?>">
                             <a href="<?php echo URL::to('public/admin/profile'); ?>" class="submenu-link">Profile</a>
                         </li>
@@ -101,18 +105,20 @@
                         <i class="bi bi-file-earmark-spreadsheet-fill"></i>
                         <span>Danh sách</span>
                     </a>
-                    
+
                     <ul class="submenu active">
-                        
-                        <li class="submenu-item <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/productadd') ||  isMenuActive('/admin/productedit') || isMenuActive('/admin/productdelete') ? 'active' : ''; ?>">
-                            <a href="<?= URL::to('public/admin/productlist') ?>" class="submenu-link">Danh sách sản phẩm</a>
+
+                        <li
+                            class="submenu-item <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/productadd') || isMenuActive('/admin/productedit') || isMenuActive('/admin/productdelete') ? 'active' : ''; ?>">
+                            <a href="<?= URL::to('public/admin/productlist') ?>" class="submenu-link">Danh sách sản
+                                phẩm</a>
                         </li>
                         <li class="submenu-item <?php echo isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
                             <a href="<?= URL::to('public/admin/reviews'); ?>" class="submenu-link">Quản lí bình luận</a>
                         </li>
-                        
+
                     </ul>
-                    
+
 
                 </li>
 
@@ -123,7 +129,8 @@
                     </a>
                     <ul class="submenu <?php echo isMenuActive('/admin/formValidation') ? 'active' : ''; ?>">
                         <li class="submenu-item <?php echo isMenuActive('/admin/formValidation') ? 'active' : ''; ?>">
-                            <a href="<?php echo URL::to('public/admin/formValidation'); ?>" class="submenu-link">General info</a>
+                            <a href="<?php echo URL::to('public/admin/formValidation'); ?>" class="submenu-link">General
+                                info</a>
                         </li>
                     </ul>
                 </li>
@@ -154,7 +161,21 @@
                         <span>Branch</span>
                     </a>
                 </li>
-                
+
+                <li class="sidebar-item <?php echo isMenuActive('/admin/introduce') ? 'active' : ''; ?>">
+                    <a href="<?= URL::to('public/admin/introduce') ?>" class='sidebar-link'>
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Introduction</span>
+                    </a>
+                </li>
+
+                <li class="sidebar-item <?php echo isMenuActive('/admin/qaa') ? 'active' : ''; ?>">
+                    <a href="<?= URL::to('public/admin/qaa') ?>" class='sidebar-link'>
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Q&A</span>
+                    </a>
+                </li>
+
                 <li class="sidebar-item <?php echo isMenuActive('/auth/logout') ? 'active' : ''; ?>">
                     <a href="<?= URL::to('public/auth/logout') ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-right"></i>

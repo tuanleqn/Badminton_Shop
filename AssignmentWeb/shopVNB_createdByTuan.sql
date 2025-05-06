@@ -14,7 +14,7 @@ CREATE TABLE `user`(
     address VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     pass VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     sex ENUM('M', 'F', 'Other'),
-    NAME VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     email VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci UNIQUE NOT NULL,
     numOfVisit INT DEFAULT 0,
     role ENUM('admin', 'customer') DEFAULT 'customer'
@@ -25,10 +25,10 @@ CREATE TABLE `user`(
     FOREIGN KEY(userId) REFERENCES USER(id)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `brand`(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
+    name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `product`(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    NAME VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+    name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
     description TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     listsOfInmage TEXT,
     price DECIMAL(10, 2) NOT NULL,
@@ -105,7 +105,7 @@ CREATE TABLE `introduce`(
     address,
     pass,
     sex,
-    NAME,
+    name,
     email,
     numOfVisit,
     role
@@ -161,11 +161,11 @@ VALUES(
     'Số 6 Nguyễn Hữu Cầu, Phường Tân Định, Quận 1, TP.HCM',
     2
 );
-INSERT INTO `brand`(id, NAME)
+INSERT INTO `brand`(id, name)
 VALUES(1, 'Yonex'),(2, 'Li-Ning'),(3, 'Victor');
 INSERT INTO `product`(
     id,
-    NAME,
+    name,
     description,
     listsOfInmage,
     price,
