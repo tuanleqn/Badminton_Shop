@@ -1,15 +1,16 @@
 <?php
 class Introduce extends Controller
 {
+  private $session;
+
   public function __construct()
   {
-    Session::init();
+    $this->session = Session::getInstance();
   }
 
   public function index()
   {
-    // Get user info from session if logged in
-    $userData = Session::get('user');
+    $userData = $this->session->get('user');
     if ($userData === false) {
       $userData = null;
     }
@@ -18,30 +19,18 @@ class Introduce extends Controller
     $formalInfoList = $formalInfo->getAllFormalInfo();
 
     $introduceModel = $this->model('IntroduceIntro');
-
     $introduceContent = $introduceModel->getValuesBySection('Giới thiệu');
-
     $visionContent = $introduceModel->getValuesBySection('Tầm nhìn');
-
     $missionContent = $introduceModel->getValuesBySection('Sứ mệnh');
-
     $coreValuesContent = $introduceModel->getValuesBySection('Giá trị cốt lõi');
-
     $businessPhilosophyContent = $introduceModel->getValuesBySection('Triết lý kinh doanh');
-
     $qualityPolicyContent = $introduceModel->getValuesBySection('Chính sách chất lượng');
-
     $sloganContent = $introduceModel->getValuesBySection('Khẩu hiệu');
-
     $suggestedContent = $introduceModel->getValuesBySection('CÓ THỂ BẠN SẼ THÍCH');
-
     $newsCategories = $introduceModel->getValuesBySection('DANH MỤC TIN TỨC');
-
     $productCategories = $introduceModel->getValuesBySection('DANH MỤC SẢN PHẨM');
-
     $branches = $introduceModel->getBranchWithUserPhone();
 
-    // If user is admin, redirect to admin panel using proper routing
     if ($userData && $userData['role'] === 'admin') {
       header('Location: ' . URL::to('public/admin/index'));
       exit();

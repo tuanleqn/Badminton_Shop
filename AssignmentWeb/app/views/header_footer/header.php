@@ -1,3 +1,7 @@
+<?php
+require_once __DIR__ . '/../../helper/session.php';
+$session = Session::getInstance();
+?>
 <!DOCTYPE html>
 <html lang="vi">
 
@@ -7,6 +11,7 @@
   <title>VNB Sports - Hệ thống shop cầu lông hàng đầu Việt Nam</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="<?php echo URL::to('assets/css/style.css'); ?>">
 
   <style>
     :root {
@@ -26,6 +31,21 @@
     .top-bar {
       background-color: var(--light-color);
       padding: 10px 0;
+    }
+
+    .hotline {
+      color: var(--dark-color);
+      font-weight: 500;
+    }
+
+    .store-system {
+      color: var(--dark-color);
+      font-weight: 500;
+      text-decoration: none;
+    }
+
+    .store-system:hover {
+      color: var(--primary-color);
     }
 
     .auth-buttons .btn {
@@ -242,15 +262,25 @@
       <div class="row align-items-center">
         <div class="col-lg-2 col-md-3 col-6">
           <a href="" class="logo navbar-brand">
-            <img src="<?php echo URL::to('assets/images/logo.svg'); ?>" width="50" height="50" alt="Logo"
-              class="logo me-1 d-inline-block align-text-top">
+            <?php foreach ($formalInfo as $info): ?>
+              <?php if ($info['name'] == 'Logo'): ?>
+                <img src="<?php echo $info['description']; ?>" width="50" height="50" alt="Logo"
+                  class="logo me-1 d-inline-block align-text-top">
+              <?php endif; ?>
+            <?php endforeach; ?>
           </a>
         </div>
         <div class="col-lg-4 col-md-5 col-6">
           <div class="hotline">
             <img src="<?php echo URL::to('assets/images/phone-call.svg'); ?>" width="18" height="18" alt="Phone Call"
               class="phone-call me-1 d-inline-block align-text-top">
-            HOTLINE: <span class="text-danger">0936155994</span>
+            HOTLINE: <span class="text-danger">
+              <?php foreach ($formalInfo as $info): ?>
+                <?php if ($info['name'] == 'Hotline'): ?>
+                  <?php echo $info['description']; ?>
+                <?php endif; ?>
+              <?php endforeach; ?>
+            </span>
           </div>
         </div>
         <div class="col-lg-3 col-md-4 col-6 mt-2 mt-md-0">
@@ -261,18 +291,18 @@
           </a>
         </div>
         <div class="col-lg-3 col-md-12 col-12 text-end auth-buttons mt-2 mt-lg-0">
-          <?php if ($userData == null): ?>
-            <!-- Hiển thị nút Đăng nhập và Đăng ký nếu userData == null -->
+          <?php if (!$session->get('user')): ?>
+            <!-- Hiển thị nút Đăng nhập và Đăng ký nếu chưa đăng nhập -->
             <a href="<?php echo URL::to('public/auth/login'); ?>" class="btn btn-outline-secondary login-button">Đăng
               nhập</a>
             <a href="<?php echo URL::to('public/auth/register'); ?>"
               class="btn btn-outline-secondary register-button">Đăng ký</a>
           <?php else: ?>
-            <!-- Hiển thị nút Profile nếu userData không rỗng -->
+            <!-- Hiển thị nút Profile nếu đã đăng nhập -->
             <div class="dropdown">
               <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown"
                 data-bs-toggle="dropdown" aria-expanded="false">
-                <?php echo htmlspecialchars($userData['NAME']); ?>
+                <?php echo htmlspecialchars($session->get('user')['NAME']); ?>
               </button>
               <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
                 <li>
@@ -312,7 +342,7 @@
             <a class="nav-link" href="<?php echo URL::to('public/home/index'); ?>">Trang chủ</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="">Sản phẩm</a>
+            <a class="nav-link" href="<?php echo URL::to('public/ProductSite/index'); ?>">Sản phẩm</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="">Tin tức</a>
@@ -346,8 +376,12 @@
       <div class="mobile-nav" id="mobile-nav">
         <div class="mobile-nav-header">
           <a href="" class="logo navbar-brand">
-            <img src="images/logo.svg" width="40" height="40" alt="Logo"
-              class="logo me-1 d-inline-block align-text-top">
+            <?php foreach ($formalInfo as $info): ?>
+              <?php if ($info['name'] == 'Logo'): ?>
+                <img src="<?php echo $info['description']; ?>" width="40" height="40" alt="Logo"
+                  class="logo me-1 d-inline-block align-text-top">
+              <?php endif; ?>
+            <?php endforeach; ?>
           </a>
           <div class="mobile-nav-close" id="mobile-nav-close">
             <i class="fas fa-times"></i>
@@ -380,3 +414,9 @@
   </nav>
 
   <hr class="break my-0">
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

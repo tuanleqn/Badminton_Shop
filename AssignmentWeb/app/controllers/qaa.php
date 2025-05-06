@@ -1,9 +1,11 @@
 <?php
 class Qaa extends Controller
 {
+  private $session;
+
   public function __construct()
   {
-    Session::init();
+    $this->session = Session::getInstance();
   }
 
   public function index()
@@ -26,7 +28,7 @@ class Qaa extends Controller
       }
     }
 
-    $userData = Session::get('user');
+    $userData = $this->session->get('user');
     if ($userData === false) {
       $userData = null;
     }

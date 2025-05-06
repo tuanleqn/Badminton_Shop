@@ -1,15 +1,19 @@
 <?php
 class Home extends Controller
 {
+    private $session;
+    private $siteModel;
+
     public function __construct()
     {
-        Session::init();
+        $this->session = Session::getInstance();
+        $this->siteModel = $this->model('SiteModel');
     }
 
     public function index()
     {
         // Get user info from session if logged in
-        $userData = Session::get('user');
+        $userData = $this->session->get('user');
         if ($userData === false) {
             $userData = null;
         }
@@ -26,7 +30,8 @@ class Home extends Controller
 
         $data = [
             'user' => $userData,
-            'formalInfo' => $formalInfoList
+            'formalInfo' => $formalInfoList,
+            'siteModel' => $this->siteModel
         ];
 
         $this->view('home/index', $data);
@@ -34,7 +39,7 @@ class Home extends Controller
 
     public function contract()
     {
-        $userData = Session::get('user');
+        $userData = $this->session->get('user');
         if ($userData === false) {
             $userData = null;
         }

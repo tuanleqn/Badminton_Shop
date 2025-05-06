@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../../helper/session.php';
-Session::init();
+require_once __DIR__ . '/../../helper/URL.php';
+$session = Session::getInstance();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -9,7 +10,7 @@ Session::init();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Sports Shop</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../../assets/css/style.css">
+    <link rel="stylesheet" href="<?php echo URL::to('assets/css/style.css'); ?>">
 </head>
 <body>
     <div class="container mt-5">
@@ -32,7 +33,7 @@ Session::init();
                             </div>
                         <?php endif; ?>
                         
-                        <form action="login" method="POST">
+                        <form action="<?php echo URL::to('public/auth/login'); ?>" method="POST">
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
@@ -45,7 +46,7 @@ Session::init();
                                 <button type="submit" class="btn btn-primary w-100">Login</button>
                             </div>
                             <div class="text-center">
-                                <p>Don't have an account? <a href="register">Sign up here</a></p>
+                                <p>Don't have an account? <a href="<?php echo URL::to('public/auth/register'); ?>">Sign up here</a></p>
                             </div>
                         </form>
                     </div>

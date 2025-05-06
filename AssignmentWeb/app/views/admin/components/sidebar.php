@@ -95,6 +95,27 @@
                     </ul>
                 </li>
 
+                <li
+                    class="sidebar-item has-sub sidebar-item has-sub <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
+                    <a href="#" class='sidebar-link'>
+                        <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                        <span>Danh sách</span>
+                    </a>
+                    
+                    <ul class="submenu active">
+                        
+                        <li class="submenu-item <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/productadd') ||  isMenuActive('/admin/productedit') || isMenuActive('/admin/productdelete') ? 'active' : ''; ?>">
+                            <a href="<?= URL::to('public/admin/productlist') ?>" class="submenu-link">Danh sách sản phẩm</a>
+                        </li>
+                        <li class="submenu-item <?php echo isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
+                            <a href="<?= URL::to('public/admin/reviews'); ?>" class="submenu-link">Quản lí bình luận</a>
+                        </li>
+                        
+                    </ul>
+                    
+
+                </li>
+
                 <li class="sidebar-item has-sub <?php echo isMenuActive('/admin/formValidation') ? 'active' : ''; ?>">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-journal-check"></i>
@@ -127,6 +148,13 @@
                     </a>
                 </li>
 
+                <li class="sidebar-item <?php echo isMenuActive('/admin/viewBranch') ? 'active' : ''; ?>">
+                    <a href="<?= URL::to('public/admin/viewBranch') ?>" class='sidebar-link'>
+                        <i class="bi bi-box-arrow-right"></i>
+                        <span>Branch</span>
+                    </a>
+                </li>
+                
                 <li class="sidebar-item <?php echo isMenuActive('/auth/logout') ? 'active' : ''; ?>">
                     <a href="<?= URL::to('public/auth/logout') ?>" class='sidebar-link'>
                         <i class="bi bi-box-arrow-right"></i>

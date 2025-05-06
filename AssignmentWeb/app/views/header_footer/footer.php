@@ -3,8 +3,11 @@
     <div class="row">
       <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
         <h5 class="mb-3">VỀ CHÚNG TÔI</h5>
-        <p>VNB SPORTS - Hệ thống shop cầu lông hàng đầu Việt Nam với hơn 1 Super Center, 5 shop Premium và 66 chi
-          nhánh trên toàn quốc.</p>
+        <?php foreach ($formalInfo as $info): ?>
+          <?php if ($info['name'] == 'About'): ?>
+            <p><?php echo $info['description']; ?></p>
+          <?php endif; ?>
+        <?php endforeach; ?>
         <div class="social-icons mt-3">
           <a href="" class="me-2"><i class="fab fa-facebook-f"></i></a>
           <a href="" class="me-2"><i class="fab fa-youtube"></i></a>
@@ -16,10 +19,24 @@
       <div class="col-lg-4 col-md-6 col-sm-12 mb-4">
         <h5 class="mb-3">LIÊN HỆ</h5>
         <ul class="footer-links list-unstyled">
-          <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i> 390/2 Hà Huy Giáp, P. Thạnh Lộc, Q.12, TP.HCM</li>
-          <li class="mb-2"><i class="fas fa-phone-alt me-2"></i> 0936155994</li>
-          <li class="mb-2"><i class="fas fa-envelope me-2"></i> info@shopvnb.com</li>
-          <li class="mb-2"><i class="fas fa-globe me-2"></i> www.shopvnb.com</li>
+          <li class="mb-2"><i class="fas fa-map-marker-alt me-2"></i>390/2 Hà Huy Giáp, P. Thạnh Lộc, Q.12, TP.HCM</li>
+          <li class="mb-2">
+            <i class="fas fa-phone-alt me-2"></i>
+            <?php foreach ($formalInfo as $info): ?>
+              <?php if ($info['name'] == 'Hotline'): ?>
+                <?php echo $info['description']; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </li>
+          <li class="mb-2">
+            <i class="fas fa-envelope me-2"></i>
+            <?php foreach ($formalInfo as $info): ?>
+              <?php if ($info['name'] == 'Email shop'): ?>
+                <?php echo $info['description']; ?>
+              <?php endif; ?>
+            <?php endforeach; ?>
+          </li>
+          <li class="mb-2"><i class="fas fa-globe me-2"></i>www.shopvnb.com</li>
         </ul>
       </div>
 
