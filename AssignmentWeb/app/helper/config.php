@@ -35,8 +35,11 @@ class db {
         }
     }
 
-    // Remove automatic connection closing in destructor to prevent premature closing
-    // Connection will be closed explicitly when needed
+    function __destruct() {
+        if ($this->connect) {
+            mysqli_close($this->connect);
+        }
+    }
 }
 
 // Create a single instance of the database connection
