@@ -254,7 +254,7 @@ include(__DIR__ . '/../header_footer/header.php');
     <h1>GIỚI THIỆU</h1>
     <p>Hệ thống shop cầu lông hàng đầu Việt Nam với hơn 1 Super Center, 5 shop Premium và 66 chi nhánh trên toàn quốc
     </p>
-    <a href="#" class="btn btn-primary">Mua sắm ngay</a>
+    <a href="" class="btn btn-primary">Mua sắm ngay</a>
   </div>
 </section>
 
@@ -418,7 +418,7 @@ include(__DIR__ . '/../header_footer/header.php');
               </p>
               <p class="card-text"><i class="fas fa-map-marker-alt text-primary me-2"></i>
                 <?php echo $branch['branch_address']; ?></p>
-              <a href="#" class="btn btn-outline-primary mt-2">Xem bản đồ</a>
+              <a href="" class="btn btn-outline-primary mt-2">Xem bản đồ</a>
             </div>
           </div>
         </div>
@@ -428,7 +428,7 @@ include(__DIR__ . '/../header_footer/header.php');
     </div>
 
     <div class="text-center mt-4">
-      <a href="#" class="btn btn-primary">Xem tất cả cửa hàng</a>
+      <a href="" class="btn btn-primary">Xem tất cả cửa hàng</a>
     </div>
   </div>
 </section>

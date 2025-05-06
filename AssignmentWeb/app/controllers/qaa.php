@@ -8,30 +8,47 @@ class Qaa extends Controller
 
   public function index()
   {
-    // Get user info from session if logged in
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+      $dataNew = [
+        'category' => 'Khác',
+        'question' => $_POST['question'] ?? '',
+        'answer' => 'Chưa có câu trả lời',
+        'name' => $_POST['name'] ?? '',
+        'email' => $_POST['email'] ?? '',
+        'phone' => $_POST['phone'] ?? '',
+        'displayOrder' => 1
+      ];
+      $qaaModel = $this->model('Qaam');
+
+      if ($qaaModel->createQaa($dataNew)) {
+        header('Location: ' . URL::to('public/qaa/index'));
+        exit();
+      }
+    }
+
     $userData = Session::get('user');
     if ($userData === false) {
       $userData = null;
     }
 
-    // Load formal info for the header
     $formalInfo = $this->model('FormalInfo');
     $formalInfoList = $formalInfo->getAllFormalInfo();
 
-    // If user is admin, redirect to admin panel using proper routing
     if ($userData && $userData['role'] === 'admin') {
       header('Location: ' . URL::to('public/admin/index'));
       exit();
     }
 
+    $qaaModel = $this->model('Qaam');
+    $faqGrouped = $qaaModel->getFaqsGroupedByCategory();
+
     $data = [
       'user' => $userData,
-      'formalInfo' => $formalInfoList
+      'formalInfo' => $formalInfoList,
+      'faqs' => $faqGrouped
     ];
 
     $this->view('introduce/qaa', $data);
   }
-
-
 }
 ?>

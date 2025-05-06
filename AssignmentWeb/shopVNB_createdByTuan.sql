@@ -87,6 +87,9 @@ CREATE TABLE `faq`(
     -- Danh mục: 'Mua hàng', 'Sản phẩm', v.v.
     question TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     answer TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    `name` VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    email VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
+    phone VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     displayOrder INT DEFAULT 0
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci;
 -- Bảng introduce (lưu trữ nội dung giới thiệu)
@@ -335,17 +338,276 @@ INSERT INTO `faq`(
     category,
     question,
     answer,
+    `name`,
+    email,
+    phone,
     displayOrder
 )
 VALUES(
     'Mua hàng',
     'Làm thế nào để đặt hàng trên website VNB Sports?',
-    'Để đặt hàng trên website VNB Sports, bạn có thể thực hiện theo các bước sau: 1. Truy cập website shopvnb.com 2. Tìm kiếm và chọn sản phẩm bạn muốn mua 3. Nhấn nút "Thêm vào giỏ hàng" 4. Kiểm tra giỏ hàng và nhấn "Thanh toán" 5. Điền thông tin giao hàng và chọn phương thức thanh toán 6. Xác nhận đơn hàng',
+    '<p>Để đặt hàng trên website VNB Sports, bạn có thể thực hiện theo các bước sau:</p>
+<ol>
+  <li>Truy cập website <a href="https://shopvnb.com">shopvnb.com</a></li>
+  <li>Tìm kiếm và chọn sản phẩm bạn muốn mua</li>
+  <li>Nhấn nút "Thêm vào giỏ hàng"</li>
+  <li>Kiểm tra giỏ hàng và nhấn "Thanh toán"</li>
+  <li>Điền thông tin giao hàng và chọn phương thức thanh toán</li>
+  <li>Xác nhận đơn hàng</li>
+</ol>
+<p>Sau khi đặt hàng thành công, bạn sẽ nhận được email xác nhận đơn hàng và nhân viên của chúng tôi sẽ liên hệ để xác nhận lại thông tin.</p>',
+    'Alice',
+    'alice@example.com',
+    '0123456789',
+    1
+),(
+    'Mua hàng',
+    'Tôi có thể mua hàng mà không cần đăng ký tài khoản không?',
+    '<p>Có, bạn có thể mua hàng trên website VNB Sports mà không cần đăng ký tài khoản. Khi thanh toán, bạn chỉ cần điền đầy đủ thông tin giao hàng và chọn phương thức thanh toán.</p>
+<p>Tuy nhiên, chúng tôi khuyên bạn nên đăng ký tài khoản để:</p>
+<ul>
+  <li>Theo dõi lịch sử đơn hàng dễ dàng</li>
+  <li>Lưu thông tin giao hàng cho lần mua sau</li>
+  <li>Nhận thông tin về chương trình khuyến mãi</li>
+  <li>Tích lũy điểm thưởng và nhận ưu đãi</li>
+</ul>',
+    'Bob',
+    'bob@example.com',
+    '0987654321',
+    1
+),(
+    'Mua hàng',
+    'Làm thế nào để kiểm tra tình trạng đơn hàng của tôi?',
+    '<p>Để kiểm tra tình trạng đơn hàng, bạn có thể thực hiện một trong các cách sau:</p>
+<ol>
+  <li><strong>Đăng nhập tài khoản:</strong> Nếu bạn đã đăng ký, hãy đăng nhập và vào mục "Đơn hàng của tôi" để xem tình trạng đơn hàng.</li>
+  <li><strong>Kiểm tra email:</strong> Chúng tôi sẽ gửi email cập nhật tình trạng đơn hàng cho bạn.</li>
+  <li><strong>Liên hệ hotline:</strong> Gọi số hotline 0936155994 và cung cấp mã đơn hàng để nhân viên kiểm tra giúp bạn.</li>
+</ol>',
+    'Carol',
+    'carol@example.com',
+    '0909123456',
+    1
+),(
+    'Mua hàng',
+    'Tôi có thể hủy đơn hàng sau khi đã đặt không?',
+    '<p>Bạn có thể hủy đơn hàng trong vòng 24 giờ sau khi đặt hàng và trước khi đơn hàng được giao cho đơn vị vận chuyển. Để hủy đơn hàng, bạn có thể:</p>
+<ul>
+  <li>Đăng nhập tài khoản và chọn "Hủy đơn hàng" trong mục "Đơn hàng của tôi"</li>
+  <li>Gọi hotline 0936155994 để được hỗ trợ hủy đơn hàng</li>
+</ul>
+<p>Lưu ý: Đối với đơn hàng đã được giao cho đơn vị vận chuyển, bạn sẽ không thể hủy đơn hàng. Trong trường hợp này, bạn có thể từ chối nhận hàng hoặc liên hệ với chúng tôi để được hướng dẫn đổi/trả hàng.</p>',
+    'Dave',
+    'dave@example.com',
+    '0912345678',
     1
 ),(
     'Sản phẩm',
     'Làm thế nào để biết sản phẩm còn hàng hay không?',
-    'Trên trang chi tiết sản phẩm, bạn có thể kiểm tra tình trạng hàng như sau: Nếu sản phẩm còn hàng, bạn sẽ thấy nút "Thêm vào giỏ hàng" và thông tin về số lượng còn lại.',
+    '<p>Trên trang chi tiết sản phẩm, bạn có thể kiểm tra tình trạng hàng như sau:</p>
+<ul>
+  <li>Nếu sản phẩm còn hàng, bạn sẽ thấy nút "Thêm vào giỏ hàng" và thông tin về số lượng còn lại.</li>
+  <li>Nếu sản phẩm hết hàng, sẽ hiển thị thông báo "Hết hàng" hoặc "Tạm hết hàng".</li>
+</ul>
+<p>Ngoài ra, bạn có thể liên hệ trực tiếp với chúng tôi qua hotline 0936155994 để kiểm tra tình trạng hàng chính xác nhất, đặc biệt là đối với các sản phẩm hot hoặc mới ra mắt.</p>',
+    'Eve',
+    'eve@example.com',
+    '0934567890',
+    1
+),(
+    'Sản phẩm',
+    'Làm thế nào để phân biệt hàng chính hãng và hàng giả?',
+    '<p>VNB Sports cam kết chỉ bán hàng chính hãng 100%. Để phân biệt hàng chính hãng và hàng giả, bạn có thể lưu ý các điểm sau:</p>
+<ol>
+  <li><strong>Tem nhãn:</strong> Sản phẩm chính hãng luôn có tem nhãn rõ ràng, in sắc nét và có mã QR hoặc mã vạch để kiểm tra.</li>
+  <li><strong>Chất lượng:</strong> Sản phẩm chính hãng có chất lượng hoàn thiện cao, không có lỗi trong quá trình sản xuất.</li>
+  <li><strong>Giá cả:</strong> Hàng chính hãng thường có giá cả phù hợp với thị trường, không quá rẻ so với mặt bằng chung.</li>
+  <li><strong>Bao bì:</strong> Hàng chính hãng có bao bì đẹp, chắc chắn, thông tin đầy đủ và rõ ràng.</li>
+</ol>
+<p>Khi mua hàng tại VNB Sports, bạn sẽ nhận được hóa đơn và phiếu bảo hành chính hãng (nếu có), đảm bảo quyền lợi của bạn.</p>',
+    'Frank',
+    'frank@example.com',
+    '0945678901',
+    1
+),(
+    'Sản phẩm',
+    'Làm thế nào để chọn vợt cầu lông phù hợp?',
+    '<p>Để chọn vợt cầu lông phù hợp, bạn nên xem xét các yếu tố sau:</p>
+<ol>
+  <li><strong>Trình độ chơi:</strong> Người mới chơi nên chọn vợt nhẹ, cân bằng. Người chơi trung cấp và cao cấp có thể chọn vợt theo phong cách chơi.</li>
+  <li><strong>Trọng lượng vợt:</strong> Vợt nhẹ (80-84g) dễ điều khiển, vợt nặng (85-89g) tạo lực đánh mạnh hơn.</li>
+  <li><strong>Cân bằng vợt:</strong> Cân bằng đầu nhẹ giúp phòng thủ tốt, cân bằng đầu nặng tăng sức mạnh tấn công.</li>
+  <li><strong>Độ cứng của thân vợt:</strong> Thân mềm giúp tạo lực tốt cho người mới, thân cứng phù hợp với người có kỹ thuật và sức mạnh.</li>
+</ol>
+<p>Bạn có thể đến trực tiếp cửa hàng VNB Sports để được tư vấn và test vợt trước khi mua. Nhân viên của chúng tôi sẽ giúp bạn chọn vợt phù hợp nhất với trình độ và phong cách chơi của bạn.</p>',
+    'Grace',
+    'grace@example.com',
+    '0956789012',
+    1
+),(
+    'Bảo hành',
+    'Chính sách bảo hành của VNB Sports như thế nào?',
+    '<p>VNB Sports áp dụng chính sách bảo hành theo quy định của nhà sản xuất:</p>
+<ul>
+  <li><strong>Vợt cầu lông:</strong> Bảo hành 6-12 tháng tùy thương hiệu, chỉ áp dụng cho lỗi sản xuất (nứt, gãy khung vợt trong điều kiện sử dụng bình thường).</li>
+  <li><strong>Giày cầu lông:</strong> Bảo hành 1-3 tháng tùy thương hiệu, chỉ áp dụng cho lỗi sản xuất như bong đế, rách đường chỉ may.</li>
+  <li><strong>Phụ kiện:</strong> Bảo hành 1 tháng cho lỗi sản xuất.</li>
+</ul>
+<p>Lưu ý: Bảo hành không áp dụng cho các trường hợp hư hỏng do sử dụng không đúng cách, va đập mạnh, hoặc tự ý sửa chữa. Để được bảo hành, bạn cần giữ hóa đơn và phiếu bảo hành.</p>',
+    'Henry',
+    'henry@example.com',
+    '0967890123',
+    1
+),(
+    'Bảo hành',
+    'Làm thế nào để yêu cầu bảo hành sản phẩm?',
+    '<p>Để yêu cầu bảo hành sản phẩm, bạn có thể thực hiện theo các bước sau:</p>
+<ol>
+  <li>Mang sản phẩm cần bảo hành đến bất kỳ cửa hàng VNB Sports nào trên toàn quốc.</li>
+  <li>Xuất trình hóa đơn mua hàng và phiếu bảo hành (nếu có).</li>
+  <li>Nhân viên của chúng tôi sẽ kiểm tra sản phẩm và xác định lỗi.</li>
+  <li>Nếu sản phẩm đủ điều kiện bảo hành, chúng tôi sẽ tiến hành sửa chữa hoặc đổi mới sản phẩm theo chính sách của từng thương hiệu.</li>
+</ol>
+<p>Thời gian bảo hành thông thường từ 7-15 ngày tùy thuộc vào tình trạng sản phẩm và chính sách của nhà sản xuất. Trong trường hợp cần thời gian lâu hơn, chúng tôi sẽ thông báo cụ thể cho bạn.</p>',
+    'Irene',
+    'irene@example.com',
+    '0978901234',
+    1
+),(
+    'Vận chuyển',
+    'Phí vận chuyển được tính như thế nào?',
+    '<p>Phí vận chuyển được tính dựa trên các yếu tố sau:</p>
+<ul>
+  <li><strong>Khoảng cách:</strong> Phí vận chuyển sẽ khác nhau tùy thuộc vào khoảng cách từ kho hàng đến địa chỉ giao hàng.</li>
+  <li><strong>Trọng lượng và kích thước:</strong> Sản phẩm càng nặng và kích thước càng lớn, phí vận chuyển càng cao.</li>
+  <li><strong>Đơn vị vận chuyển:</strong> Mỗi đơn vị vận chuyển có mức phí khác nhau.</li>
+</ul>
+<p>Cụ thể:</p>
+<ul>
+  <li>Nội thành Hà Nội và TP.HCM: 20.000đ - 30.000đ</li>
+  <li>Các tỉnh thành khác: 30.000đ - 50.000đ</li>
+</ul>
+<p>Đặc biệt, VNB Sports áp dụng chính sách miễn phí vận chuyển cho đơn hàng từ 500.000đ (nội thành) và từ 1.000.000đ (toàn quốc).</p>',
+    'John',
+    'john@example.com',
+    '0989012345',
+    1
+),(
+    'Vận chuyển',
+    'Thời gian giao hàng là bao lâu?',
+    '<p>Thời gian giao hàng phụ thuộc vào khu vực giao hàng:</p>
+<ul>
+  <li><strong>Nội thành Hà Nội và TP.HCM:</strong> 1-2 ngày làm việc</li>
+  <li><strong>Các tỉnh thành miền Bắc và miền Nam:</strong> 2-3 ngày làm việc</li>
+  <li><strong>Các tỉnh miền Trung và Tây Nguyên:</strong> 3-5 ngày làm việc</li>
+  <li><strong>Khu vực hải đảo và vùng sâu vùng xa:</strong> 5-7 ngày làm việc</li>
+</ul>
+<p>Lưu ý: Thời gian giao hàng có thể bị ảnh hưởng bởi các yếu tố như thời tiết, giao thông, dịch bệnh, v.v. Trong trường hợp này, chúng tôi sẽ thông báo cho bạn về sự chậm trễ và thời gian giao hàng dự kiến mới.</p>',
+    'Karen',
+    'karen@example.com',
+    '0990123456',
+    1
+),(
+    'Đổi trả',
+    'Chính sách đổi trả của VNB Sports như thế nào?',
+    '<p>VNB Sports áp dụng chính sách đổi trả như sau:</p>
+<ul>
+  <li><strong>Thời gian đổi trả:</strong> Trong vòng 7 ngày kể từ ngày nhận hàng.</li>
+  <li><strong>Điều kiện đổi trả:</strong>
+    <ul>
+      <li>Sản phẩm còn nguyên vẹn, không có dấu hiệu đã qua sử dụng</li>
+      <li>Còn đầy đủ tem nhãn, bao bì, phụ kiện đi kèm</li>
+      <li>Có hóa đơn mua hàng hoặc phiếu giao hàng</li>
+    </ul>
+  </li>
+  <li><strong>Các trường hợp được đổi trả:</strong>
+    <ul>
+      <li>Sản phẩm bị lỗi do nhà sản xuất</li>
+      <li>Sản phẩm không đúng mẫu mã, kích thước như đã đặt</li>
+      <li>Sản phẩm không đúng như mô tả trên website</li>
+    </ul>
+  </li>
+</ul>
+<p>Lưu ý: Đối với vợt cầu lông đã được căng dây, chúng tôi không áp dụng chính sách đổi trả trừ khi sản phẩm bị lỗi do nhà sản xuất.</p>',
+    'Leo',
+    'leo@example.com',
+    '0911123456',
+    1
+),(
+    'Đổi trả',
+    'Làm thế nào để đổi hoặc trả sản phẩm?',
+    '<p>Để đổi hoặc trả sản phẩm, bạn có thể thực hiện theo các bước sau:</p>
+<ol>
+  <li><strong>Liên hệ với chúng tôi:</strong> Gọi hotline 0936155994 hoặc gửi email đến info@shopvnb.com để thông báo về việc đổi/trả sản phẩm.</li>
+  <li><strong>Cung cấp thông tin:</strong> Mã đơn hàng, tên sản phẩm, lý do đổi/trả.</li>
+  <li><strong>Nhận hướng dẫn:</strong> Nhân viên của chúng tôi sẽ hướng dẫn bạn cách thức đổi/trả sản phẩm.</li>
+  <li><strong>Gửi sản phẩm:</strong> Đóng gói sản phẩm cẩn thận và gửi về địa chỉ được cung cấp, kèm theo hóa đơn và phiếu đổi/trả.</li>
+</ol>
+<p>Sau khi nhận được sản phẩm và kiểm tra, chúng tôi sẽ tiến hành đổi sản phẩm mới hoặc hoàn tiền cho bạn trong vòng 7 ngày làm việc.</p>',
+    'Mia',
+    'mia@example.com',
+    '0922234567',
+    1
+),(
+    'Thanh toán',
+    'VNB Sports chấp nhận những phương thức thanh toán nào?',
+    '<p>VNB Sports chấp nhận các phương thức thanh toán sau:</p>
+<ul>
+  <li><strong>Thanh toán khi nhận hàng (COD):</strong> Bạn thanh toán trực tiếp cho nhân viên giao hàng khi nhận sản phẩm.</li>
+  <li><strong>Chuyển khoản ngân hàng:</strong> Chuyển tiền vào tài khoản ngân hàng của VNB Sports.</li>
+  <li><strong>Thanh toán qua thẻ tín dụng/ghi nợ:</strong> Thanh toán trực tuyến qua cổng thanh toán an toàn.</li>
+  <li><strong>Ví điện tử:</strong> Thanh toán qua Momo, ZaloPay, VNPay, v.v.</li>
+  <li><strong>Trả góp:</strong> Áp dụng cho đơn hàng từ 3.000.000đ trở lên, hợp tác với các ngân hàng và công ty tài chính.</li>
+</ul>',
+    'Nina',
+    'nina@example.com',
+    '0933345678',
+    1
+),(
+    'Thanh toán',
+    'Thanh toán trực tuyến có an toàn không?',
+    '<p>Có, thanh toán trực tuyến tại VNB Sports hoàn toàn an toàn. Chúng tôi áp dụng các biện pháp bảo mật cao nhất để bảo vệ thông tin thanh toán của bạn:</p>
+<ul>
+  <li>Sử dụng công nghệ mã hóa SSL 256-bit để bảo vệ thông tin cá nhân và thông tin thanh toán.</li>
+  <li>Hợp tác với các cổng thanh toán uy tín và được cấp phép như VNPAY, OnePay, v.v.</li>
+  <li>Tuân thủ các tiêu chuẩn bảo mật quốc tế PCI DSS.</li>
+  <li>Không lưu trữ thông tin thẻ tín dụng của khách hàng.</li>
+</ul>
+<p>Nếu bạn vẫn lo ngại về vấn đề bảo mật, bạn có thể chọn phương thức thanh toán khi nhận hàng (COD) hoặc chuyển khoản ngân hàng.</p>',
+    'Oscar',
+    'oscar@example.com',
+    '0944456789',
+    1
+),(
+    'Tài khoản',
+    'Làm thế nào để đăng ký tài khoản trên website VNB Sports?',
+    '<p>Để đăng ký tài khoản trên website VNB Sports, bạn có thể thực hiện theo các bước sau:</p>
+<ol>
+  <li>Truy cập website <a href="https://shopvnb.com">shopvnb.com</a></li>
+  <li>Nhấn vào nút "Đăng ký" ở góc trên bên phải màn hình</li>
+  <li>Điền đầy đủ thông tin cá nhân: họ tên, email, số điện thoại, mật khẩu</li>
+  <li>Nhấn nút "Đăng ký" để hoàn tất</li>
+</ol>
+<p>Sau khi đăng ký thành công, bạn sẽ nhận được email xác nhận. Hãy nhấn vào liên kết trong email để kích hoạt tài khoản của bạn.</p>',
+    'Paul',
+    'paul@example.com',
+    '0955567890',
+    1
+),(
+    'Tài khoản',
+    'Tôi quên mật khẩu, làm thế nào để lấy lại?',
+    '<p>Nếu bạn quên mật khẩu, bạn có thể thực hiện các bước sau để lấy lại:</p>
+<ol>
+  <li>Truy cập trang đăng nhập của VNB Sports</li>
+  <li>Nhấn vào liên kết "Quên mật khẩu"</li>
+  <li>Nhập địa chỉ email đã đăng ký tài khoản</li>
+  <li>Nhấn nút "Gửi yêu cầu"</li>
+  <li>Kiểm tra email và làm theo hướng dẫn để đặt lại mật khẩu</li>
+</ol>
+<p>Lưu ý: Liên kết đặt lại mật khẩu chỉ có hiệu lực trong vòng 24 giờ. Nếu bạn không nhận được email, hãy kiểm tra thư mục spam hoặc liên hệ với chúng tôi để được hỗ trợ.</p>',
+    'Queenie',
+    'queenie@example.com',
+    '0966678901',
     1
 );
 INSERT INTO `introduce`(section, content, note)
