@@ -26,12 +26,12 @@ class Auth extends Controller {
                 }
                 exit();
             } else {
-                $data['error'] = "Invalid email or password";
-                $this->view("auth/login", $data);
+                $this->session->setFlash('error', "Invalid email or password");
+                header('Location: ' . URL::to('public/auth/login'));
+                exit();
             }
-        } else {
-            $this->view("auth/login");
         }
+        $this->view("auth/login");
     }
 
     public function register() {
@@ -48,20 +48,70 @@ class Auth extends Controller {
             $result = $this->userAuth->register($userData);
             
             if (isset($result['success'])) {
+                $this->session->setFlash('message', "Registration successful. Please login.");
                 header("Location: login");
                 exit();
             } else {
-                $data['error'] = $result['error'];
-                $this->view("auth/register", $data);
+                $this->session->setFlash('error', $result['error']);
+                header('Location: ' . URL::to('public/auth/register'));
+                exit();
             }
-        } else {
-            $this->view("auth/register");
         }
+        $this->view("auth/register");
     }
 
     public function logout() {
         $this->session->destroy();
         header("Location: /Shop-badminton/AssignmentWeb/public/home/index");
         exit();
+    }
+
+    public function changePasswordAction() {
+        if (!$this->session->get('user')) {
+            header('Location: ' . URL::to('public/auth/login'));
+            exit;
+        }
+        $this->view('auth/change_password');
+    }
+
+    public function updatePasswordAction() {
+        if (!$this->session->get('user')) {
+            header('Location: ' . URL::to('public/auth/login'));
+            exit;
+        }
+
+        $current_password = $_POST['current_password'] ?? '';
+        $new_password = $_POST['new_password'] ?? '';
+        $confirm_password = $_POST['confirm_password'] ?? '';
+
+        if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+            $this->session->setFlash('error', 'Vui lòng điền đầy đủ thông tin');
+            header('Location: ' . URL::to('public/auth/changePasswordAction'));
+            exit;
+        }
+
+        if ($new_password !== $confirm_password) {
+            $this->session->setFlash('error', 'Mật khẩu mới không khớp');
+            header('Location: ' . URL::to('public/auth/changePasswordAction'));
+            exit;
+        }
+
+        $user = $this->session->get('user');
+        $userModel = new UserAuth();
+
+        if (!$userModel->verifyPassword($user['email'], $current_password)) {
+            $this->session->setFlash('error', 'Mật khẩu hiện tại không đúng');
+            header('Location: ' . URL::to('public/auth/changePasswordAction'));
+            exit;
+        }
+
+        if ($userModel->updatePassword($user['email'], $new_password)) {
+            $this->session->setFlash('success', 'Đổi mật khẩu thành công');
+            header('Location: ' . URL::to('public/auth/changePasswordAction'));
+        } else {
+            $this->session->setFlash('error', 'Có lỗi xảy ra, vui lòng thử lại sau');
+            header('Location: ' . URL::to('public/auth/changePasswordAction'));
+        }
+        exit;
     }
 }

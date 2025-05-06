@@ -38,21 +38,15 @@ $session = Session::getInstance();
                 </div>
 
                 <section class="section">
-                    <?php if ($session->get('message')): ?>
+                    <?php if ($session->hasFlash('message')): ?>
                         <div class="alert alert-success">
-                            <?php 
-                            echo $session->get('message');
-                            $session->remove('message');
-                            ?>
+                            <?php echo $session->getFlash('message'); ?>
                         </div>
                     <?php endif; ?>
                     
-                    <?php if ($session->get('error')): ?>
+                    <?php if ($session->hasFlash('error')): ?>
                         <div class="alert alert-danger">
-                            <?php 
-                            echo $session->get('error');
-                            $session->remove('error');
-                            ?>
+                            <?php echo $session->getFlash('error'); ?>
                         </div>
                     <?php endif; ?>
 

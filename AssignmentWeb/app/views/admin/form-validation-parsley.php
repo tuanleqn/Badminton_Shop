@@ -64,20 +64,14 @@ $session = Session::getInstance();
           </div>
           <div class="card-content">
             <div class="card-body">
-              <?php if ($session->get('message')): ?>
+              <?php if ($session->hasFlash('message')): ?>
                 <div class="alert alert-success">
-                    <?php 
-                        echo $session->get('message');
-                        unset($_SESSION['message']);
-                    ?>
+                    <?php echo $session->getFlash('message'); ?>
                 </div>
               <?php endif; ?>
-              <?php if ($session->get('error')): ?>
+              <?php if ($session->hasFlash('error')): ?>
                 <div class="alert alert-danger">
-                    <?php 
-                        echo $session->get('error');
-                        unset($_SESSION['error']);
-                    ?>
+                    <?php echo $session->getFlash('error'); ?>
                 </div>
               <?php endif; ?>
               

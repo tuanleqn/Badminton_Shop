@@ -1,6 +1,8 @@
 <?php
 class Session {
     private static $instance = null;
+    private $flash = [];
+
     private function __construct() {
         if (version_compare(phpversion(), '5.4.0', '>=')) {
             if (session_status() === PHP_SESSION_NONE) {
@@ -71,5 +73,25 @@ class Session {
         session_destroy();
         header("Location: /Shop-badminton/AssignmentWeb/public/home/index");
         exit();
+    }
+
+    public function setFlash($key, $message) {
+        if (!isset($_SESSION['flash'])) {
+            $_SESSION['flash'] = [];
+        }
+        $_SESSION['flash'][$key] = $message;
+    }
+
+    public function hasFlash($key) {
+        return isset($_SESSION['flash'][$key]);
+    }
+
+    public function getFlash($key) {
+        if (isset($_SESSION['flash'][$key])) {
+            $message = $_SESSION['flash'][$key];
+            unset($_SESSION['flash'][$key]);
+            return $message;
+        }
+        return null;
     }
 }

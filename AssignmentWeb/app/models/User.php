@@ -3,7 +3,7 @@ require_once __DIR__ . '/../helper/config.php';
 
 class User extends db {
     protected $conn;
-    
+
     public function __construct() {
         parent::__construct();
         $this->conn = $this->connect;
@@ -32,16 +32,18 @@ class User extends db {
         }
         return $users;
     }
+
     public function getAllCustomer() {
-        $query = "SELECT * FROM user  WHERE role = 'customer'";
-        $stmt = mysqli_prepare($this->conn, $query);
-        mysqli_stmt_execute($stmt);
-        $result = mysqli_stmt_get_result($stmt);
-        $users = [];
-        while ($row = $result->fetch_assoc()) {
-            $users[] = $row;
+        $query = "SELECT * FROM user WHERE role = 'customer'";
+        $result = mysqli_query($this->conn, $query);
+        if (!$result) {
+            return false;
         }
-        return $users;
+        $userList = array();
+        while ($row = mysqli_fetch_assoc($result)) {
+            $userList[] = $row;
+        }
+        return $userList;
     }
 
     // Get user's branch
@@ -90,6 +92,21 @@ class User extends db {
         $query = "UPDATE user SET phone = ?, address = ?, name = ?, email = ? WHERE id = ?";
         $stmt = mysqli_prepare($this->conn, $query);
         mysqli_stmt_bind_param($stmt, "ssssi", $data['phone'], $data['address'], $data['name'], $data['email'], $userId);
+        return mysqli_stmt_execute($stmt);
+    }
+
+    public function updateProfile($userData) {
+        $query = "UPDATE user 
+                 SET name = ?, email = ?, phone = ?, address = ? 
+                 WHERE id = ?";
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "ssssi", 
+            $userData['name'],
+            $userData['email'],
+            $userData['phone'],
+            $userData['address'],
+            $userData['id']
+        );
         return mysqli_stmt_execute($stmt);
     }
 

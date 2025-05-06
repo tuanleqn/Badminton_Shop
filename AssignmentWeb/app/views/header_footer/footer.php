@@ -9,10 +9,21 @@
                     <?php endif; ?>
                 <?php endforeach; ?>
                 <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-instagram"></i></a>
-                    <a href="#"><i class="fab fa-youtube"></i></a>
+                    <a href="<?php foreach($formalInfo as $info): ?>
+                            <?php if($info['name'] == 'Facebook'): ?>
+                                <?php echo $info['description']; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>"><i class="fab fa-facebook-f"></i></a>
+                    <a href="<?php foreach($formalInfo as $info): ?>
+                            <?php if($info['name'] == 'Instagram'): ?>
+                                <?php echo $info['description']; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>"><i class="fab fa-instagram"></i></a>
+                    <a href="<?php foreach($formalInfo as $info): ?>
+                            <?php if($info['name'] == 'Youtube'): ?>
+                                <?php echo $info['description']; ?>
+                            <?php endif; ?>
+                        <?php endforeach; ?>"><i class="fab fa-youtube"></i></a>
                 </div>
             </div>
             <div class="col-lg-3 col-md-6 mb-4">

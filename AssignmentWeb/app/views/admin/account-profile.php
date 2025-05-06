@@ -44,14 +44,14 @@ $session = Session::getInstance();
                     </div>
                 </div>
 
-                <?php if($session->get('error')): ?>
+                <?php if($session->hasFlash('error')): ?>
                 <div class="alert alert-danger">
-                    <?= $session->get('error') ?>
+                    <?= $session->getFlash('error') ?>
                 </div>
                 <?php endif; ?>
-                <?php if($session->get('message')): ?>
+                <?php if($session->hasFlash('message')): ?>
                 <div class="alert alert-success">
-                    <?= $session->get('message') ?>
+                    <?= $session->getFlash('message') ?>
                 </div>
                 <?php endif; ?>
 

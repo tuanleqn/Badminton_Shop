@@ -7,6 +7,9 @@ class UserAuth extends db {
     public function __construct() {
         parent::__construct();
         $this->conn = $this->connect;
+        if (!$this->conn) {
+            die("Connection failed in UserAuth model");
+        }
     }
 
     public function login($email, $password) {
@@ -17,7 +20,6 @@ class UserAuth extends db {
         $result = mysqli_stmt_get_result($stmt);
         
         if($user = mysqli_fetch_assoc($result)) {
-            // Verify password
             if($password === $user['pass']) { // Note: In production, use password_verify() with hashed passwords
                 unset($user['pass']); // Don't store password in session
                 return $user;
@@ -55,22 +57,25 @@ class UserAuth extends db {
         return ["error" => "Registration failed"];
     }
 
-    public function updatePassword($userId, $currentPassword, $newPassword) {
-        $query = "SELECT pass FROM user WHERE id = ?";
+    public function verifyPassword($email, $password) {
+        $query = "SELECT pass FROM user WHERE email = ?";
         $stmt = mysqli_prepare($this->conn, $query);
-        mysqli_stmt_bind_param($stmt, "i", $userId);
+        mysqli_stmt_bind_param($stmt, "s", $email);
         mysqli_stmt_execute($stmt);
         $result = mysqli_stmt_get_result($stmt);
-        $user = mysqli_fetch_assoc($result);
         
-        if (!$user || !password_verify($currentPassword, $user['pass'])) {
-            return false;
+        if ($row = mysqli_fetch_assoc($result)) {
+            return ($password === $row['pass']); // Note: In production, use password_verify()
         }
         
-        $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-        $query = "UPDATE user SET pass = ? WHERE id = ?";
+        return false;
+    }
+
+    public function updatePassword($email, $newPassword) {
+        $query = "UPDATE user SET pass = ? WHERE email = ?";
         $stmt = mysqli_prepare($this->conn, $query);
-        mysqli_stmt_bind_param($stmt, "si", $hashedPassword, $userId);
+        mysqli_stmt_bind_param($stmt, "ss", $newPassword, $email);
+        
         return mysqli_stmt_execute($stmt);
     }
 }

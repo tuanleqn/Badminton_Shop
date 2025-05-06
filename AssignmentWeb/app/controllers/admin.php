@@ -47,9 +47,9 @@ class Admin extends Controller {
             }
             
             if ($formalInfo->modifyFormalInfo($data)) {
-                $this->session->set('message', 'Information updated successfully');
+                $this->session->setFlash('message', 'Information updated successfully');
             } else {
-                $this->session->set('error', 'Failed to update information');
+                $this->session->setFlash('error', 'Failed to update information');
             }
             
             header('Location: ' . URL::to('public/admin/formValidation'));
@@ -84,30 +84,75 @@ class Admin extends Controller {
             
             if (empty($errors)) {
                 $updateData = [
+                    'id' => $userData['id'],
                     'name' => trim($_POST['name']),
                     'email' => trim($_POST['email']),
                     'phone' => trim($_POST['phone']),
                     'address' => trim($_POST['address'])
                 ];
                 
-                if ($user->updateUser($userData['id'], $updateData)) {
+                if ($user->updateUser($updateData['id'], $updateData)) {
                     // Update session data only after successful database update
                     $userData = array_merge($userData, $updateData);
                     $this->session->set('user', $userData);
-                    $this->session->set('message', 'Profile updated successfully');
+                    $this->session->setFlash('message', 'Profile updated successfully');
                     header('Location: ' . URL::to('public/admin/profile'));
                     exit();
                 } else {
-                    $this->session->set('error', 'Failed to update profile');
+                    $this->session->setFlash('error', 'Failed to update profile');
                 }
             } else {
-                $this->session->set('error', implode(', ', $errors));
+                $this->session->setFlash('error', implode(', ', $errors));
             }
         }
         
         $this->view("admin/account-profile", ['user' => $userData]);
     }
 
+    public function security() {
+        $this->view('admin/account-security');
+    }
+
+    public function adminUpdatePassword(){
+            if (!$this->session->get('user')) {
+                header('Location: ' . URL::to('public/auth/login'));
+                exit;
+            }
+    
+            $current_password = $_POST['current_password'] ?? '';
+            $new_password = $_POST['new_password'] ?? '';
+            $confirm_password = $_POST['confirm_password'] ?? '';
+    
+            if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+                $this->session->setFlash('error', 'Vui lòng điền đầy đủ thông tin');
+                header('Location: ' . URL::to('public/admin/security'));
+                exit;
+            }
+    
+            if ($new_password !== $confirm_password) {
+                $this->session->setFlash('error', 'Mật khẩu mới không khớp');
+                header('Location: ' . URL::to('public/admin/security'));
+                exit;
+            }
+    
+            $user = $this->session->get('user');
+            $userModel = $this->model('UserAuth');
+    
+            if (!$userModel->verifyPassword($user['email'], $current_password)) {
+                $this->session->setFlash('error', 'Mật khẩu hiện tại không đúng');
+                header('Location: ' . URL::to('public/admin/security'));
+                exit;
+            }
+    
+            if ($userModel->updatePassword($user['email'], $new_password)) {
+                $this->session->setFlash('success', 'Đổi mật khẩu thành công');
+                header('Location: ' . URL::to('public/admin/security'));
+            } else {
+                $this->session->setFlash('error', 'Có lỗi xảy ra, vui lòng thử lại sau');
+                header('Location: ' . URL::to('public/admin/security'));
+            }
+            exit;
+    }
     public function response($id = null) {
         $response = $this->model('Response');
         
@@ -249,25 +294,27 @@ class Admin extends Controller {
                 $branchAddress = $_POST['branchAddress'];
                 
                 if ($getBranch->addBranch($branchName, $branchAddress)) {
-                    $this->session->set('message', 'Branch added successfully');
+                    $this->session->setFlash('message', 'Branch added successfully');
                 } else {
-                    $this->session->set('error', 'Failed to add branch');
+                    $this->session->setFlash('error', 'Failed to add branch');
                 }
                 header('Location: ' . URL::to('public/admin/viewBranch'));
                 exit;
             }
 
-            $branchName = $_POST['branchName'];
-            $branchAddress = $_POST['branchAddress'];
-            $branchId = $_POST['branchid'];
+            if ($_POST['branchid'] && $_POST['branchName'] && $_POST['branchAddress']) {
+                $branchName = $_POST['branchName'];
+                $branchAddress = $_POST['branchAddress'];
+                $branchId = $_POST['branchid'];
 
-            if ($getBranch->updateBranch($branchId, $branchName, $branchAddress)) {
-                $this->session->set('message', 'Branch updated successfully');
-            } else {
-                $this->session->set('error', 'Failed to update branch');
+                if ($getBranch->updateBranch($branchId, $branchName, $branchAddress)) {
+                    $this->session->setFlash('message', 'Branch updated successfully');
+                } else {
+                    $this->session->setFlash('error', 'Failed to update branch');
+                }
+                header('Location: ' . URL::to('public/admin/viewBranch'));
+                exit();
             }
-            header('Location: ' . URL::to('public/admin/viewBranch'));
-            exit();
         }
         
         $this->view('admin/view-branch', ['branches' => $branchData]);

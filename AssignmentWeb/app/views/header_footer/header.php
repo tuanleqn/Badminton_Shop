@@ -311,6 +311,11 @@ $session = Session::getInstance();
                   </a>
                 </li>
                 <li>
+                  <a class="dropdown-item" href="<?php echo URL::to('public/auth/changePasswordAction'); ?>">
+                    <i class="fas fa-key me-2"></i> Đổi mật khẩu
+                  </a>
+                </li>
+                <li>
                   <hr class="dropdown-divider">
                 </li>
                 <li>
