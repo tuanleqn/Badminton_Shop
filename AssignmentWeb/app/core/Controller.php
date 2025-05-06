@@ -1,15 +1,29 @@
 <?php
 class Controller {
     public function model($model) {
-        require_once '../app/models/' . $model . '.php';
+        $modelPath = __DIR__ . '/../models/' . $model . '.php';
+        if (!file_exists($modelPath)) {
+            die('Model ' . $model . ' does not exist');
+        }
+        require_once $modelPath;
         return new $model;
     }
 
     public function view($view, $data = []) {
-        if (file_exists('../app/views/' . $view . '.php')) {
-            require_once '../app/views/' . $view . '.php';
+        $viewPath = __DIR__ . '/../views/' . $view;
+        // Add .php extension if not present
+        if (!pathinfo($viewPath, PATHINFO_EXTENSION)) {
+            $viewPath .= '.php';
+        }
+        
+        if (file_exists($viewPath)) {
+            extract($data);
+            ob_start();
+            require_once $viewPath;
+            $content = ob_get_clean();
+            echo $content;
         } else {
-            die('View does not exist');
+            die('View ' . $view . ' does not exist at ' . $viewPath);
         }
     }
 }
