@@ -1,0 +1,714 @@
+<?php require_once __DIR__ . '/../../helper/URL.php'; ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="<?php echo URL::asset('css/style.css'); ?>">
+    <title>Sports Shop - Trang Chủ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Thêm style cho mobile menu toggle -->
+    <style>
+      .mobile-menu-toggle {
+        display: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+      }
+      
+      .mobile-menu-toggle.active i:before {
+        content: "\f00d";  /* Font Awesome icon for close (X) */
+      }
+      
+      @media (max-width: 991px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="container-fluid px-0">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="top-contact">
+                            <span><i class="fas fa-envelope"></i><?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Email shop'): ?>
+                                        <?php echo $info['description']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?> </span>
+                            <span><i class="fas fa-phone-alt"></i><?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Hotline'): ?>
+                                        <?php echo $info['description']; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?> </span></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="top-links">
+                            <a href="#"><i class="fas fa-map-marker-alt"></i> Hệ thống cửa hàng</a>
+                            <a href="#"><i class="fas fa-truck"></i> Theo dõi đơn hàng</a>
+                            <div class="social-mini">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <div class="main-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="logo">
+                            <a href="index.html">
+                                <?php foreach($data['formalInfo'] as $info): ?>
+                                    <?php if($info['name'] == 'Logo'): ?>
+                                        <img src="<?php echo $info['description']; ?>" alt="Logo">
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-4 d-none d-lg-block">
+                        <div class="search-box">
+                            <form action="#" method="get">
+                                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-6">
+                        <div class="header-actions">
+                            <div class="header-action-item">
+                                <?php if(isset($data['user'])): ?>
+                                    <div class="dropdown">
+                                        <a href="#" class="action-link dropdown-toggle" data-bs-toggle="dropdown">
+                                            <i class="fas fa-user-circle"></i>
+                                            <span class="d-none d-md-inline"><?php echo $data['user']['name']; ?></span>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a class="dropdown-item" href="#">Thông tin tài khoản</a></li>
+                                            <li><a class="dropdown-item" href="#">Đơn hàng của tôi</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item" href="<?php echo URL::to('public/auth/logout'); ?>">Đăng xuất</a></li>
+                                        </ul>
+                                    </div>
+                                <?php else: ?>
+                                    <div class="auth-buttons">
+                                        <a href="<?php echo URL::to('public/auth/login'); ?>" class="action-link">
+                                            <i class="fas fa-sign-in-alt"></i>
+                                            <span class="d-none d-md-inline">Đăng nhập</span>
+                                        </a>
+                                        <a href="<?php echo URL::to('public/auth/register'); ?>" class="action-link ms-3">
+                                            <i class="fas fa-user-plus"></i>
+                                            <span class="d-none d-md-inline">Đăng ký</span>
+                                        </a>
+                                    </div>
+                                <?php endif; ?>
+                            </div>
+                            <div class="header-action-item">
+                                <a href="#" class="action-link">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="badge">0</span>
+                                    <span class="d-none d-md-inline">Yêu thích</span>
+                                </a>
+                            </div>
+                            <div class="header-action-item">
+                                <a href="#" class="action-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="badge">0</span>
+                                    <span class="d-none d-md-inline">Giỏ hàng</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="nav-container">
+                            <div class="category-menu d-none d-lg-flex">
+                                <div class="category-heading">
+                                    <i class="fas fa-bars"></i>
+                                    <span>Danh mục</span>
+                                </div>
+                            </div>
+                            <ul class="nav-menu">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="http://localhost/Shop-badminton/AssignmentWeb/public/home/index">TRANG CHỦ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">GIỚI THIỆU</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">SẢN PHẨM</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">TIN TỨC</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">HƯỚNG DẪN</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">KHUYẾN MÃI</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="http://localhost/Shop-badminton/AssignmentWeb/public/home/contract">LIÊN HỆ</a>
+                                </li>
+                            </ul>
+                            <div class="mobile-menu-toggle d-lg-none">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Slider -->
+        <div class="hero-slider">
+            <div class="hero-slide">
+                <?php foreach($data['formalInfo'] as $info): ?>
+                    <?php if($info['name'] == 'banner'): ?>
+                        <img src="<?php echo $info['description']; ?>" alt="banner" class="img-fluid">
+                    <?php endif; ?>
+                    <?php endforeach; ?>
+                <div class="hero-content">
+                    <div class="container">
+                        <div class="hero-text">
+                            <h1 class="animated-text">THIẾT BỊ CẦU LÔNG CHÍNH HÃNG</h1>
+                            <p>Sản phẩm chất lượng cao từ các thương hiệu hàng đầu</p>
+                            <div class="hero-buttons">
+                                <a href="<?= URL::to('public/ProductSite/index'); ?>" class="btn btn-primary btn-lg">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Giao hàng miễn phí</h4>
+                                <?php foreach($data['formalInfo'] as $info): ?>
+                                <?php if($info['name'] == 'Shipping benefit'): ?>
+                                    <p><?php echo $info['description']; ?> </p>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Đổi trả dễ dàng</h4>
+                                <?php foreach($data['formalInfo'] as $info): ?>
+                                <?php if($info['name'] == 'Refund'): ?>
+                                    <p><?php echo $info['description']; ?> </p>
+                                <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Bảo hành chính hãng</h4>
+                                <p>Sản phẩm chính hãng 100%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Hỗ trợ 24/7</h4>
+                                <p>Tư vấn trực tuyến</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Categories -->
+        <section class="product-categories">
+            <div class="container">
+                <div class="section-header">
+                    <h2>DANH MỤC SẢN PHẨM</h2>
+                    <p>Khám phá các sản phẩm cầu lông chất lượng cao</p>
+                </div>
+                <div class="row product-banner">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" class="card-img-top" alt="Vợt cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Vợt cầu lông</h4>
+                                <span>24 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" class="card-img-top" alt="Giày cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Giày cầu lông</h4>
+                                <span>18 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" class="card-img-top" alt="Áo cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Áo cầu lông</h4>
+                                <span>32 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/4.webp'); ?>" class="card-img-top" alt="Quần cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Quần cầu lông</h4>
+                                <span>15 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/5.webp'); ?>" class="card-img-top" alt="Túi vợt">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Túi vợt</h4>
+                                <span>12 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/6.webp'); ?>" class="card-img-top" alt="Balo thể thao">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Balo thể thao</h4>
+                                <span>8 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/7.webp'); ?>" class="card-img-top" alt="Phụ kiện">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Phụ kiện</h4>
+                                <span>28 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="<?php echo URL::asset('images/8.webp'); ?>" class="card-img-top" alt="Quả cầu">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Quả cầu</h4>
+                                <span>6 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sale Products -->
+        <section class="sale-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Sản phẩm mới nhất</h2>
+                    <p>Khám phá những sản phẩm mới về của chúng tôi</p>
+                </div>
+                <div class="row">
+                <?php
+                    $newestProducts = $data['siteModel']->getNewestProducts(4);
+                    foreach($newestProducts as $product):
+                        $averageRating = round($product['average_rating'], 1);
+                        $fullStars = floor($averageRating);
+                        $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
+                        $emptyStars = 5 - ($fullStars + $halfStar);
+                ?>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="product-card card h-100 d-flex flex-column" data-id="<?php echo $product['id']; ?>" data-price="<?php echo $product['price']; ?>" data-rating="<?php echo $averageRating; ?>" data-category="<?php echo strtolower($product['category']); ?>">
+                            <div class="sale-badge">NEW</div>
+                            <div class="product-img">
+                                <img src="/Shop-badminton/AssignmentWeb/app/<?php echo $product['image_path']; ?>" alt="<?php echo htmlspecialchars($product['name']); ?>" class="card-img-top img-fluid" style="width: 250px; height: 300px; object-fit: cover; align-self: center;">
+                                <div class="product-actions">
+                                    <a href="/Shop-badminton/AssignmentWeb/app/views/product_site/product_detail.php?id=<?php echo $product['id']; ?>" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
+                                </div>
+                            </div>
+                            <div class="product-info card-body">
+                                <div class="product-brand"><?php echo ucfirst($product['category']); ?></div>
+                                <h3 class="product-title card-title"><?php echo htmlspecialchars($product['name']); ?></h3>
+                                <div class="product-price card-text">
+                                    <span class="current-price"><?php echo number_format($product['price'], 0, ',', '.'); ?>₫</span>
+                                </div>
+                                <div class="product-rating">
+                                    <?php
+                                        for ($i = 0; $i < $fullStars; $i++) {
+                                            echo '<i class="fas fa-star text-warning"></i>';
+                                        }
+                                        if ($halfStar) {
+                                            echo '<i class="fas fa-star-half-alt text-warning"></i>';
+                                        }
+                                        for ($i = 0; $i < $emptyStars; $i++) {
+                                            echo '<i class="far fa-star text-warning"></i>';
+                                        }
+                                    ?>
+                                </div>
+                            </div>
+                            <div class="add-to-cart mt-auto">
+                                <a href="<?php echo URL::to('public/ProductSite/productdetail?id=' . $product['id']); ?>" class="btn btn-custom btn-add-cart">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="<?= URL::to('public/ProductSite/index'); ?>" class="btn-view-all">Xem tất cả sản phẩm <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Section -->
+        <section class="banner-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="promo-banner">
+                            <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Promo Banner">
+                            <div class="banner-content">
+                                <h3>Vợt cầu lông cao cấp</h3>
+                                <p>Bộ sưu tập tất cả vợt Yonex</p>
+                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="promo-banner">
+                            <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Promo Banner">
+                            <div class="banner-content">
+                                <h3>Giày cầu lông chính hãng</h3>
+                                <p>Bộ sưu tập mới nhất từ Li-Ning</p>
+                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>TIN TỨC MỚI</h2>
+                    <p>Cập nhật thông tin mới nhất về cầu lông</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">15</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 5 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Sản phẩm mới ra mắt</h5>
+                                <p class="news-text">Khám phá bộ sưu tập vợt cầu lông mới nhất với công nghệ tiên tiến giúp nâng cao hiệu suất chơi.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">12</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 3 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Giải đấu sắp diễn ra</h5>
+                                <p class="news-text">Thông tin về các giải đấu cầu lông sắp diễn ra trong tháng tới và cách đăng ký tham gia.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">10</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 8 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Kỹ thuật cầu lông cơ bản</h5>
+                                <p class="news-text">Hướng dẫn các kỹ thuật cơ bản dành cho người mới bắt đầu chơi cầu lông từ các chuyên gia.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn-view-all">Xem tất cả tin tức <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brands Section -->
+        <section class="brands-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>THƯƠNG HIỆU NỔI BẬT</h2>
+                    <p>Đối tác chính thức của chúng tôi</p>
+                </div>
+                <div class="brands-slider">
+                    <div class="brand-item">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Brand">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-newsletter">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5 col-md-12">
+                            <div class="newsletter-content">
+                                <h3>Đăng ký nhận tin</h3>
+                                <p>Nhận thông tin khuyến mãi và cập nhật mới nhất</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-12">
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Nhập email của bạn">
+                                <button type="submit">Đăng ký</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <div class="footer-logo">
+                                    <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Logo">
+                                </div>
+                                <p>Sports là hệ thống cửa hàng cầu lông với hơn 50 chi nhánh trên toàn quốc, cung cấp sỉ và lẻ các mặt hàng dụng cụ cầu lông từ phong trào tới chuyên nghiệp.</p>
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>THÔNG TIN LIÊN HỆ</h5>
+                                <ul class="contact-info">
+                                    <li><i class="fas fa-map-marker-alt"></i> 123 đường ABC, quận XYZ, TP.HCM</li>
+                                    <li><i class="fas fa-phone-alt"></i> Hotline: 0000000000</li>
+                                    <li><i class="fas fa-envelope"></i> Email: info@gmail.com</li>
+                                    <li><i class="fas fa-clock"></i> Giờ làm việc: 8:00 - 22:00</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>CHÍNH SÁCH</h5>
+                                <ul class="footer-links">
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách bảo hành</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách đổi trả</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách vận chuyển</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách thanh toán</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách bảo mật</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>HƯỚNG DẪN</h5>
+                                <ul class="footer-links">
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn mua hàng</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn thanh toán</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn đổi trả</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn bảo hành</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Câu hỏi thường gặp</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="copyright">© 2024 Sports Shop. All Rights Reserved.</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="payment-methods">
+                                <span>Phương thức thanh toán:</span>
+                                <img src="<?php echo URL::asset('images/logo-web.png'); ?>" alt="Payment Methods" class="payment-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Set the date we're counting down to (24 hours from now)
+        const countDownDate = new Date().getTime() + (24 * 60 * 60 * 1000);
+
+        // Update the countdown every 1 second
+        const countdownTimer = setInterval(function() {
+            // Get current date and time
+            const now = new Date().getTime();
+
+            // Find the distance between now and the countdown date
+            const distance = countDownDate - now;
+
+            // Time calculations for days, hours, minutes and seconds
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            document.getElementById("days").innerHTML = days.toString().padStart(2, '0');
+            document.getElementById("hours").innerHTML = hours.toString().padStart(2, '0');
+            document.getElementById("minutes").innerHTML = minutes.toString().padStart(2, '0');
+            document.getElementById("seconds").innerHTML = seconds.toString().padStart(2, '0');
+
+            // If the countdown is finished, display expired message
+            if (distance < 0) {
+                clearInterval(countdownTimer);
+                document.getElementById("days").innerHTML = "00";
+                document.getElementById("hours").innerHTML = "00";
+                document.getElementById("minutes").innerHTML = "00";
+                document.getElementById("seconds").innerHTML = "00";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+

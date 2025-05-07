@@ -1,0 +1,20 @@
+.thumbnail-image {
+    width: 125px; 
+    height: 180px; 
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 5px;
+   
+}
+#largeImage {
+    width:500px;
+    height:300px;
+    object-fit: cover; 
+   
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
