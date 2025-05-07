@@ -2,6 +2,9 @@
 
 require_once __DIR__ . '/../../models/SiteModel.php';
 require_once __DIR__ . '/../../controllers/ProductController.php';
+require_once __DIR__ . '/../../helper/config.php';
+require_once __DIR__ . '/../../helper/URL.php';
+
 
 $productId = isset($_POST['id']) ? htmlspecialchars($_POST['id']) : '';
 $productName = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
@@ -31,7 +34,7 @@ $productQuantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
+                <li class="breadcrumb-item"><a href="<?= URL::to('public/home/index'); ?>">Trang chủ</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
             </ol>
         </nav>

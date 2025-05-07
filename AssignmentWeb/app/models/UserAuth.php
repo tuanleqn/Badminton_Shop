@@ -78,4 +78,17 @@ class UserAuth extends db {
         
         return mysqli_stmt_execute($stmt);
     }
+    public function checkUserExists($email, $phone) {
+        try {
+            $query = "SELECT * FROM user WHERE email = ? OR phone = ?";
+            $stmt = $this->conn->prepare($query); 
+            $stmt->bind_param("ss", $email, $phone); 
+            $stmt->execute(); 
+            $result = $stmt->get_result(); 
+            return $result->num_rows > 0;
+        } catch (Exception $e) {
+            error_log("Database Error: " . $e->getMessage());
+            return false;
+        }
+    }
 }

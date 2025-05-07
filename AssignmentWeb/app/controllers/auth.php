@@ -114,4 +114,22 @@ class Auth extends Controller {
         }
         exit;
     }
+    public function checkUser() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+            header('Content-Type: application/json');
+            $user = $this->session->get('user');
+            if ($user) {
+                $email = $user['email'];
+                $phone = $user['phone'];
+                error_log("Checking user: Email = $email, Phone = $phone");
+                $exists = $this->userAuth->checkUserExists($email, $phone);
+                echo json_encode(['exists' => $exists]);
+            } else {
+                error_log("No user found in session.");
+                echo json_encode(['exists' => false]);
+            }
+            exit();
+        }
+    }
 }
+

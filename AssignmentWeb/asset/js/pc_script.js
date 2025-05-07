@@ -126,7 +126,7 @@ function renderCart() {
         }
     
         // Collect selected products
-        fetch("/Shop-badminton/AssignmentWeb/app/controllers/auth.php", {
+        fetch("/Shop-badminton/AssignmentWeb/public/auth/checkUser", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -137,7 +137,18 @@ function renderCart() {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                return response.json(); // Parse the response as JSON
+                // First check the content type of the response
+                const contentType = response.headers.get("content-type");
+                if (contentType && contentType.includes("application/json")) {
+                    return response.json();
+                } else {
+                    // If not JSON, get the text and try to determine the result from the response
+                    return response.text().then(text => {
+                        // Check if the response contains any indication of success
+                        // This is a fallback in case the server doesn't return proper JSON
+                        return { exists: !text.includes("not logged in") && !text.includes("error") };
+                    });
+                }
             })
             .then((data) => {
                 if (data.exists) {

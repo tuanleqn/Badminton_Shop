@@ -159,6 +159,60 @@ $session = Session::getInstance();
       border-bottom: 1px solid #eee;
     }
 
+    /* Floating Cart Button */
+    .floating-cart {
+      position: fixed;
+      bottom: 20px;
+      left: 20px;
+      z-index: 1000;
+      background-color: #ff6600;
+      color: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .floating-cart:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      background-color: #ff5500;
+      color: white;
+    }
+
+    .floating-cart i {
+      font-size: 24px;
+    }
+
+    .floating-cart .cart-count {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      background-color: #dc3545;
+      color: white;
+      border-radius: 50%;
+      padding: 0.25rem 0.5rem;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .floating-cart {
+        bottom: 15px;
+        left: 15px;
+        width: 50px;
+        height: 50px;
+      }
+      
+      .floating-cart i {
+        font-size: 20px;
+      }
+    }
+
     /* Responsive Breakpoints */
     /* Desktop view */
     @media (min-width: 992px) {
@@ -257,6 +311,12 @@ $session = Session::getInstance();
 </head>
 
 <body>
+  <!-- Floating Cart Button -->
+  <a href="<?php echo URL::to('public/ProductSite/productcart'); ?>" class="floating-cart">
+    <i class="fas fa-shopping-cart"></i>
+    <span class="cart-count">0</span>
+  </a>
+
   <div class="top-bar">
     <div class="container py-2">
       <div class="row align-items-center">
@@ -289,43 +349,51 @@ $session = Session::getInstance();
           </a>
         </div>
         <div class="col-lg-3 col-md-12 col-12 text-end auth-buttons mt-2 mt-lg-0">
-          <?php if (!$session->get('user')): ?>
-            <!-- Hiển thị nút Đăng nhập và Đăng ký nếu chưa đăng nhập -->
-            <a href="<?php echo URL::to('public/auth/login'); ?>" class="btn btn-outline-secondary login-button">Đăng nhập</a>
-            <a href="<?php echo URL::to('public/auth/register'); ?>" class="btn btn-outline-secondary register-button">Đăng ký</a>
-          <?php else: ?>
-            <!-- Hiển thị nút Profile nếu đã đăng nhập -->
-            <div class="dropdown">
-              <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-                <?php echo htmlspecialchars($session->get('user')['name']); ?>
-              </button>
-              <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
-                <li>
-                  <a class="dropdown-item" href="<?php echo URL::to('public/profile'); ?>">
-                    <i class="fas fa-user me-2"></i> Thông tin cá nhân
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="<?php echo URL::to('public/orders'); ?>">
-                    <i class="fas fa-box me-2"></i> Đơn hàng của tôi
-                  </a>
-                </li>
-                <li>
-                  <a class="dropdown-item" href="<?php echo URL::to('public/auth/changePasswordAction'); ?>">
-                    <i class="fas fa-key me-2"></i> Đổi mật khẩu
-                  </a>
-                </li>
-                <li>
-                  <hr class="dropdown-divider">
-                </li>
-                <li>
-                  <a class="dropdown-item text-danger" href="<?php echo URL::to('public/auth/logout'); ?>">
-                    <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
-                  </a>
-                </li>
-              </ul>
-            </div>
-          <?php endif; ?>
+          <div class="d-flex justify-content-end align-items-center">
+            <a href="<?php echo URL::to('public/ProductSite/productcart'); ?>" class="btn btn-outline-primary position-relative me-2">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-count">
+                0
+              </span>
+            </a>
+            <?php if (!$session->get('user')): ?>
+              <!-- Hiển thị nút Đăng nhập và Đăng ký nếu chưa đăng nhập -->
+              <a href="<?php echo URL::to('public/auth/login'); ?>" class="btn btn-outline-secondary login-button me-2">Đăng nhập</a>
+              <a href="<?php echo URL::to('public/auth/register'); ?>" class="btn btn-outline-secondary register-button">Đăng ký</a>
+            <?php else: ?>
+              <!-- Hiển thị nút Profile nếu đã đăng nhập -->
+              <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="profileDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                  <?php echo htmlspecialchars($session->get('user')['name']); ?>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
+                  <li>
+                    <a class="dropdown-item" href="<?php echo URL::to('public/profile'); ?>">
+                      <i class="fas fa-user me-2"></i> Thông tin cá nhân
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="<?php echo URL::to('public/orders'); ?>">
+                      <i class="fas fa-box me-2"></i> Đơn hàng của tôi
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="<?php echo URL::to('public/auth/changePasswordAction'); ?>">
+                      <i class="fas fa-key me-2"></i> Đổi mật khẩu
+                    </a>
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider">
+                  </li>
+                  <li>
+                    <a class="dropdown-item text-danger" href="<?php echo URL::to('public/auth/logout'); ?>">
+                      <i class="fas fa-sign-out-alt me-2"></i> Đăng xuất
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            <?php endif; ?>
+          </div>
         </div>
       </div>
     </div>
@@ -364,9 +432,8 @@ $session = Session::getInstance();
           <button class="navbar-toggler" type="button" id="mobile-menu-toggle">
             <i class="fas fa-bars fa-lg"></i>
           </button>
-          <div class="d-flex">
+          <div class="d-flex align-items-center">
             <a href="" class="btn btn-outline-primary me-2"><i class="fas fa-search"></i></a>
-            <a href="" class="btn btn-outline-primary"><i class="fas fa-shopping-cart"></i></a>
           </div>
         </div>
       </div>
@@ -417,5 +484,30 @@ $session = Session::getInstance();
   
   <!-- Bootstrap Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  
+  <script>
+    // Function to update cart count badges
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const count = cart.reduce((total, item) => total + 1, 0);
+      
+      // Update all cart count badges
+      document.querySelectorAll('.cart-count').forEach(badge => {
+        badge.textContent = count;
+        // Hide badge if count is 0
+        badge.style.display = count > 0 ? 'block' : 'none';
+      });
+    }
+
+    // Update cart count when page loads
+    document.addEventListener('DOMContentLoaded', updateCartCount);
+
+    // Listen for cart updates
+    window.addEventListener('storage', function(e) {
+      if (e.key === 'cart') {
+        updateCartCount();
+      }
+    });
+  </script>
 </body>
 </html>
