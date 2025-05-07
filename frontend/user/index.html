@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <title>Sports Shop - Trang Chủ</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+    <!-- Thêm style cho mobile menu toggle -->
+    <style>
+      .mobile-menu-toggle {
+        display: none;
+        color: #fff;
+        font-size: 1.5rem;
+        cursor: pointer;
+        position: absolute;
+        right: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 100;
+      }
+      
+      .mobile-menu-toggle.active i:before {
+        content: "\f00d";  /* Font Awesome icon for close (X) */
+      }
+      
+      @media (max-width: 991px) {
+        .mobile-menu-toggle {
+          display: block;
+        }
+      }
+    </style>
+</head>
+<body>
+    <div class="container-fluid px-0">
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="top-contact">
+                            <span><i class="fas fa-envelope"></i> info@sportsshop.com</span>
+                            <span><i class="fas fa-phone-alt"></i> 0123456789</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="top-links">
+                            <a href="#"><i class="fas fa-map-marker-alt"></i> Hệ thống cửa hàng</a>
+                            <a href="#"><i class="fas fa-truck"></i> Theo dõi đơn hàng</a>
+                            <div class="social-mini">
+                                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#"><i class="fab fa-instagram"></i></a>
+                                <a href="#"><i class="fab fa-youtube"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Header -->
+        <div class="main-header">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-3 col-md-4 col-6">
+                        <div class="logo">
+                            <a href="index.html">
+                                <img src="./images/logo-web.png" alt="Sports Shop Logo">
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-4 d-none d-lg-block">
+                        <div class="search-box">
+                            <form action="#" method="get">
+                                <input type="text" placeholder="Tìm kiếm sản phẩm...">
+                                <button type="submit"><i class="fas fa-search"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-8 col-6">
+                        <div class="header-actions">
+                            <div class="header-action-item">
+                                <a href="#" class="action-link">
+                                    <i class="fas fa-user-circle"></i>
+                                    <span class="d-none d-md-inline">Tài khoản</span>
+                                </a>
+                            </div>
+                            <div class="header-action-item">
+                                <a href="#" class="action-link">
+                                    <i class="fas fa-heart"></i>
+                                    <span class="badge">0</span>
+                                    <span class="d-none d-md-inline">Yêu thích</span>
+                                </a>
+                            </div>
+                            <div class="header-action-item">
+                                <a href="#" class="action-link">
+                                    <i class="fas fa-shopping-cart"></i>
+                                    <span class="badge">0</span>
+                                    <span class="d-none d-md-inline">Giỏ hàng</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="main-nav">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="nav-container">
+                            <div class="category-menu d-none d-lg-flex">
+                                <div class="category-heading">
+                                    <i class="fas fa-bars"></i>
+                                    <span>Danh mục</span>
+                                </div>
+                            </div>
+                            <ul class="nav-menu">
+                                <li class="nav-item active">
+                                    <a class="nav-link" href="./index.html">TRANG CHỦ</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">GIỚI THIỆU</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">SẢN PHẨM</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">TIN TỨC</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">HƯỚNG DẪN</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">KHUYẾN MÃI</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="./contract.html">LIÊN HỆ</a>
+                                </li>
+                            </ul>
+                            <div class="mobile-menu-toggle d-lg-none">
+                                <i class="fas fa-bars"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Hero Slider -->
+        <div class="hero-slider">
+            <div class="hero-slide">
+                <img src="./images/1000z-launch-website-banner_1695177885.webp" alt="banner" class="img-fluid">
+                <div class="hero-content">
+                    <div class="container">
+                        <div class="hero-text">
+                            <h1 class="animated-text">THIẾT BỊ CẦU LÔNG CHÍNH HÃNG</h1>
+                            <p>Sản phẩm chất lượng cao từ các thương hiệu hàng đầu</p>
+                            <div class="hero-buttons">
+                                <a href="#" class="btn btn-primary btn-lg">Mua ngay</a>
+                                <a href="#" class="btn btn-outline-light btn-lg">Khám phá</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features -->
+        <div class="features-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-truck"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Giao hàng miễn phí</h4>
+                                <p>Cho đơn hàng từ 500K</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-sync-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Đổi trả dễ dàng</h4>
+                                <p>Trong vòng 7 ngày</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Bảo hành chính hãng</h4>
+                                <p>Sản phẩm chính hãng 100%</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-sm-6">
+                        <div class="feature-box">
+                            <div class="feature-icon">
+                                <i class="fas fa-headset"></i>
+                            </div>
+                            <div class="feature-content">
+                                <h4>Hỗ trợ 24/7</h4>
+                                <p>Tư vấn trực tuyến</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Categories -->
+        <section class="product-categories">
+            <div class="container">
+                <div class="section-header">
+                    <h2>DANH MỤC SẢN PHẨM</h2>
+                    <p>Khám phá các sản phẩm cầu lông chất lượng cao</p>
+                </div>
+                <div class="row product-banner">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/1.1.webp" class="card-img-top" alt="Vợt cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Vợt cầu lông</h4>
+                                <span>24 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/2_1.webp" class="card-img-top" alt="Giày cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Giày cầu lông</h4>
+                                <span>18 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/3_1.webp" class="card-img-top" alt="Áo cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Áo cầu lông</h4>
+                                <span>32 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/4.webp" class="card-img-top" alt="Quần cầu lông">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Quần cầu lông</h4>
+                                <span>15 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/5.webp" class="card-img-top" alt="Túi vợt">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Túi vợt</h4>
+                                <span>12 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/6.webp" class="card-img-top" alt="Balo thể thao">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Balo thể thao</h4>
+                                <span>8 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/7.webp" class="card-img-top" alt="Phụ kiện">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Phụ kiện</h4>
+                                <span>28 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
+                        <div class="category-card">
+                            <div class="category-img">
+                                <img src="./images/8.webp" class="card-img-top" alt="Quả cầu">
+                                <div class="category-overlay">
+                                    <a href="#" class="btn-view">Xem ngay</a>
+                                </div>
+                            </div>
+                            <div class="category-title">
+                                <h4>Quả cầu</h4>
+                                <span>6 sản phẩm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sale Products -->
+        <section class="sale-products">
+            <div class="container">
+                <div class="section-header">
+                    <h2>FLASH SALE</h2>
+                    <p>Ưu đãi giới hạn - Nhanh tay mua ngay</p>
+                    <div class="countdown">
+                        <div class="countdown-item">
+                            <span id="days">00</span>
+                            <p>Ngày</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="hours">00</span>
+                            <p>Giờ</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="minutes">00</span>
+                            <p>Phút</p>
+                        </div>
+                        <div class="countdown-item">
+                            <span id="seconds">00</span>
+                            <p>Giây</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="sale-badge">-30%</div>
+                            <div class="product-img">
+                                <img src="./images/1.1.webp" alt="Vợt cầu lông">
+                                <div class="product-actions">
+                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
+                                </div>
+                                <div class="product-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <p>Đã bán: 15/20</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-brand">Yonex</div>
+                                <h3 class="product-title">Vợt Cầu Lông Yonex Astrox 100ZZ</h3>
+                                <div class="product-price">
+                                    <span class="old-price">4.500.000₫</span>
+                                    <span class="current-price">3.150.000₫</span>
+                                </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span>(25)</span>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                <button class="btn-add-cart">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="sale-badge">-25%</div>
+                            <div class="product-img">
+                                <img src="./images/2_1.webp" alt="Giày cầu lông">
+                                <div class="product-actions">
+                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
+                                </div>
+                                <div class="product-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 60%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <p>Đã bán: 12/20</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-brand">Li-Ning</div>
+                                <h3 class="product-title">Giày Cầu Lông Lining AYAQ019-2</h3>
+                                <div class="product-price">
+                                    <span class="old-price">2.800.000₫</span>
+                                    <span class="current-price">2.100.000₫</span>
+                                </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>(18)</span>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                <button class="btn-add-cart">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="sale-badge">-40%</div>
+                            <div class="product-img">
+                                <img src="./images/3_1.webp" alt="Áo cầu lông">
+                                <div class="product-actions">
+                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
+                                </div>
+                                <div class="product-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 90%" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <p>Đã bán: 18/20</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-brand">Yonex</div>
+                                <h3 class="product-title">Áo Cầu Lông Yonex 2023 - Xanh</h3>
+                                <div class="product-price">
+                                    <span class="old-price">650.000₫</span>
+                                    <span class="current-price">390.000₫</span>
+                                </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span>(32)</span>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                <button class="btn-add-cart">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-6 mb-4">
+                        <div class="product-card">
+                            <div class="sale-badge">-20%</div>
+                            <div class="product-img">
+                                <img src="./images/4.webp" alt="Quần cầu lông">
+                                <div class="product-actions">
+                                    <a href="#" class="btn-action"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-shopping-cart"></i></a>
+                                    <a href="#" class="btn-action"><i class="fas fa-heart"></i></a>
+                                </div>
+                                <div class="product-progress">
+                                    <div class="progress">
+                                        <div class="progress-bar" role="progressbar" style="width: 45%" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                    <p>Đã bán: 9/20</p>
+                                </div>
+                            </div>
+                            <div class="product-info">
+                                <div class="product-brand">Victor</div>
+                                <h3 class="product-title">Quần Cầu Lông Victor 2023 - Đen</h3>
+                                <div class="product-price">
+                                    <span class="old-price">450.000₫</span>
+                                    <span class="current-price">360.000₫</span>
+                                </div>
+                                <div class="product-rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <i class="far fa-star"></i>
+                                    <span>(14)</span>
+                                </div>
+                            </div>
+                            <div class="add-to-cart">
+                                <button class="btn-add-cart">Thêm vào giỏ</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn-view-all">Xem tất cả sản phẩm giảm giá <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner Section -->
+        <section class="banner-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="promo-banner">
+                            <img src="./images/1.1.webp" alt="Promo Banner">
+                            <div class="banner-content">
+                                <h3>Vợt cầu lông cao cấp</h3>
+                                <p>Giảm đến 30% cho tất cả vợt Yonex</p>
+                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="promo-banner">
+                            <img src="./images/2_1.webp" alt="Promo Banner">
+                            <div class="banner-content">
+                                <h3>Giày cầu lông chính hãng</h3>
+                                <p>Bộ sưu tập mới nhất từ Li-Ning</p>
+                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section class="news-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>TIN TỨC MỚI</h2>
+                    <p>Cập nhật thông tin mới nhất về cầu lông</p>
+                </div>
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="./images/1.1.webp" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">15</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 5 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Sản phẩm mới ra mắt</h5>
+                                <p class="news-text">Khám phá bộ sưu tập vợt cầu lông mới nhất với công nghệ tiên tiến giúp nâng cao hiệu suất chơi.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="./images/2_1.webp" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">12</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 3 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Giải đấu sắp diễn ra</h5>
+                                <p class="news-text">Thông tin về các giải đấu cầu lông sắp diễn ra trong tháng tới và cách đăng ký tham gia.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="news-card">
+                            <div class="news-img">
+                                <img src="./images/3_1.webp" alt="Tin tức">
+                                <div class="news-date">
+                                    <span class="day">10</span>
+                                    <span class="month">Tháng 4</span>
+                                </div>
+                            </div>
+                            <div class="news-body">
+                                <div class="news-meta">
+                                    <span><i class="fas fa-user"></i> Admin</span>
+                                    <span><i class="fas fa-comments"></i> 8 bình luận</span>
+                                </div>
+                                <h5 class="news-title">Kỹ thuật cầu lông cơ bản</h5>
+                                <p class="news-text">Hướng dẫn các kỹ thuật cơ bản dành cho người mới bắt đầu chơi cầu lông từ các chuyên gia.</p>
+                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text-center mt-4">
+                    <a href="#" class="btn-view-all">Xem tất cả tin tức <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Brands Section -->
+        <section class="brands-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>THƯƠNG HIỆU NỔI BẬT</h2>
+                    <p>Đối tác chính thức của chúng tôi</p>
+                </div>
+                <div class="brands-slider">
+                    <div class="brand-item">
+                        <img src="./images/logo-web.png" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="./images/logo-web.png" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="./images/logo-web.png" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="./images/logo-web.png" alt="Brand">
+                    </div>
+                    <div class="brand-item">
+                        <img src="./images/logo-web.png" alt="Brand">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="main-footer">
+            <div class="footer-newsletter">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-5 col-md-12">
+                            <div class="newsletter-content">
+                                <h3>Đăng ký nhận tin</h3>
+                                <p>Nhận thông tin khuyến mãi và cập nhật mới nhất</p>
+                            </div>
+                        </div>
+                        <div class="col-lg-7 col-md-12">
+                            <form class="newsletter-form">
+                                <input type="email" placeholder="Nhập email của bạn">
+                                <button type="submit">Đăng ký</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-main">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <div class="footer-logo">
+                                    <img src="./images/logo-web.png" alt="Logo">
+                                </div>
+                                <p>Sports là hệ thống cửa hàng cầu lông với hơn 50 chi nhánh trên toàn quốc, cung cấp sỉ và lẻ các mặt hàng d��ng cụ cầu lông từ phong trào tới chuyên nghiệp.</p>
+                                <div class="social-links">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-youtube"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>THÔNG TIN LIÊN HỆ</h5>
+                                <ul class="contact-info">
+                                    <li><i class="fas fa-map-marker-alt"></i> 123 đường ABC, quận XYZ, TP.HCM</li>
+                                    <li><i class="fas fa-phone-alt"></i> Hotline: 0000000000</li>
+                                    <li><i class="fas fa-envelope"></i> Email: info@gmail.com</li>
+                                    <li><i class="fas fa-clock"></i> Giờ làm việc: 8:00 - 22:00</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>CHÍNH SÁCH</h5>
+                                <ul class="footer-links">
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách bảo hành</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách đổi trả</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách vận chuyển</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách thanh toán</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Chính sách bảo mật</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 col-md-6 col-sm-12 mb-4">
+                            <div class="footer-widget">
+                                <h5>HƯỚNG DẪN</h5>
+                                <ul class="footer-links">
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn mua hàng</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn thanh toán</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn đổi trả</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Hướng dẫn bảo hành</a></li>
+                                    <li><a href="#"><i class="fas fa-angle-right"></i> Câu hỏi thường gặp</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="copyright">© 2024 Sports Shop. All Rights Reserved.</p>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <div class="payment-methods">
+                                <span>Phương thức thanh toán:</span>
+                                <img src="./images/logo-web.png" alt="Payment Methods" class="payment-img">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./index.js"></script>
+</body>
+</html>
+
