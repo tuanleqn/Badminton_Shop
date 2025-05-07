@@ -5,7 +5,7 @@ class db
     protected $servername = "localhost";
     protected $username = "root";
     protected $password = "";
-    protected $dbname = "shopVNB";
+    protected $dbname = "shopvnb";
 
     function __construct()
     {

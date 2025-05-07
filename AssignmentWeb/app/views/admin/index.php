@@ -1,6 +1,8 @@
 <?php 
-require_once '../app/helper/URL.php';
-require_once '../app/helper/session.php';
+require_once(__DIR__ . '/../../helper/URL.php');
+
+require_once(__DIR__ . '/../../helper/session.php');
+
 $session = Session::getInstance();
 ?>
 <!DOCTYPE html>

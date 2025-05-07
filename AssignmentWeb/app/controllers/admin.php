@@ -480,4 +480,43 @@ class Admin extends Controller {
         $allQaa = $qaaModel->getAllQaa();
         $this->view('admin/qaa', ['qaas' => $allQaa]);
     }
+
+
+    public function admintintuc() {
+        $this->view('admin/admintintuc');
+    }
+    public function admin_comments() {
+        $this->view('admin/admin_comments');
+    }
+    public function admin_replies() {
+        $this->view('admin/admin_replies');
+    }
+    public function edit_cmt() {
+        $this->view('admin/edit_cmt');
+    }
+    public function edit_reply() {
+        $this->view('admin/edit_reply');
+    }
+    public function edit_tin_tuc() {
+        $this->view('admin/edit-tin-tuc');
+    }
+    public function xoa_cmt() {
+        $this->view('admin/xoa_cmt');
+    }
+    public function xoa_reply() {
+        $this->view('admin/xoa_reply');
+    }
+    public function xoanoidung() {
+        $this->view('admin/xoanoidung');
+    }
+    public function taonoidung() {
+        $this->view('admin/taonoidung');
+    }
+    public function uploaddata_edit() {
+        $this->view('admin/uploaddata_edit');
+    }
+    public function uploaddata() {
+        $this->view('admin/uploaddata');
+    }
+   
 }

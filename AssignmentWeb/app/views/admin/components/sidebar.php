@@ -79,7 +79,22 @@
                         </li>
                     </ul>
                 </li>
+                <li class="sidebar-item  has-sub">
+                    <a href="#" class="sidebar-link">
+                        <i class="bi bi-collection-fill"></i>
+                        <span>TIN TỨC</span>
+                    </a>
+                    <ul class="submenu submenu-closed" style="--submenu-height: 258px;">
+                        <li class="submenu-item  ">
+                            <a href="<?= URL::to('public/admin/admintintuc') ?>" class="submenu-link">Bài Viết</a>
+                        </li>
+                        <li class="submenu-item  ">
+                            <a href="<?= URL::to('public/admin/admin_comments') ?>" class="submenu-link">Bình Luận</a>
+                        </li>
+                    </ul>
+                    
 
+                </li>
                 <li class="sidebar-item has-sub <?php echo isMenuActive('/admin/products') ? 'active' : ''; ?>">
                     <a href="#" class='sidebar-link'>
                         <i class="bi bi-stack"></i>
