@@ -1,4 +1,12 @@
 <?php
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+if (isset($_SESSION['review_success']) && $_SESSION['review_success'] === true) {
+    echo "<script>alert('Thank you for your review!');</script>";
+    unset($_SESSION['review_success']); 
+}
 require_once __DIR__ . '/../../models/SiteModel.php';
 require_once __DIR__ . '/../../controllers/ProductController.php';
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -81,7 +89,7 @@ if ($productId > 0) {
                     <!-- Slider Section -->
                     <div class="col-md-6">
                         <div class="image-container position-relative">
-                            <img src="/Shop-badminton/AssignmentWeb/app/<?php echo htmlspecialchars($images[0]); ?>" id="largeImage" alt="Product Image" class="img-fluid rounded">
+                            <img src="/Shop-badminton/AssignmentWeb/<?php echo htmlspecialchars($images[0]); ?>" id="largeImage" alt="Product Image" class="img-fluid rounded">
                         </div>
 
                         <!-- Carousel for thumbnails -->
@@ -140,8 +148,18 @@ if ($productId > 0) {
                             <button id="increaseBtn" class="btn btn-outline-danger btn-sm ms-2">+</button>
                         </div>
                         <div class="d-flex gap-3">
-                            <button class="btn btn-warning text-white fw-bold px-4" id="buyNowBtn">MUA NGAY</button>
-                            <button id="addToCartBtn" class="btn btn-danger text-white fw-bold px-4">THÊM VÀO GIỎ HÀNG</button>
+                        <form action="<?php echo URL::to('public/ProductSite/productcart'); ?>" method="POST" id="buyNowForm">
+                            <input type="hidden" name="id" value="<?php echo htmlspecialchars($product['id']); ?>">
+                            <input type="hidden" name="name" value="<?php echo htmlspecialchars($product['name']); ?>">
+                            <input type="hidden" name="image" value="<?php echo htmlspecialchars($images[0]); ?>">
+                            <input type="hidden" name="price" value="<?php echo htmlspecialchars($product['price']); ?>">
+                            <input type="hidden" name="size" value="<?php echo htmlspecialchars($product['size'] ?? ''); ?>">
+                            <input type="hidden" name="quantity" id="buyNowQuantity" value="1">
+                            <button type="submit" class="btn btn-custom text-white fw-bold px-4" style="background-color: #f98850;">
+                                MUA NGAY
+                            </button>
+                        </form>
+                        <button id="addToCartBtn" class="btn btn-danger text-white fw-bold px-4">THÊM VÀO GIỎ HÀNG</button>
                         </div>
                         <div class="product-description mt-4">
                             <h2>Description</h2>
@@ -154,7 +172,7 @@ if ($productId > 0) {
             <div class="reviews-section container mt-5 px-3">
       
                 <h1 class="mt-4" id="reviewHeading">Leave a Review</h1>
-                <form id="reviewForm" class="row g-3" method="POST" action="/Shop-badminton/AssignmentWeb/app/asset/submit_review.php">
+                <form id="reviewForm" class="row g-3" method="POST" action="<?php echo URL::to('asset/AJAX/product/submit_review.php'); ?>">
                     <input type="hidden" name="product_id" value="<?php echo htmlspecialchars($product['id']); ?>">
 
                     <!-- Star Rating -->
@@ -246,11 +264,11 @@ if ($productId > 0) {
             const col = document.createElement('div');
             col.className = 'col-3';
             const imgElement = document.createElement('img');
-            imgElement.src = '/Shop-badminton/AssignmentWeb/app/' + images[i % images.length];
+            imgElement.src = '/Shop-badminton/AssignmentWeb/' + images[i % images.length];
             imgElement.className = 'thumbnail-image'; // Apply the CSS class
             imgElement.alt = `Thumbnail ${i + 1}`;
             imgElement.addEventListener('click', () => {
-                document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/app/' + images[i % images.length];
+                document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/' + images[i % images.length];
             });
             col.appendChild(imgElement);
             thumbnailRow.appendChild(col);
@@ -258,7 +276,7 @@ if ($productId > 0) {
     }
 
     // Automatically update the large image to the first thumbnail in the current view
-    document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/app/' + images[currentIndex % images.length];
+    document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/' + images[currentIndex % images.length];
 }
 
     document.getElementById('nextBtn').addEventListener('click', () => {
@@ -273,6 +291,15 @@ if ($productId > 0) {
 
     // Initialize thumbnails and large image on page load
     updateThumbnails();
+
+    document.getElementById('buyNowBtn').addEventListener('click', function () {
+        const productId = <?php echo json_encode($product['id']); ?>;
+        const quantity = document.getElementById('quantity').value;
+
+        window.location.href = `/Shop-badminton/AssignmentWeb/app/asset/add_cart.php?id=${productId}&quantity=${quantity}`;
+    });
+
+   
 </script>
         <script src="<?php echo URL::to('asset/js/product_detail.js'); ?>"></script>
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>

@@ -31,7 +31,6 @@ class db
 
             // Set timezone
             mysqli_query($this->connect, "SET time_zone = '+07:00'");
-
         } catch (Exception $e) {
             die("Database Error: " . $e->getMessage());
         }

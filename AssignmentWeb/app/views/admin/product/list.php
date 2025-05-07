@@ -4,6 +4,13 @@ require_once __DIR__ . '/../../../controllers/ProductController.php';
 require_once __DIR__ . '/../../../models/SiteModel.php';
 require_once '../app/helper/URL.php';
 
+if (!isset($DBConnect)) {
+    $DBConnect = new mysqli('localhost', 'root', '', 'shopvnb'); // Replace with your actual DB credentials
+    if ($DBConnect->connect_error) {
+        die("Database connection failed: " . $DBConnect->connect_error);
+    }
+}
+
 $productController = new ProductController();
 
 // Get search and pagination parameters
@@ -105,7 +112,7 @@ $totalProducts = $data['totalProducts'];
                                         <td><?php echo number_format($product['price'], 0, ',', '.'); ?> VND</td>
                                         <td>
                                             <?php if (!empty($product['image'])): ?>
-                                                <img src="<?php echo URL::to('app/' . htmlspecialchars($product['image'])); ?>" alt="Image" style="width: 80px; height: 80px; object-fit: cover;">
+                                                <img src="<?php echo URL::to('/' . htmlspecialchars($product['image'])); ?>" alt="Image" style="width: 80px; height: 80px; object-fit: cover;">
                                             <?php else: ?>
                                                 <span>No Image</span>
                                             <?php endif; ?>

@@ -49,19 +49,19 @@ document.addEventListener('DOMContentLoaded', () => {
                 const col = document.createElement('div');
                 col.className = 'col-3';
                 const imgElement = document.createElement('img');
-                imgElement.src = '/Shop-badminton/AssignmentWeb/app/' + images[i % images.length];
+                imgElement.src = '/Shop-badminton/AssignmentWeb/' + images[i % images.length];
                 imgElement.className = 'thumbnail-image'; // Apply the CSS class
                 imgElement.alt = `Thumbnail ${i + 1}`;
                 imgElement.addEventListener('click', () => {
-                    document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/app/' + images[i % images.length];
+                    document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/' + images[i % images.length];
                 });
                 col.appendChild(imgElement);
                 thumbnailRow.appendChild(col);
             }
         }
-
+    
         // Automatically update the large image to the first thumbnail in the current view
-        document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/app/' + images[currentIndex % images.length];
+        document.getElementById('largeImage').src = '/Shop-badminton/AssignmentWeb/' + images[currentIndex % images.length];
     }
 
     document.getElementById('nextBtn').addEventListener('click', () => {
@@ -119,5 +119,16 @@ document.addEventListener('DOMContentLoaded', function () {
     if (reviews.length > 0) {
         createPagination();
         showPage(1);
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const buyNowBtn = document.getElementById('buyNowBtn');
+    if (buyNowBtn) {
+        buyNowBtn.addEventListener('click', function () {
+            const productId = buyNowBtn.getAttribute('data-product-id'); // Get product ID from a data attribute
+            const quantity = document.getElementById('quantity').value;
+
+            window.location.href = `/Shop-badminton/AssignmentWeb/app/views/product_site/add_cart.php?id=${productId}&quantity=${quantity}`;        });
     }
 });

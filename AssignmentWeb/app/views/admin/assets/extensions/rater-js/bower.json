@@ -7,3 +7,12 @@
         "**/.*"
     ]
 }
+{
+    "name":"rater-js",
+    "main":[
+        "index.js"
+    ],
+    "ignore":[
+        "**/.*"
+    ]
+}

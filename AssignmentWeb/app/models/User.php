@@ -3,7 +3,6 @@ require_once __DIR__ . '/../helper/config.php';
 
 class User extends db {
     protected $conn;
-
     public function __construct() {
         parent::__construct();
         $this->conn = $this->connect;

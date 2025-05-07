@@ -66,18 +66,15 @@ class Admin extends Controller {
         $this->session->checkSession();
         $userData = $this->session->get('user');
         $user = $this->model('User');
-
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Validate required fields
             $requiredFields = ['name', 'email', 'phone', 'address'];
             $errors = [];
-
             foreach ($requiredFields as $field) {
                 if (!isset($_POST[$field]) || empty(trim($_POST[$field]))) {
                     $errors[] = ucfirst($field) . ' is required';
                 }
             }
-
             // Validate email format
             if (!empty($_POST['email']) && !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
                 $errors[] = 'Invalid email format';

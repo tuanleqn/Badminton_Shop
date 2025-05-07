@@ -21,4 +21,12 @@ class ProductSite extends Controller
     {
         $this->view('product_site/product_detail');
     }
+    public function productcart()
+    {
+        $this->view('product_site/product_cart');
+    }
+    public function ordermanagement()
+    {
+        $this->view('product_site/order_management');
+    }
 }
