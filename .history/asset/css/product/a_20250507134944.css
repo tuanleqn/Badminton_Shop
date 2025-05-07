@@ -1,0 +1,27 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+}
+
+/* Add spacing between pagination buttons */
+.dataTable-pagination .page-item {
+    margin: 0 5px; /* Add horizontal spacing */
+}
+
+.dataTable-pagination .page-item .page-link {
+    padding: 8px 12px; /* Adjust padding for better button size */
+    border-radius: 4px; /* Add rounded corners */
+    border: 1px solid #ddd; /* Add a border */
+    color: #007bff; /* Default text color */
+    text-decoration: none; /* Remove underline */
+}
+
+.dataTable-pagination .page-item.active .page-link {
+    background-color: #007bff; /* Active button background */
+    color: #fff; /* Active button text color */
+    border-color: #007bff; /* Active button border color */
+}
+
+.dataTable-pagination .page-item .page-link:hover {
+    background-color: #f0f0f0; /* Hover background */
+    color: #007bff; /* Hover text color */
+}

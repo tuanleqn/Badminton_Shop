@@ -1,0 +1,161 @@
+
+@media (max-width: 768px) {
+    body {
+        padding-top: 80px; /* Adjust this value to match the height of your header */
+    }
+    .d-md-flex {
+        display: none !important;
+    }
+
+    /* Show mobile-specific elements */
+    .d-md-none {
+        display: flex !important;
+    }
+
+    /* Adjust other styles for mobile layout */
+    .product-card {
+        width: 100%; /* Full width for mobile */
+    }
+
+    .filter-button {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        z-index: 1000;
+    }
+    .d-md-none {
+        display: flex !important; /* Force mobile layout */
+    }
+
+    .d-md-block {
+        display: none !important; /* Hide desktop layout */
+    }
+    .sidebar {
+        
+        width: 100%; /* Make the sidebar full width */
+        margin: 0; /* Remove any margins */
+        padding: 10px; /* Add some padding */
+    }
+    .row {
+        margin: 0; /* Remove any extra margins */
+        padding: 0; /* Remove any extra padding */
+        width: 100%; /* Ensure it spans the full width */
+    }
+    #productList {
+        margin-top: 20px; /* Add spacing if needed */
+    }
+    .col-md-9 {
+        flex: 0 0 100%; /* Make it take up 100% of the width */
+        max-width: 100%; /* Ensure it doesn't exceed 100% */
+    }
+    
+}
+
+
+/* Style for quantity controls */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px; /* Add spacing between buttons and input */
+}
+
+.quantity-controls button {
+    width: 30px; /* Smaller button width */
+    height: 30px; /* Smaller button height */
+    padding: 0;
+    font-size: 14px;
+    text-align: center;
+    line-height: 1;
+    border-radius: 50%; /* Make buttons circular */
+}
+
+.quantity-controls .form-control {
+
+    text-align: center;
+    font-size: 14px;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.cart-header {
+    background-color: #ff5722;
+    color: white;
+    padding: 10px;
+    font-weight: bold;
+}
+.cart-body {
+    display: flex;
+    justify-content: space-between; /* Space between content and quantity controls */
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    padding: 15px 0;
+}
+.cart-total {
+    font-weight: bold;
+    color: red;
+}
+/* Card Styling */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+/* Product Image */
+.card img {
+    border-radius: 5px;
+}
+
+/* Product Details */
+.card h5 {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+}
+
+/* Quantity Controls */
+.quantity-controls button {
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    font-size: 0.8rem;
+}
+
+.quantity-controls input {
+    width: 50px;
+    text-align: center;
+}
+
+/* Delete Button */
+.btn-danger {
+    font-size: 0.9rem;
+    padding: 5px 10px;
+}
+.btn-checkout {
+    background-color: #ff5722;
+    color: white;
+    font-weight: bold;
+}
+.btn-checkout:hover {
+    background-color: #e64a19;
+}
+
+#checkoutButton{
+    background-color: #ff5722;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+
