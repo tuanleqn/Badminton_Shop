@@ -26,45 +26,65 @@ CREATE TABLE `user`(
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `brand`(
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `product`(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
-    description TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    listsOfInmage TEXT,
-    price DECIMAL(10, 2) NOT NULL,
-    createdDate DATETIME DEFAULT CURRENT_TIMESTAMP,
-    category VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    rating DECIMAL(3, 2),
-    color VARCHAR(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    size VARCHAR(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    branchId INT,
-    FOREIGN KEY(branchId) REFERENCES branch(id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `ProductCart`(
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; 
+
+-- First create product table
+CREATE TABLE `product` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `description` text DEFAULT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `createdDate` datetime DEFAULT current_timestamp(),
+  `category` varchar(50) DEFAULT NULL,
+  `rating` decimal(3,2) DEFAULT NULL,
+  `color` varchar(50) DEFAULT NULL,
+  `size` varchar(20) DEFAULT NULL,
+  `branchId` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `branchId` (`branchId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- Then create product_images table
+CREATE TABLE `product_images` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL,
+  `image_path` varchar(255) NOT NULL,
+  `image_order` int(11) DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `ProductCart`(
     id INT AUTO_INCREMENT PRIMARY KEY,
     address VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     userId INT,
-    FOREIGN KEY(userId) REFERENCES USER(id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `Has`(
+    FOREIGN KEY(userId) REFERENCES user(id)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci;
+
+CREATE TABLE `Has`(
     productCartId INT,
     productId INT,
     quantity INT DEFAULT 1,
-    PRIMARY KEY(productCartId, productId),
-    FOREIGN KEY(productCartId) REFERENCES ProductCart(id),
-    FOREIGN KEY(productId) REFERENCES product(id)
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; CREATE TABLE `review`(
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    userId INT,
-    details TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    title VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci,
-    DATE DATETIME DEFAULT CURRENT_TIMESTAMP,
-    stars INT CHECK
-        (stars BETWEEN 1 AND 5),
-        Product_id INT,
-    STATUS ENUM
-        ('pending', 'approved', 'rejected') DEFAULT 'pending',
-        FOREIGN KEY(userId) REFERENCES USER(id),
-        FOREIGN KEY(Product_id) REFERENCES product(id)
+    PRIMARY KEY(productCartId, productId)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci;
+
+CREATE TABLE `product_ratings` (
+  `product_id` int(11) NOT NULL,
+  `average_rating` float DEFAULT 0,
+  `total_reviews` int(11) DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `review` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) DEFAULT NULL,
+  `details` text DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `date` datetime DEFAULT current_timestamp(),
+  `stars` int(11) DEFAULT NULL CHECK (`stars` between 1 and 5),
+  `Product_id` int(11) DEFAULT NULL,
+  `status` enum('pending','approved','rejected') DEFAULT 'pending',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
 CREATE TABLE `Response`(
     id INT AUTO_INCREMENT PRIMARY KEY,
     firstName VARCHAR(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
@@ -99,75 +119,32 @@ CREATE TABLE `introduce`(
     -- Ví dụ: 'Tầm nhìn', 'Sứ mệnh'
     content TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci,
     note TEXT CHARACTER SET utf8 COLLATE utf8_unicode_ci
-) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; INSERT INTO `user`(
-    id,
-    phone,
-    address,
-    pass,
-    sex,
-    name,
-    email,
-    numOfVisit,
-    role
-)
-VALUES(
-    1,
-    '0123456789',
-    '123 Main St',
-    'password123',
-    'M',
-    'John Doe',
-    'john.doe@example.com',
-    5,
-    'customer'
-),(
-    2,
-    '0987654321',
-    '456 Elm St',
-    'password456',
-    'F',
-    'Jane Smith',
-    'jane.smith@example.com',
-    3,
-    'customer'
-),(
-    5,
-    '0112233445',
-    '789 Oak St',
-    'password789',
-    'M',
-    'Mike Johnson',
-    'mike.johnson@example.com',
-    1,
-    'admin'
-);
-INSERT INTO `branch`(address, userId)
-VALUES(
-    '390/2 Hà Huy Giáp, Phường Thạnh Lộc, Quận 12',
-    1
-),(
-    '20 Cao Bá Nhạ, Phường Nguyễn Cư Trinh, Quận 1, TP.HCM',
-    2
-),(
-    '209 Âu Cơ, Phường 5, Quận 11, TP.HCM',
-    5
-),(
-    '284 Xô Viết Nghệ Tĩnh, P.21, Quận Bình Thạnh, TP.HCM',
-    1
-),(
-    '916 Kha Vạn Cân, Phường Trường Thọ, TP.Thủ Đức',
-    5
-),(
-    'Số 6 Nguyễn Hữu Cầu, Phường Tân Định, Quận 1, TP.HCM',
-    2
-);
-INSERT INTO `brand`(id, name)
-VALUES(1, 'Yonex'),(2, 'Li-Ning'),(3, 'Victor');
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COLLATE = utf8_unicode_ci; 
+
+-- Insert user data first
+INSERT INTO `user` (id, phone, address, pass, sex, name, email, numOfVisit, role) 
+VALUES 
+(1, '0123456789', '123 Street A', 'hashedpass123', 'M', 'John Doe', 'john@example.com', 0, 'customer'),
+(2, '0987654321', '456 Street B', 'hashedpass456', 'F', 'Jane Smith', 'jane@example.com', 0, 'customer'),
+(5, '0123456780', '789 Street C', 'hashedpass789', 'M', 'Admin User', 'admin@example.com', 0, 'admin');
+
+-- Insert branch data first
+INSERT INTO `branch` (id, address, userId) 
+VALUES 
+(1, '123 Main Branch St', 1),
+(2, '456 Second Branch St', 2);
+
+-- Then insert ProductCart data
+INSERT INTO `ProductCart` (`id`, `address`, `userId`) 
+VALUES 
+(1, '123 Main St', 1),
+(2, '456 Elm St', 2);
+
+-- Then insert product data
 INSERT INTO `product`(
     id,
     name,
     description,
-    listsOfInmage,
     price,
     category,
     rating,
@@ -175,53 +152,22 @@ INSERT INTO `product`(
     size,
     branchId
 )
-VALUES(
-    1,
-    'Badminton Racket A',
-    'High-quality racket',
-    '["img1.jpg", "img2.jpg"]',
-    100.00,
-    'Sports',
-    4.8,
-    'Blue',
-    'Standard',
-    1
-),(
-    2,
-    'Badminton Shoes B',
-    'Comfortable shoes',
-    '["img3.jpg", "img4.jpg"]',
-    80.00,
-    'Sports',
-    4.5,
-    'White',
-    '42',
-    1
-),(
-    3,
-    'Badminton Net C',
-    'Durable net',
-    '["img5.jpg"]',
-    50.00,
-    'Sports',
-    4.2,
-    'Black',
-    'Large',
-    2
-),(
-    4,
-    'Badminton Bag D',
-    'Spacious bag',
-    '["img6.jpg", "img7.jpg"]',
-    60.00,
-    'Accessories',
-    4.7,
-    'Red',
-    'Medium',
-    2
-);
-INSERT INTO `ProductCart`(id, address, userId)
-VALUES(1, '123 Main St', 1),(2, '456 Elm St', 2);
+VALUES
+(1, 'Badminton Racket A', 'High-quality racket', 100.00, 'Sports', 4.8, 'Blue', 'Standard', 1),
+(2, 'Badminton Shoes B', 'Comfortable shoes', 80.00, 'Sports', 4.5, 'White', '42', 1),
+(3, 'Badminton Net C', 'Durable net', 50.00, 'Sports', 4.2, 'Black', 'Large', 2),
+(4, 'Badminton Bag D', 'Spacious bag', 60.00, 'Accessories', 4.7, 'Red', 'Medium', 2);
+
+-- Then insert product_images data
+INSERT INTO `product_images` (`id`, `product_id`, `image_path`, `image_order`) 
+VALUES
+(56, 1, 'uploads/681650d0a2d29-a6c766496832d86c81232.jpg', 0),
+(57, 1, 'uploads/681650d0a3dda-SD_2024_Christmas.webp', 1),
+(89, 2, 'uploads/681709de17f1e-0ac8d846d63d66633f2c3.jpg', 0),
+(90, 2, 'uploads/681709de1dfc9-2025_Chinese_New_Year%27s_Day_Illustration.webp', 1),
+(91, 3, 'uploads/6817896e03676-2024_Christmas_Illustration.webp', 0),
+(92, 4, 'uploads/6817896e05cb5-2025_Chinese_New_Year%27s_Day_Illustration.webp', 0);
+
 INSERT INTO `Has`(
     productCartId,
     productId,
@@ -232,49 +178,49 @@ INSERT INTO `review`(
     userId,
     details,
     title,
-    stars,
     DATE,
+    stars,
     Product_id,
-STATUS
+    status
 )
 VALUES(
     1,
     'Great product, works as expected',
     'Excellent Purchase',
-    5,
     '2023-01-15 10:30:00',
+    5,
     1,
     'approved'
 ),(
     2,
     'Good quality but a bit expensive',
     'Good but Pricey',
-    4,
     '2023-02-20 14:45:00',
+    4,
     2,
     'approved'
 ),(
     5,
     'Not what I expected, disappointed',
     'Disappointing',
-    2,
     '2023-03-10 09:15:00',
+    2,
     3,
     'approved'
 ),(
     1,
     'Amazing quality and feel',
     'Best Racket',
-    5,
     '2023-04-05 16:20:00',
+    5,
     1,
     'approved'
 ),(
     2,
     'Fits perfectly and looks great',
     'Perfect Fit',
-    5,
     '2023-05-12 11:10:00',
+    5,
     4,
     'approved'
 );
@@ -808,3 +754,120 @@ VALUES(
     'Vợt Cầu Lông Babolat',
     'https://shopvnb.com/vot-cau-long-babolat'
 );
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `product`
+--
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `product`
+--
+ALTER TABLE `product`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `product`
+--
+ALTER TABLE `product`
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`branchId`) REFERENCES `branch` (`id`);
+
+--
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=93;
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `product_images`
+--
+ALTER TABLE `product_images`
+  ADD CONSTRAINT `product_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+
+ALTER TABLE `review`
+  ADD KEY `userId` (`userId`),
+  ADD KEY `review_ibfk_2` (`Product_id`);
+
+--
+-- AUTO_INCREMENT cho các bảng đã đổ
+--
+
+--
+-- AUTO_INCREMENT cho bảng `review`
+--
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `review`
+--
+ALTER TABLE `review`
+  ADD CONSTRAINT `review_ibfk_1` FOREIGN KEY (`userId`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `review_ibfk_2` FOREIGN KEY (`Product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
+
+
+  --
+-- Chỉ mục cho các bảng đã đổ
+--
+
+--
+-- Chỉ mục cho bảng `product_ratings`
+--
+ALTER TABLE `product_ratings`
+  ADD PRIMARY KEY (`product_id`);
+
+--
+-- Các ràng buộc cho các bảng đã đổ
+--
+
+--
+-- Các ràng buộc cho bảng `product_ratings`
+--
+ALTER TABLE `product_ratings`
+  ADD CONSTRAINT `product_ratings_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `product` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+
+
+-- Add foreign key constraints after all data insertions
+ALTER TABLE `Has`
+    ADD CONSTRAINT `fk_has_productcart` 
+    FOREIGN KEY(productCartId) REFERENCES ProductCart(id) 
+    ON DELETE CASCADE;
+
+ALTER TABLE `Has`
+    ADD CONSTRAINT `fk_has_product` 
+    FOREIGN KEY(productId) REFERENCES product(id) 
+    ON DELETE CASCADE;

@@ -60,7 +60,7 @@ class Response extends db {
     }
 
     public function updateStatus($id, $status) {
-        $validStatuses = ['read', 'unread', 'responsed'];
+        $validStatuses = ['read', 'new', 'replied'];
         if (!in_array($status, $validStatuses)) {
             return false;
         }

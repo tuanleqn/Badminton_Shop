@@ -80,7 +80,7 @@ $session = Session::getInstance();
                                                     <div class="d-flex align-items-center email-meta">
                                                         <span class="badge bg-<?php 
                                                             echo $response['status'] === 'read' ? 'success' : 
-                                                                ($response['status'] === 'unread' ? 'warning' : 'info'); 
+                                                                ($response['status'] === 'new' ? 'warning' : 'info'); 
                                                         ?>"><?php echo ucfirst($response['status']); ?></span>
                                                         <small class="ms-2 text-nowrap"><?php echo date('d M Y H:i', strtotime($response['createdAt'])); ?></small>
                                                     </div>
@@ -248,27 +248,31 @@ $session = Session::getInstance();
         const responseModal = document.getElementById('responseDetailModal');
         
         // Update response details and show modal
-        function fetchResponseDetails(id) {
+        async function fetchResponseDetails(id) {
             currentResponseId = id;
             
             // First fetch the response details
             fetch(`<?php echo URL::to('public/admin/response/'); ?>/${id}`)
                 .then(response => response.json())
-                .then(data => {
+                .then(async data => {
                     if (data.success) {
                         const response = data.response;
                         
                         // If status is unread, update it to read
-                        if (response.status === 'unread') {
-                            updateStatus(id, 'read', document.querySelector(`[data-id="${id}"] .dropdown`))
-                                .then(() => {
-                                    // Update the badge in the list view
-                                    const listBadge = document.querySelector(`[data-id="${id}"] .badge`);
-                                    if (listBadge) {
-                                        listBadge.className = 'badge bg-success';
-                                        listBadge.textContent = 'read';
-                                    }
-                                });
+                        if (response.status === 'new') {
+                            try {
+                                await updateStatus(id, 'read', document.querySelector(`[data-id="${id}"] .dropdown`));
+                                const listItem = document.querySelector(`[data-id="${id}"]`);
+                                const listBadge = listItem.querySelector('.badge');
+                                if (listBadge) {
+                                    listBadge.className = 'badge bg-success';
+                                    listBadge.textContent = 'Read';
+                                }
+                                // Update the response status for the modal display
+                                response.status = 'read';
+                            } catch (error) {
+                                console.error('Error updating status:', error);
+                            }
                         }
                         
                         document.querySelector('.response-name').textContent = `${response.firstName} ${response.lastName}`;
@@ -280,8 +284,8 @@ $session = Session::getInstance();
                         const statusBtn = document.querySelector('.response-status');
                         statusBtn.innerHTML = `<span class="badge bg-${
                             response.status === 'read' ? 'success' : 
-                            (response.status === 'unread' ? 'warning' : 'info')
-                        }">${response.status === 'unread' ? 'read' : response.status}</span>`;
+                            (response.status === 'new' ? 'warning' : 'info')
+                        }">${response.status === 'new' ? 'read' : response.status}</span>`;
                         
                         // Show modal using Bootstrap's API
                         const modal = new bootstrap.Modal(responseModal);
@@ -307,7 +311,7 @@ $session = Session::getInstance();
                     if (badge) {
                         badge.className = `badge bg-${
                             status === 'read' ? 'success' : 
-                            (status === 'unread' ? 'warning' : 'info')
+                            (status === 'new' ? 'warning' : 'info')
                         }`;
                         badge.textContent = status;
                     }
@@ -387,7 +391,7 @@ $session = Session::getInstance();
                             if (responseItem) {
                                 const badge = responseItem.querySelector('.badge');
                                 badge.className = 'badge bg-info';
-                                badge.textContent = 'responsed';
+                                badge.textContent = 'replied';
                             }
                         }
                     } else {
