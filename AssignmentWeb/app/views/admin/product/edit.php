@@ -80,7 +80,7 @@ if (!$product) {
                             <?php foreach ($productImages as $index => $image): ?>
                                 
                                 <div class="me-2 mb-2 image-item" data-id="<?php echo htmlspecialchars($image['id']); ?>">
-                                    <img src="<?php echo URL::to('app/' . htmlspecialchars($image['image_path'])); ?>" 
+                                    <img src="<?php echo URL::to('/' . htmlspecialchars($image['image_path'])); ?>" 
                                         alt="Product Image" 
                                         style="width: 100px; height: 100px; object-fit: cover; border: 1px solid #ddd; border-radius: 5px;">
                                     <div>
@@ -102,27 +102,52 @@ if (!$product) {
                 </div>
                 <div class="mb-3">
                     <label for="category" class="form-label">Danh mục</label>
+                    <!-- <div class="mb-3">
+                    <label for="category" class="form-label">Danh mục</label>
+                    <select class="form-select" id="category" name="category">
+                        <option value="" selected>Chọn danh mục</option>
+                        <option value="1">Vợt cầu lông</option>
+                        <option value="2">Giày cầu lông</option>
+                        <option value="3">Áo cầu lông</option>
+                        <option value="4">Quần cầu lông</option>
+                        <option value="5">Túi vợt</option>
+                        <option value="6">Balo thể thao</option>
+                        <option value="7">Phụ kiện</option>
+                        <option value="8">Quả cầu</option>
+                    </select>
+                </div> -->
                     <select class="form-select" id="category" name="category">
                         <option value="" <?php echo $product['category'] == '' ? 'selected' : ''; ?>>Chọn danh mục</option>
-                        <option value="1" <?php echo $product['category'] == '1' ? 'selected' : ''; ?>>Danh mục 1</option>
-                        <option value="2" <?php echo $product['category'] == '2' ? 'selected' : ''; ?>>Danh mục 2</option>
-                        <option value="3" <?php echo $product['category'] == '3' ? 'selected' : ''; ?>>Danh mục 3</option>
+                        <option value="Vợt cầu lông" <?php echo $product['category'] == 'Vợt cầu lông' ? 'selected' : ''; ?>>Vợt cầu lông</option>
+                        <option value="Giày cầu lông" <?php echo $product['category'] == 'Giày cầu lông' ? 'selected' : ''; ?>>Giày cầu lông</option>
+                        <option value="Áo cầu lông" <?php echo $product['category'] == 'Áo cầu lông' ? 'selected' : ''; ?>>Áo cầu lông</option>
+                        <option value="Quần cầu lông" <?php echo $product['category'] == 'Quần cầu lông' ? 'selected' : ''; ?>>Quần cầu lông</option>
+                        <option value="Túi vợt" <?php echo $product['category'] == 'Túi vợt' ? 'selected' : ''; ?>>Túi vợt</option>
+                        <option value="Balo thể thao" <?php echo $product['category'] == 'Balo thể thao' ? 'selected' : ''; ?>>Balo thể thao</option>
+                        <option value="Phụ kiện" <?php echo $product['category'] == 'Phụ kiện' ? 'selected' : ''; ?>>Phụ kiện</option>
+                        <option value="Quả cầu" <?php echo $product['category'] == 'Quả cầu' ? 'selected' : ''; ?>>Quả cầu</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="color" class="form-label">Màu sắc</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-palette"></i></span>
-                        <input type="text" class="form-control" id="color" name="color" value="<?php echo htmlspecialchars($product['color']); ?>">
-                    </div>                    
+                        <input type="text" class="form-control" id="color" name="color" 
+                            value="<?php echo htmlspecialchars($product['color']); ?>" 
+                            placeholder="Nhập màu sắc sản phẩm (ví dụ: Đỏ, Xanh)">
+                    </div>
+                    <small class="form-text text-muted">Nhập các màu sắc, cách nhau bằng dấu phẩy.</small>
                 </div>
                
                 <div class="mb-3">
                     <label for="size" class="form-label">Kích thước</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-ruler"></i></span>
-                        <input type="text" class="form-control" id="size" name="size" value="<?php echo htmlspecialchars($product['size']); ?>">
+                        <input type="text" class="form-control" id="size" name="size" 
+                            value="<?php echo htmlspecialchars($product['size']); ?>" 
+                            placeholder="Nhập kích thước sản phẩm (ví dụ: S, M, L)">
                     </div>
+                    <small class="form-text text-muted">Nhập các kích thước, cách nhau bằng dấu phẩy.</small>
                 </div>
                 <div class="mb-3">
                     <label for="branchId" class="form-label">BrandID</label>

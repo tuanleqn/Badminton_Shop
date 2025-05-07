@@ -62,17 +62,20 @@ require_once '../app/helper/URL.php';
                     <label for="category" class="form-label">Danh mục</label>
                     <select class="form-select" id="category" name="category">
                         <option value="" selected>Chọn danh mục</option>
-                        <option value="1">Danh mục 1</option>
-                        <option value="2">Danh mục 2</option>
-                        <option value="3">Danh mục 3</option>
+                        <option value="Vợt cầu lông">Vợt cầu lông</option>
+                        <option value="Giày cầu lông">Giày cầu lông</option>
+                        <option value="Áo cầu lông">Áo cầu lông</option>
+                        <option value="Quần cầu lông">Quần cầu lông</option>
+                        <option value="Túi vợt">Túi vợt</option>
+                        <option value="Balo thể thao">Balo thể thao</option>
+                        <option value="Phụ kiện">Phụ kiện</option>
+                        <option value="Quả cầu">Quả cầu</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="color" class="form-label">Màu sắc</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-palette"></i></span>
-                        <input type="text" class="form-control" id="color" name="color" placeholder="Nhập màu sắc sản phẩm">
-                    </div>                    
+                    <input type="text" class="form-control" id="color" name="color" placeholder="Nhập màu sắc sản phẩm (ví dụ: Đỏ, Xanh)">
+                    <small class="form-text text-muted">Nhập các màu sắc, cách nhau bằng dấu phẩy.</small>
                 </div>
                 <div class="mb-3">
                     <label for="rating" class="form-label">Rating</label>
@@ -83,18 +86,15 @@ require_once '../app/helper/URL.php';
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="quantity" class="form-label">Kích thước</label>
-                    <div class="input-group">
-                        <span class="input-group-text"><i class="bi bi-ruler"></i></span>
-                        <input type="text" class="form-control" id="size" name="size" placeholder="Nhập kích thước sản phẩm">
-                
-                    </div>
+                    <label for="size" class="form-label">Kích thước</label>
+                    <input type="text" class="form-control" id="size" name="size" placeholder="Nhập kích thước sản phẩm (ví dụ: S, M, L)">
+                    <small class="form-text text-muted">Nhập các kích thước, cách nhau bằng dấu phẩy.</small>
                 </div>
                 <div class="mb-3">
-                    <label for="brandID" class="form-label">BrandID</label>
+                    <label for="brandId" class="form-label">Brand ID</label>
                     <div class="input-group">
                         <span class="input-group-text"><i class="bi bi-box"></i></span>
-                        <input type="number" class="form-control" id="branchId" name="branchId" placeholder="Enter Branch ID" required>
+                        <input type="number" class="form-control" id="brandId" name="brandId" placeholder="Enter Brand ID" required>
                     </div>
                 </div>
                 <div class="form-check mb-3">
@@ -109,38 +109,42 @@ require_once '../app/helper/URL.php';
 </div>
 <script>
     document.getElementById('addProductForm').addEventListener('submit', function (e) {
-        e.preventDefault();
+    e.preventDefault();
 
-        const formData = new FormData(this);
+    const formData = new FormData(this);
+    const color = formData.get('color');
+    console.log('Color:', document.getElementById('color').value);
+    if (!color || color.trim() === '') {
+        alert('Vui lòng nhập màu sắc sản phẩm.');
+        return;
+    }
 
-        fetch('<?php echo URL::to("asset/AJAX/product/add.php"); ?>', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => {
-            // First check if the response can be parsed as JSON
-            return response.text().then(text => {
-                try {
-                    return JSON.parse(text);
-                } catch (e) {
-                    // If it's not JSON, throw an error with the response text
-                    throw new Error(`Server Error: ${text}`);
-                }
-            });
-        })
-        .then(data => {
-            if (data.status === 'success') {
-                alert(data.message);
-                window.location.href = '<?php echo URL::to("public/admin/productlist"); ?>'; // Redirect to product list
-            } else {
-                throw new Error(data.message || 'Failed to add product');
+    fetch('<?php echo URL::to("asset/AJAX/product/add.php"); ?>', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => {
+        return response.text().then(text => {
+            try {
+                return JSON.parse(text);
+            } catch (e) {
+                throw new Error(`Server Error: ${text}`);
             }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Error adding product: ' + error.message);
         });
+    })
+    .then(data => {
+        if (data.status === 'success') {
+            alert(data.message);
+            window.location.href = '<?php echo URL::to("public/admin/productlist"); ?>';
+        } else {
+            throw new Error(data.message || 'Failed to add product');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Error adding product: ' + error.message);
     });
+});
 </script>
 <script src="<?php echo URL::to('app/views/admin/assets/static/js/components/dark.js'); ?>"></script>
 <script src="<?php echo URL::to('app/views/admin/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js'); ?>"></script>

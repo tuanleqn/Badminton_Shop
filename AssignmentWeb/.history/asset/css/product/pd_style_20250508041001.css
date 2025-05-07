@@ -1,0 +1,414 @@
+@media (max-width: 768px) {
+    /* Ensure the menu button is visible on smaller screens */
+    #mobileMenuButton {
+        display: inline-block !important;
+    }
+
+    /* Hide desktop navigation on smaller screens */
+    .nav.d-md-flex {
+        display: none !important;
+    }
+
+    /* Center the logo and align icons properly */
+    .header {
+        flex-wrap: nowrap;
+    }
+
+    .header .d-flex {
+        flex: 1;
+    }
+
+    .header .justify-content-center {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header .gap-2 {
+        justify-content: flex-end;
+    }
+}
+
+@media (min-width: 769px) {
+    /* Hide mobile-specific buttons on larger screens */
+    #mobileMenuButton {
+        display: none !important;
+    }
+    .d-md-none {
+        display: none !important;
+    }
+
+    /* Ensure desktop navigation is visible */
+    .nav.d-md-flex {
+        display: flex !important;
+    }
+}
+
+@media (max-width: 576px) {
+    footer .footer-container {
+        flex-direction: row;
+        text-align: center;
+    }
+
+    footer .footer-contact,
+    footer .footer-links {
+        margin-bottom: 20px; /* Add spacing between stacked sections */
+    }
+}
+
+@media (max-width: 1024px) {
+    /* Ensure the menu button is visible on smaller screens */
+    #mobileMenuButton {
+        display: inline-block !important;
+    }
+
+    /* Hide desktop navigation on smaller screens */
+    .nav.d-md-flex {
+        display: none !important;
+    }
+
+    /* Center the logo and align icons properly */
+    .header {
+        flex-wrap: nowrap;
+    }
+
+    .header .d-flex {
+        flex: 1;
+    }
+
+    .header .justify-content-center {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .header .gap-2 {
+        justify-content: flex-end;
+    }
+}
+
+@media (min-width: 1025px) {
+    /* Hide the menu button on larger screens */
+    #mobileMenuButton {
+        display: none !important;
+    }
+
+    /* Ensure desktop navigation is visible */
+    .nav.d-md-flex {
+        display: flex !important;
+    }
+
+    /* Align the logo and navigation properly */
+    .header .justify-content-center {
+        flex: 0;
+    }
+
+    .nav {
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+.header {
+    padding: 10px 15px;
+}
+
+.header .logo {
+    height: 40px;
+}
+
+.header .btn {
+    padding: 5px 10px;
+    font-size: 16px;
+}
+
+.header .btn i {
+    font-size: 18px;
+}
+
+
+.container-fluid {
+    width: 100%;
+    padding: 0; /* Remove any default padding */
+    margin: 0; /* Remove any default margin */
+}
+
+
+.header img {
+    width: 50px;
+    
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    margin-left: 15%;
+}
+.nav-link {
+    color: black; 
+    margin: 0 15px;
+    align-items: end;
+}
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Mega Menu Styling */
+.mega-menu {
+    display: none;
+    position: absolute;
+    top: 100%; /* Position it below the navigation bar */
+    left: 50%;
+    transform: translateX(-30%); /* Shift it back by 50% of its width to center it */
+    width: 100vw; /* Set the width of the mega menu (adjust as needed) */
+    background-color: #fff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    z-index: 1000;
+}
+
+.nav-item:hover .mega-menu {
+    display: block;
+}
+
+.mega-menu h6 {
+    font-weight: bold;
+    color: #ff5722;
+    margin-bottom: 10px;
+}
+
+.mega-menu ul {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.mega-menu ul li {
+    margin-bottom: 5px;
+}
+
+.mega-menu ul li a {
+    text-decoration: none;
+    color: #333;
+}
+
+.mega-menu ul li a:hover {
+    color: #ff5722;
+}
+
+/* Fix alignment issues */
+.row {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col-md-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.btn-custom {
+    margin-left: 10px; 
+
+}
+
+.tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background: #007bff;
+    color: #fff;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px; /* Adjust size as needed */
+    color: #ff4081; /* Color for the favorite icon */
+}
+
+.product-title {
+    font-size: 24px;
+    margin: 10px 0;
+}
+
+.product-price {
+    font-size: 20px;
+    color: #28a745;
+    font-weight: bold;
+}
+
+.labels {
+    margin: 10px 0;
+}
+
+.container .breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin: 0;
+}
+
+textarea {
+    height: 100px; 
+}
+
+.newsletter {
+    margin-top: 30px;
+}
+
+.newsletter input {
+    max-width: 400px;
+}
+
+#quantity {
+    height: 38px;
+    font-size: 1rem;
+}
+
+.btn-warning {
+    background-color: #ffc107;
+    border: none;
+}
+
+.btn-danger {
+    background-color: #ff5722;
+    border: none;
+}
+
+.btn-warning:hover {
+    background-color: #e0a800;
+}
+
+.btn-danger:hover {
+    background-color: #e64a19;
+}
+.image-container {
+    position: relative;
+}
+.tag {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(211, 211, 211, 0.7);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    color: #000000;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+.favorite-icon {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 24px; /* Adjust size as needed */
+    color: #ff4081; /* Color for the favorite icon */
+}
+.small-image {
+    cursor: pointer;
+    border: 1px solid #e0e0e0; /* Optional: border for thumbnails */
+    transition: transform 0.2s;
+}
+.small-image:hover {
+    transform: scale(1.05); /* Slight zoom effect on hover */
+}
+.carousel-control {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-200%);
+    background-color: rgba(255, 255, 255, 0.7);
+    border: none;
+    width: 40px; 
+    height: 40px; 
+    border-radius: 50%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.carousel-control.left {
+    left: 10px; /* Position for left button */
+}
+.carousel-control.right {
+    right: 10px; /* Position for right button */
+}
+
+.form-group {
+    display: flex;
+    justify-content: space-between; /* Aligns select boxes in a row */
+}
+.form-control {
+    flex: 1; /* Allows select boxes to share available space */
+    margin-right: 10px; /* Adds space between select boxes */
+}
+.form-control:last-child {
+    margin-right: 0; /* Removes margin from the last select box */
+}
+
+.review-card {
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    position: relative;
+}
+.star-rating {
+    color: #ffcc00;
+}
+.reviewer-info {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+}
+.reviewer-info img {
+    border-radius: 50%;
+    width: 30px; 
+    height: 30px; 
+    margin-right: 10px;
+}
+.edit-button {
+    margin-top: 10px;
+}
+.editable {
+    display: none; 
+}
+.hidden {
+    display: none;
+}
+
+.quantity-input {
+    width: 60px;
+    margin-top: 2%;
+    margin-left: 0;
+    margin-right: 0;
+}
+.thumbnail-image {
+    width: 125px; 
+    height: 180px; 
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 5px;
+   
+}
+#largeImage {
+    width:500px;
+    height:300px;
+    object-fit: cover; 
+   
+}
+.image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+body a {
+    text-decoration: none;
+    color: #ff5722; /* Default link color */
+}
+
+#reviewPagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}

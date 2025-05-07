@@ -18,7 +18,7 @@
         <nav aria-label="breadcrumb">
             <nav aria-label="breadcrumb" class="mt-3">
                 <ol class="breadcrumb" id="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo URL::to('public/home'); ?>">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page" id="currentPage">Đơn hàng của tôi</li>
                 </ol>
             </nav> 

@@ -2,10 +2,10 @@
 require_once __DIR__ . '/../../../helper/config.php';
 require_once __DIR__ . '/../../../controllers/ProductController.php';
 require_once __DIR__ . '/../../../models/SiteModel.php';
-require_once '../app/helper/URL.php';
+require_once __DIR__ . '/../../../helper/URL.php';
 
 if (!isset($DBConnect)) {
-    $DBConnect = new mysqli('localhost', 'root', '', 'shopvnb'); // Replace with your actual DB credentials
+    $DBConnect = new mysqli('localhost', 'root', '', 'shopvnb'); 
     if ($DBConnect->connect_error) {
         die("Database connection failed: " . $DBConnect->connect_error);
     }
@@ -65,27 +65,28 @@ $totalProducts = $data['totalProducts'];
                         </nav>
                     </div>
                 </div>
-                <div class="row-md-12  text-md-end mt-2 mt-md-0">
-                        <a href="<?php echo URL::to('public/admin/productadd'); ?>" class="btn btn-success">Thêm sản phẩm mới</a>
-                </div>
+               
 
+                <!-- filepath: d:\Tieu_Anh\xampp\htdocs\Shop-badminton\AssignmentWeb\app\views\admin\product\list.php -->
                 <div class="row align-items-center mb-3">
-                    <div class="col-auto">
-                        <div class="dataTables_length" id="table2_length">
-                            <label>
-                                <select name="table2_length" aria-controls="table2" class="form-select form-select-sm" onchange="changeEntries(this.value)">
-                                    <option value="10" <?php echo isset($_GET['limit']) && $_GET['limit'] == 10 ? 'selected' : ''; ?>>10</option>
-                                    <option value="25" <?php echo isset($_GET['limit']) && $_GET['limit'] == 25 ? 'selected' : ''; ?>>25</option>
-                                    <option value="50" <?php echo isset($_GET['limit']) && $_GET['limit'] == 50 ? 'selected' : ''; ?>>50</option>
-                                    <option value="100" <?php echo isset($_GET['limit']) && $_GET['limit'] == 100 ? 'selected' : ''; ?>>100</option>
-                                </select>
-                            </label>
+                    <div class="col-12 col-md-3">
+                        <div class="d-flex align-items-center">
+                            <span class="me-2">Show</span>
+                            <select name="table2_length" aria-controls="table2" class="form-select form-select-sm" onchange="changeEntries(this.value)">
+                                <option value="10" <?php echo isset($_GET['limit']) && $_GET['limit'] == 10 ? 'selected' : ''; ?>>10</option>
+                                <option value="25" <?php echo isset($_GET['limit']) && $_GET['limit'] == 25 ? 'selected' : ''; ?>>25</option>
+                                <option value="50" <?php echo isset($_GET['limit']) && $_GET['limit'] == 50 ? 'selected' : ''; ?>>50</option>
+                                <option value="100" <?php echo isset($_GET['limit']) && $_GET['limit'] == 100 ? 'selected' : ''; ?>>100</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col">
+                    <div class="col-12 col-md-6">
                         <form method="GET" class="d-flex">
                             <input type="text" name="search" class="form-control form-control-sm" placeholder="Search..." value="<?php echo htmlspecialchars($search); ?>">
                         </form>
+                    </div>
+                    <div class="col-12 col-md-3 text-md-end">
+                        <a href="<?php echo URL::to('public/admin/productadd'); ?>" class="btn btn-success btn-sm w-100 w-md-auto">Thêm sản phẩm mới</a>
                     </div>
                 </div>
                 
@@ -109,7 +110,7 @@ $totalProducts = $data['totalProducts'];
                                         <td><?php echo $product['id']; ?></td>
                                         <td><?php echo htmlspecialchars($product['name']); ?></td>
                                         <td><?php echo htmlspecialchars($product['description']); ?></td>
-                                        <td><?php echo number_format($product['price'], 0, ',', '.'); ?> VND</td>
+                                        <td><?php echo '$' . number_format($product['price'], 2, '.', ','); ?></td>
                                         <td>
                                             <?php if (!empty($product['image'])): ?>
                                                 <img src="<?php echo URL::to('/' . htmlspecialchars($product['image'])); ?>" alt="Image" style="width: 80px; height: 80px; object-fit: cover;">
@@ -120,7 +121,7 @@ $totalProducts = $data['totalProducts'];
                                         <td>
                                             <div class="d-flex justify-content-around d-grid gap-2">
                                                 <a href="<?php echo URL::to('public/admin/productedit?id=' . $product['id']); ?>" class="btn btn-secondary btn-sm">Edit</a>
-                                                <a href="<?php echo URL::to('public/admin/productdelete?&id=' . $product['id']); ?>" 
+                                                <a href="<?php echo URL::to('public/admin/productdelete?&action=delete&id=' . $product['id']); ?>" 
                                                     class="btn btn-danger btn-sm" 
                                                     onclick="return confirm('Are you sure you want to delete this item?')">Delete</a>                
                                             </div>
@@ -133,7 +134,7 @@ $totalProducts = $data['totalProducts'];
                 </section>
 
                 <div class="dataTable-info">
-                    Showing <?php echo ($currentPage - 1) * $limit + 1; ?> to <?php echo min($currentPage * $limit, $totalProducts); ?> of <?php echo $totalProducts; ?> entries
+                    Showing <?php echo ($currentPage - 1) * $limit + 1; ?> to <?php echo min($currentPage * $limit, $totalProducts); ?> of <?php echo $totalProducts; ?> products
                 </div>
 
                     

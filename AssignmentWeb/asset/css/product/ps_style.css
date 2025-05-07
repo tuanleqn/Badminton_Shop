@@ -1,3 +1,50 @@
+body {
+    background-color: #f8f9fa;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+.annotationLayer .linkAnnotation:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Fallback for unsupported browsers */
+    -webkit-backdrop-filter: invert(100%); /* Safari 9+ */
+    backdrop-filter: invert(100%); /* Other browsers */
+}
+
+th {
+    text-align: -webkit-match-parent; /* Vendor-prefixed property first */
+    text-align: match-parent !important; /* Standard property */
+    text-align: inherit; /* Fallback property */
+}
+
+.form-check-input {
+    -webkit-print-color-adjust: exact; /* Safari */
+    print-color-adjust: exact; /* Standard property for other browsers */
+}
+.textLayer {
+    -webkit-text-size-adjust: none; /* Safari and Chrome */
+    -ms-text-size-adjust: none; /* Internet Explorer */
+    text-size-adjust: none; /* Standard property for other browsers */
+}
+
+.chat-message--text .markdown-body #md-searchpanel .btn:not(.close-btn):hover {
+    -webkit-box-shadow: none; /* Vendor-prefixed property first */
+    box-shadow: none; /* Standard property */
+    background-color: var(--tw-button-hover-bg);
+}
+
+@media (max-width: 576px) {
+    footer .footer-container {
+        flex-direction: row;
+        text-align: center;
+    }
+
+    footer .footer-contact,
+    footer .footer-links {
+        margin-bottom: 20px; /* Add spacing between stacked sections */
+    }
+}
+
+
 
 @media (max-width: 768px) {
     body {
@@ -48,114 +95,200 @@
         flex: 0 0 100%; /* Make it take up 100% of the width */
         max-width: 100%; /* Ensure it doesn't exceed 100% */
     }
+    footer .footer-container {
+        flex-direction: row;
+        text-align: center;
+    }
+
+    footer .footer-contact {
+        margin-bottom: 20px; 
+        margin-left: 5%;
+    }
+
+    footer .footer-contact,
+    footer .footer-links {
+        margin-bottom: 20px; 
+    }
     
 }
-
-
-/* Style for quantity controls */
-.quantity-controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 5px; /* Add spacing between buttons and input */
+.annotationLayer .linkAnnotation:hover {
+    background-color: rgba(255, 255, 255, 0.8); /* Fallback for unsupported browsers */
+    -webkit-backdrop-filter: invert(100%); /* Safari 9+ */
+    backdrop-filter: invert(100%); /* Other browsers */
+}
+* {
+    text-align: -webkit-match-parent;
+    box-sizing: border-box;
+     /* Older Safari versions */
+    text-align: match-parent;
 }
 
-.quantity-controls button {
-    width: 30px; /* Smaller button width */
-    height: 30px; /* Smaller button height */
-    padding: 0;
-    font-size: 14px;
-    text-align: center;
-    line-height: 1;
-    border-radius: 50%; /* Make buttons circular */
-}
 
-.quantity-controls .form-control {
 
-    text-align: center;
-    font-size: 14px;
-    padding: 0;
-    border: 1px solid #ccc;
-    border-radius: 10px;
-    margin: 0;
-}
-
-.cart-header {
-    background-color: #ff5722;
-    color: white;
-    padding: 10px;
+.system-info {
+    padding: 5px 15px;
+    border-radius: 5px;
+    background-color: #e9ecef;
+    margin-right: 25px;
     font-weight: bold;
 }
-.cart-body {
-    display: flex;
-    justify-content: space-between; /* Space between content and quantity controls */
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    padding: 15px 0;
+
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0; /* Adjust spacing if needed */
 }
-.cart-total {
-    font-weight: bold;
-    color: red;
+
+.sidebar {
+    margin-top: 2%;
 }
-/* Card Styling */
-.card {
-    border: 1px solid #ddd;
-    border-radius: 8px;
+
+.filter-sidebar {
     background-color: #fff;
-}
-
-/* Product Image */
-.card img {
+    padding: 20px;
     border-radius: 5px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
 }
-
-/* Product Details */
-.card h5 {
-    font-size: 1rem;
-    font-weight: bold;
+.filter-button {
+    position: fixed;
+    top: 50%;
+    right: 20px;
+    z-index: 1050;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-
-.card p {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 0.5rem;
+.filter-button svg {
+    margin-right: 0;
 }
-
-/* Quantity Controls */
-.quantity-controls button {
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    font-size: 0.8rem;
+.badge .close {
+    margin-left: 8px; 
+    cursor: pointer; 
+    font-weight: 100;
 }
-
-.quantity-controls input {
-    width: 50px;
+.product-card {
+    background-color: #e9ecef;
+    border-radius: 5px;
+    padding: 15px;
     text-align: center;
+    height: 100%; /* Ensures all cards have the same height */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
-/* Delete Button */
-.btn-danger {
-    font-size: 0.9rem;
-    padding: 5px 10px;
-}
-.btn-checkout {
-    background-color: #ff5722;
-    color: white;
-    font-weight: bold;
-}
-.btn-checkout:hover {
-    background-color: #e64a19;
-}
 
-#checkoutButton{
-    background-color: #ff5722;
-    color: white;
-    font-weight: bold;
-    padding: 10px 20px;
-    border-radius: 5px;
+body a {
+    text-decoration: none;
+    color: #f98850; /* Inherit color from parent element */
+}
+.product-card .btn {
     border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin-top: 3%;
+    background-color: #f98850;
+    color: white;
+    font-weight: bold;
+    
     cursor: pointer;
+}
+
+.product-card button:hover {
+    background-color: #dd6f37;
+
+}
+
+.product-card button:active {
+    background-color: #e6936a;
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+  }
+  .product-card button:visited {
+    background-color: #be6a3f;
+  }
+  .pagination .page-item.active .page-link {
+    background-color: #f98850; /* Custom color */
+    border-color: #f98850; /* Match border color */
+    color: #fff; /* Text color */
+}
+
+/* Change the hover color of pagination items */
+.pagination .page-link:hover {
+    background-color: #f98850; /* Custom hover color */
+    border-color: #f98850; /* Match border color */
+    color: #fff; /* Text color */
+}
+
+/* Change the default pagination item color */
+.pagination .page-link {
+    color: #f98850; /* Default text color */
+    border-color: #f98850; /* Default border color */
+}
+  .card-title {
+    white-space: nowrap; 
+    overflow: hidden;   
+    text-overflow: ellipsis; /* Add "..." to indicate truncated text */
+    display: block;      
+    max-width: 100%;     
+}
+
+.product-image {
+    width: 100%;
+    height: 150px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.product-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+.sort-options {
+    margin-bottom: 20px;
+}
+
+
+
+.search-sort-container {
+    display: flex;
+    justify-content: space-between; /* Space between breadcrumb and dropdown */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 20px; /* Add spacing below the container */
+}
+
+.breadcrumb {
+    margin-bottom: 0; /* Remove default bottom margin */
+}
+
+.dropdown button {
+    white-space: nowrap; /* Prevent text wrapping in the dropdown button */
+    display: flex;
+    align-items: center; /* Align the icon and text vertically */
+    gap: 5px; /* Add spacing between the icon and text */
+}
+#searchInputMobile {
+    transition: width 0.3s ease; /* Smooth transition for width */
+}
+
+#searchInputMobile.d-none {
+    width: 0; /* Hidden state */
+    padding: 0; /* Remove padding when hidden */
+    border: none; /* Remove border when hidden */
+    visibility: hidden; /* Make it invisible */
+}
+
+#searchInputMobile:not(.d-none) {
+    width: 200px; /* Visible state */
+    padding: 0.375rem 0.75rem; /* Restore padding */
+    border: 1px solid #ced4da; /* Restore border */
+    visibility: visible; /* Make it visible */
 }
 
 

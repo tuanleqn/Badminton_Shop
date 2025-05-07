@@ -1,0 +1,20 @@
+<?php
+require_once __DIR__ . '/../../../helper/config.php';
+require_once __DIR__ . '/../../../controllers/ProductController.php';
+require_once __DIR__ . '/../../../helper/URL.php';
+
+$productController = new ProductController();
+
+if ($_GET['action'] === 'productdelete' && isset($_GET['id'])) {
+    $productController = new ProductController();
+    $result = $productController->deleteProducts($_GET['id']);
+    if ($result) {
+        header("Location: " . URL::to('public/admin/productlist') . "?message=Product deleted successfully");
+    } else {
+        echo "Failed to delete the product.";
+    }
+    exit;
+}
+
+// Add other edit functionality here...
+?>

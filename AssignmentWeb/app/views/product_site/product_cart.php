@@ -2,11 +2,11 @@
 
 require_once __DIR__ . '/../../models/SiteModel.php';
 require_once __DIR__ . '/../../controllers/ProductController.php';
-require_once __DIR__ . '/../../helper/config.php';
-require_once __DIR__ . '/../../helper/URL.php';
 
-
-$productId = isset($_POST['id']) ? htmlspecialchars($_POST['id']) : '';
+$productId = isset($_POST['id']) ? htmlspecialchars($_POST['id']) : null;
+if (!$productId) {
+    echo "<script>console.error('Product ID is not set!');</script>";
+}
 $productName = isset($_POST['name']) ? htmlspecialchars($_POST['name']) : '';
 $productImage = isset($_POST['image']) ? htmlspecialchars($_POST['image']) : 'assets/images/default-image.jpg';
 $productPrice = isset($_POST['price']) ? htmlspecialchars($_POST['price']) : 0;
@@ -34,7 +34,7 @@ $productQuantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
         <!-- Breadcrumb -->
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="<?= URL::to('public/home/index'); ?>">Trang chủ</a></li>
+            <li class="breadcrumb-item"><a href="<?php echo URL::to('public/home'); ?>">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Giỏ hàng</li>
             </ol>
         </nav>
@@ -162,12 +162,18 @@ $productQuantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
     </div>
 
         <script>
-            const productId = "<?php echo $productId; ?>";
-            const productName = "<?php echo $productName; ?>";
-            const productImage = "<?php echo $productImage; ?>";
-            const productPrice = "<?php echo $productPrice; ?>";
-            const productSize = "<?php echo $productSize; ?>";
-            const productQuantity = "<?php echo $productQuantity; ?>";
+            const productId = "<?php echo isset($productId) ? htmlspecialchars($productId) : ''; ?>";
+            const productName = "<?php echo isset($productName) ? htmlspecialchars($productName) : ''; ?>";
+            const productImage = "<?php echo isset($productImage) ? htmlspecialchars($productImage) : ''; ?>";
+            const productPrice = "<?php echo isset($productPrice) ? htmlspecialchars($productPrice) : ''; ?>";
+            const productSize = "<?php echo isset($productSize) ? htmlspecialchars($productSize) : ''; ?>";
+            const productQuantity = "<?php echo isset($productQuantity) ? htmlspecialchars($productQuantity) : ''; ?>";
+            console.log("Product ID:", productId);
+console.log("Product Name:", productName);
+console.log("Product Image:", productImage);
+console.log("Product Price:", productPrice);
+console.log("Product Size:", productSize);
+console.log("Product Quantity:", productQuantity);
         </script>
         <script src="<?php echo URL::to('asset/js/pc_script.js'); ?>"></script>
         

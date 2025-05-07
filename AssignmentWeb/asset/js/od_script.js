@@ -56,7 +56,8 @@ document.addEventListener("DOMContentLoaded", function () {
             // Order Header
             const orderHeader = `
                 <div class="card-header">
-                    <strong>Mã đơn hàng:</strong> ${order.orderId}
+                    <strong>Mã đơn hàng:</strong> ${order.orderId} <br>
+                    <strong>Trạng thái:</strong> ${order.status}
                 </div>
             `;
 
@@ -176,6 +177,7 @@ document.addEventListener("DOMContentLoaded", function () {
             <p><strong>Email:</strong> ${order.receiverEmail}</p>
             <p><strong>Địa chỉ:</strong> ${order.receiverAddress}</p>
             <p><strong>Tổng tiền:</strong> ${order.totalPrice} đ</p>
+            <p><strong>Trạng thái:</strong> ${order.status}</p>
             <h5>Sản phẩm:</h5>
             ${order.products.map(product => `
                 <div class="d-flex align-items-center mb-2">

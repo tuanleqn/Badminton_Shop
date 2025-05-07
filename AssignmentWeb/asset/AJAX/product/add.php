@@ -10,17 +10,31 @@ try {
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Validate that all required POST data exists
-        $requiredFields = ['name', 'price', 'category', 'branchId'];
+        $requiredFields = ['name', 'price', 'category', 'brandId'];
         $missingFields = [];
         foreach ($requiredFields as $field) {
             if (!isset($_POST[$field]) || trim($_POST[$field]) === '') {
                 $missingFields[] = $field;
             }
         }
-        
+
         if (!empty($missingFields)) {
             error_log('Missing required fields: ' . implode(', ', $missingFields));
             echo json_encode(['status' => 'error', 'message' => 'Missing required fields: ' . implode(', ', $missingFields)]);
+            exit;
+        }
+
+        if (!isset($_POST['brandId']) || trim($_POST['brandId']) === '') {
+            error_log('Missing brandId in POST data');
+            echo json_encode(['status' => 'error', 'message' => 'Missing brandId']);
+            exit;
+        }
+        
+        $brandId = filter_var($_POST['brandId'], FILTER_VALIDATE_INT);
+
+        if ($brandId === false || $brandId <= 0) {
+            error_log('Invalid brand ID: ' . $_POST['brandId']);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid brand ID']);
             exit;
         }
 
@@ -33,9 +47,16 @@ try {
         // Fix rating validation and conversion
         $rating = isset($_POST['rating']) ? filter_var($_POST['rating'], FILTER_VALIDATE_FLOAT) : 0.0;
         $rating = is_numeric($rating) ? number_format((float)$rating, 1, '.', '') : '0.0';
-        $color = isset($_POST['color']) ? strip_tags(trim($_POST['color'])) : '';
-        $size = isset($_POST['size']) ? intval($_POST['size']) : 0;
-        $branchId = filter_var($_POST['branchId'], FILTER_VALIDATE_INT);
+        $brandId = filter_var($_POST['brandId'], FILTER_VALIDATE_INT);
+        if (isset($_POST['color']) && trim($_POST['color']) !== '') {
+            $color = strip_tags(trim($_POST['color']));
+            error_log('Sanitized color value: ' . $color);
+        } else {
+            error_log('Color is missing or invalid');
+            echo json_encode(['status' => 'error', 'message' => 'Color is required']);
+            exit;
+        }
+        $size = isset($_POST['size']) ? implode(', ', array_map('strip_tags', explode(',', $_POST['size']))) : ''; // Fix size processing
 
         // Validate price and branchId
         if ($price === false || $price <= 0) {
@@ -44,9 +65,14 @@ try {
             exit;
         }
 
-        if ($branchId === false || $branchId <= 0) {
-            error_log('Invalid branch ID: ' . $_POST['branchId']);
-            echo json_encode(['status' => 'error', 'message' => 'Invalid branch ID']);
+        if (empty($color)) {
+            echo json_encode(['status' => 'error', 'message' => 'Color is required']);
+            exit;
+        }
+
+        if ($brandId === false || $brandId <= 0) {
+            error_log('Invalid brand ID: ' . $_POST['brandId']);
+            echo json_encode(['status' => 'error', 'message' => 'Invalid brand ID']);
             exit;
         }
 
@@ -55,20 +81,26 @@ try {
 
         try {
             // Insert product into the database
-            $sql = "INSERT INTO product (name, description, price, createdDate, category, rating, color, size, branchId) 
+            $sql = "INSERT INTO product (name, description, price, createdDate, category, rating, color, size, brandId) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            error_log('Final SQL Query: ' . $sql);
             $stmt = $DBConnect->prepare($sql);
-            
+
             if (!$stmt) {
                 throw new Exception("Prepare failed: " . $DBConnect->error);
             }
-
-            $stmt->bind_param('ssdsssisi', $name, $description, $price, $createdDate, $category, $rating, $color, $size, $branchId);
-
+            error_log('Raw POST color value: ' . $_POST['color']);
+error_log('Sanitized color value: ' . $color);
+            error_log('Color value before SQL execution: ' . $color);
+            error_log('Type of $color: ' . gettype($color));
+            error_log("SQL Parameters: Name: $name, Description: $description, Price: $price, CreatedDate: $createdDate, Category: $category, Rating: $rating, Color: $color, Size: $size, BrandId: $brandId");
+            $stmt->bind_param('ssdsssisi', $name, $description, $price, $createdDate, $category, $rating, $color, $size, $brandId);
+            
             if (!$stmt->execute()) {
                 throw new Exception("Execute failed: " . $stmt->error);
             }
 
+           
             $productId = $stmt->insert_id;
 
             // Handle file uploads

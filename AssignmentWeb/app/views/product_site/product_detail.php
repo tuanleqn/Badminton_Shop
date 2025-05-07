@@ -9,6 +9,7 @@ if (isset($_SESSION['review_success']) && $_SESSION['review_success'] === true) 
 }
 require_once __DIR__ . '/../../models/SiteModel.php';
 require_once __DIR__ . '/../../controllers/ProductController.php';
+require_once __DIR__ . '/../../helper/URL.php'; 
 $productId = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 
 if ($productId > 0) {
@@ -79,8 +80,8 @@ if ($productId > 0) {
         <div class="justify-content-between align-items-center container-fluid px-3 mt-5">
             <nav aria-label="breadcrumb" class="container mt-3">
                 <ol class="breadcrumb" id="breadcrumb">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a href="../product_site/index.php">Products</a></li>
+                <li class="breadcrumb-item"><a href="<?php echo URL::to('public/home'); ?>">Home</a></li>
+                    <li class="breadcrumb-item"><a href="<?php echo URL::to('public/ProductSite/index'); ?>">Products</a></li>
                     <li class="breadcrumb-item active" aria-current="page" id="currentPage"><?php echo htmlspecialchars($product['name']); ?></li>
                 </ol>
             </nav> 

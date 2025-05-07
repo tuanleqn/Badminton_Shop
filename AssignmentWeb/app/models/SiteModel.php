@@ -55,14 +55,25 @@ class SiteModel {
         $result = $stmt->get_result();
         return $result->fetch_all(MYSQLI_ASSOC);
     }
-
+    public function updateImageOrder($imageOrder) {
+        $orderArray = explode(',', $imageOrder);
+        foreach ($orderArray as $order => $imageId) {
+            $sql = "UPDATE product_images SET image_order = ? WHERE id = ?";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bind_param('ii', $order, $imageId);
+            $stmt->execute();
+        }
+    }
     public function updateProduct($productId, $data) {
-        $sql = "
-            UPDATE product 
-            SET name = ?, description = ?, price = ?, category = ?, color = ?, size = ?, branchId = ?
-            WHERE id = ?
-        ";
+        $sql = "UPDATE product 
+            SET name = ?, description = ?, price = ?, category = ?, color = ?, size = ?, brandId = ? 
+            WHERE id = ?";
         $stmt = $this->db->prepare($sql);
+
+        if (!$stmt) {
+            throw new Exception("Prepare failed: " . $this->db->error);
+        }
+
         $stmt->bind_param(
             'ssdsssii',
             $data['name'],
@@ -71,10 +82,14 @@ class SiteModel {
             $data['category'],
             $data['color'],
             $data['size'],
-            $data['branchId'],
+            $data['brandId'],
             $productId
         );
-        return $stmt->execute();
+
+        $result = $stmt->execute();
+        $stmt->close();
+
+        return $result;
     }
     
 
@@ -111,18 +126,29 @@ class SiteModel {
         return $reviews;
     }
     public function submitReview($productId, $stars, $title, $details) {
-        if ($productId > 0 && $stars > 0 && !empty($title) && !empty($details)) {
+        // Validate input
+        if ($productId > 0 && $stars > 0 && $stars <= 5 && !empty($title) && !empty($details)) {
             $query = "INSERT INTO review (product_id, stars, title, details, date, status) VALUES (?, ?, ?, ?, NOW(), 'pending')";
             $stmt = $this->db->prepare($query);
+    
+            if (!$stmt) {
+                error_log("Prepare failed: " . $this->db->error);
+                return false;
+            }
+    
             $stmt->bind_param("iiss", $productId, $stars, $title, $details);
     
             if ($stmt->execute()) {
-                return "Review submitted successfully!";
+                $stmt->close();
+                return true; // Success
             } else {
-                return "Error submitting review.";
+                error_log("Execute failed: " . $stmt->error);
+                $stmt->close();
+                return false; // Failure
             }
         } else {
-            return "Invalid input. Please fill out all fields.";
+            error_log("Invalid input: productId=$productId, stars=$stars, title=$title, details=$details");
+            return false; // Invalid input
         }
     }
 
@@ -141,36 +167,94 @@ class SiteModel {
         return $result->fetch_all(MYSQLI_ASSOC);
     }
 
-    public function getAllProducts($limit, $offset, $orderBy = 'p.id ASC') {
+    public function getAllProducts($limit, $offset, $orderBy = 'p.id ASC', $categories = null, $brands = null, $sizes = null) {
         $query = "
-        SELECT 
-            p.id, 
-            p.name, 
-            p.price, 
-            p.category, 
-            p.description, 
-            COALESCE(pr.average_rating, 0) AS average_rating, 
-            (SELECT image_path 
-             FROM product_images 
-             WHERE product_images.product_id = p.id 
-             ORDER BY image_order ASC LIMIT 1) AS image_path
-             
-        FROM product p
-        LEFT JOIN product_ratings pr ON p.id = pr.product_id
-        ORDER BY $orderBy
-        LIMIT ? OFFSET ?";
-
+            SELECT 
+                p.id, 
+                p.name, 
+                p.price, 
+                p.category, 
+                p.size, 
+                p.description, 
+                b.name AS brand_name, 
+                COALESCE(pr.average_rating, 0) AS average_rating, 
+                (SELECT image_path 
+                 FROM product_images 
+                 WHERE product_images.product_id = p.id 
+                 ORDER BY image_order ASC LIMIT 1) AS image_path
+            FROM product p
+            LEFT JOIN product_ratings pr ON p.id = pr.product_id
+            LEFT JOIN brand b ON p.brandId = b.id
+        ";
+    
+        $conditions = [];
+        $params = [];
+        $types = '';
+    
+        if ($categories) {
+            $placeholders = implode(',', array_fill(0, count($categories), '?'));
+            $conditions[] = "p.category IN ($placeholders)";
+            $params = array_merge($params, $categories);
+            $types .= str_repeat('s', count($categories));
+        }
+    
+        if ($brands) {
+            $placeholders = implode(',', array_fill(0, count($brands), '?'));
+            $conditions[] = "p.brandId IN ($placeholders)";
+            $params = array_merge($params, $brands);
+            $types .= str_repeat('i', count($brands));
+        }
+    
+        if ($sizes) {
+            $placeholders = implode(',', array_fill(0, count($sizes), '?'));
+            $conditions[] = "p.size IN ($placeholders)";
+            $params = array_merge($params, $sizes);
+            $types .= str_repeat('s', count($sizes));
+        }
+    
+        if (!empty($conditions)) {
+            $query .= " WHERE " . implode(" AND ", $conditions);
+        }
+    
+        $query .= " ORDER BY $orderBy LIMIT ? OFFSET ?";
+        $params[] = $limit;
+        $params[] = $offset;
+        $types .= 'ii';
+    
         $stmt = $this->db->prepare($query);
-        $stmt->bind_param("ii", $limit, $offset);
+        $stmt->bind_param($types, ...$params);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         $products = [];
         while ($row = $result->fetch_assoc()) {
             $products[] = $row;
         }
         return $products;
     }
+
+    public function getAllBrands() {
+        $query = "SELECT DISTINCT b.id, b.name FROM brand b INNER JOIN product p ON b.id = p.brandId";
+        $result = $this->db->query($query);
+    
+        $brands = [];
+        while ($row = $result->fetch_assoc()) {
+            $brands[] = $row;
+        }
+        return $brands;
+    }
+
+    public function getAllSizes() {
+        $query = "SELECT DISTINCT size FROM product WHERE size IS NOT NULL AND size != ''";
+        $result = $this->db->query($query);
+    
+        $sizes = [];
+        while ($row = $result->fetch_assoc()) {
+            $sizes[] = $row['size'];
+        }
+        return $sizes;
+    }
+
     public function getTotalProducts() {
         $query = "SELECT COUNT(*) AS total FROM product";
         $res = mysqli_query($this->db, $query);
@@ -197,6 +281,8 @@ class SiteModel {
         ";
         $this->db->query($query);
     }
+
+    
 
     public function getSortedProducts($limit, $offset, $orderBy) {
         $query = "SELECT 
@@ -252,11 +338,22 @@ class SiteModel {
             LIMIT ? OFFSET ?
         ";
         $stmt = $this->db->prepare($query);
+    
+        if (!$stmt) {
+            error_log("Prepare failed: " . $this->db->error);
+            return [];
+        }
+    
         $searchTerm = '%' . $search . '%';
         $stmt->bind_param("ssii", $searchTerm, $searchTerm, $limit, $offset);
         $stmt->execute();
         $result = $stmt->get_result();
-        return $result->fetch_all(MYSQLI_ASSOC);
+    
+        // Debug: Log the fetched products
+        $products = $result->fetch_all(MYSQLI_ASSOC);
+        error_log('Products fetched from database: ' . print_r($products, true));
+    
+        return $products;
     }
 
     public function getNewestProducts($limit = 4) {
@@ -291,13 +388,12 @@ class SiteModel {
 
     public function deleteProductById($productId) {
         $query = "DELETE FROM product WHERE id = ?";
-        foreach ($orderArray as $order => $imageId) {
-            $sql = "UPDATE product_images SET image_order = ? WHERE id = ?";
-            $stmt = $this->db->prepare($sql);
-            $stmt->bind_param('ii', $order, $imageId);
-            $stmt->execute();
-        }
+        $stmt = $this->db->prepare($query);
+        $stmt->bind_param("i", $productId);
+
+        return $stmt->execute();
     }
+
 
     public function removeImages($imageIds) {
         foreach ($imageIds as $imageId) {

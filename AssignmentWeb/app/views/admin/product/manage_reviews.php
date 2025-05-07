@@ -31,6 +31,7 @@ $currentPage = $data['currentPage'];
     <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app.css'); ?>">
     <link rel="stylesheet" href="<?php echo URL::to('app/views/admin/assets/compiled/css/app-dark.css'); ?>">
     <link rel="stylesheet" href="<?php echo URL::to('asset/css/product/a.css'); ?>" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
 </head>
 <body>
     <div id="app">
@@ -41,103 +42,93 @@ $currentPage = $data['currentPage'];
                     <i class="bi bi-justify fs-3"></i>
                 </a>
             </header>
-            
-<div class="page-heading">
-    <div class="page-title">
-        <div class="row">
-            <div class="col-12 col-md-6 order-md-1 order-last">
-                <h3>Danh sách bình luận</h3>
-            </div>
-            <div class="col-12 col-md-6 order-md-2 order-first">
-                <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="index.html">Danh sách</a></li>
-                        <li class="breadcrumb-item active" aria-current="page">Danh sách bình luận</li>
-                    </ol>
-                </nav>
-            </div>
+
+            <div class="layout-horizontal"> 
+                <div class="container mt-5"> 
+                    <div class="row">
+                        <div class="col-12 col-md-6 order-md-1 order-last">
+                            <h3>Danh sách bình luận</h3>
+                        </div>
+                        <div class="col-12 col-md-6 order-md-2 order-first">
+                            <nav aria-label="breadcrumb" class="breadcrumb-header float-start float-lg-end">
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="index.html">Danh sách</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Danh sách bình luận</li>
+                                </ol>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" data-bs-display="static" aria-expanded="false">
+                            <?php echo ucfirst($statusFilter); ?>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="?status=pending">Pending</a></li>
+                            <li><a class="dropdown-item" href="?status=approved">Approved</a></li>
+                            <li><a class="dropdown-item" href="?status=rejected">Rejected</a></li>
+                        </ul>
+                    </div>
+                    <section> 
+                        <div class="table-responsive"> 
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Product</th>
+                                    <th>Stars</th>
+                                    <th>Title</th>
+                                    <th>Details</th>
+                                    <th>Status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php while ($row = $reviews->fetch_assoc()): ?>
+                                    <tr>
+                                        <td><?php echo $row['id']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['product_name']); ?></td>
+                                        <td><?php echo $row['stars']; ?></td>
+                                        <td><?php echo htmlspecialchars($row['title']); ?></td>
+                                        <td><?php echo htmlspecialchars($row['details']); ?></td>
+                                        <td id="review-status-<?php echo $row['id']; ?>"><?php echo ucfirst($row['status']); ?></td>
+                                        <td>
+                                            <?php if ($row['status'] === 'rejected'): ?>
+                                                <a href="#" class="text-success update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="approved" title="Approve">
+                                                    <i class="bi bi-check fs-5"></i>
+                                                </a>
+                                            <?php elseif ($row['status'] === 'approved'): ?>
+                                                <a href="#" class="text-danger update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="rejected" title="Reject">
+                                                    <i class="bi bi-x fs-5"></i>
+                                                </a>
+                                            <?php else: ?>
+                                                <a href="#" class="text-success me-2 update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="approved" title="Approve">
+                                                    <i class="bi bi-check fs-5"></i>
+                                                </a>
+                                                <a href="#" class="text-danger update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="rejected" title="Reject">
+                                                    <i class="bi bi-x fs-5"></i>
+                                                </a>
+                                            <?php endif; ?>
+                                        </td>
+                                    </tr>
+                                <?php endwhile; ?>
+                            </tbody>
+                        </table>
+                        </div>
+                    </section>
+                    <nav>
+                        <ul class="pagination justify-content-end">
+                            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
+                                    <a class="page-link" href="?status=<?php echo urlencode($statusFilter); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
+                        </ul>
+                    </nav>
+                </div>
+                                
+            </div>                               
         </div>
-    </div>
-
-    <!-- Minimal jQuery Datatable start -->
-    
-    <!-- Minimal jQuery Datatable end -->
-    <!-- Basic Tables start -->
-    <section class="section">
-    <div id="main" class="layout-horizontal">
-        
-
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <form method="GET" class="d-flex">
-            <select name="status" class="form-select">
-                <option value="pending" <?php echo $statusFilter === 'pending' ? 'selected' : ''; ?>>Pending</option>
-                <option value="approved" <?php echo $statusFilter === 'approved' ? 'selected' : ''; ?>>Approved</option>
-                <option value="rejected" <?php echo $statusFilter === 'rejected' ? 'selected' : ''; ?>>Rejected</option>
-            </select>
-            <button type="submit" class="btn btn-primary ms-2">Filter</button>
-        </form>
-    </div>
-    <div class="table-responsive"> 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Product</th>
-                <th>Stars</th>
-                <th>Title</th>
-                <th>Details</th>
-                <th>Status</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php while ($row = $reviews->fetch_assoc()): ?>
-                <tr>
-                    <td><?php echo $row['id']; ?></td>
-                    <td><?php echo htmlspecialchars($row['product_name']); ?></td>
-                    <td><?php echo $row['stars']; ?></td>
-                    <td><?php echo htmlspecialchars($row['title']); ?></td>
-                    <td><?php echo htmlspecialchars($row['details']); ?></td>
-                    <td id="review-status-<?php echo $row['id']; ?>"><?php echo ucfirst($row['status']); ?></td>
-                    <td>
-                       
-                    <?php if ($row['status'] === 'rejected'): ?>
-                    <a href="#" class="btn btn-success btn-sm update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="approved">Approve</a>
-                    <?php elseif ($row['status'] === 'approved'): ?>
-                        <a href="#" class="btn btn-danger btn-sm update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="rejected">Reject</a>
-                    <?php else: ?>
-                        <a href="#" class="btn btn-success btn-sm update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="approved">Approve</a>
-                        <a href="#" class="btn btn-danger btn-sm update-status-btn" data-id="<?php echo $row['id']; ?>" data-status="rejected">Reject</a>
-
-                    <?php endif; ?>
-                    </td>
-                </tr>
-            <?php endwhile; ?>
-        </tbody>
-    </table>
-    </div>
-    
-    <nav>
-        <ul class="pagination justify-content-end">
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <li class="page-item <?php echo $i == $page ? 'active' : ''; ?>">
-                    <a class="page-link" href="?status=<?php echo urlencode($statusFilter); ?>&page=<?php echo $i; ?>"><?php echo $i; ?></a>
-                </li>
-            <?php endfor; ?>
-        </ul>
-    </nav>
-      
-    </div>
-
-    </section>
-    <!-- Basic Tables end -->
-
-</div>
-
-    
-        </div>
-    </div>
-    
+    </div>    
 </div>
     
 <script src="<?php echo URL::to('app/views/admin/assets/static/js/components/dark.js'); ?>"></script>

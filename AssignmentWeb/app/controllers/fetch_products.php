@@ -28,15 +28,30 @@ switch ($sort) {
         $orderBy = 'p.id ASC'; // Default sorting
         break;
 }
-$productModel->syncProductRatings();
-// Fetch all products
-$products = $productModel->getAllProducts($limit, $offset, $orderBy);
 
+$category = isset($_GET['category']) ? $_GET['category'] : null;
+$brandId = isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : null;
+$size = isset($_GET['size']) ? $_GET['size'] : null;
+
+// Fetch products based on the filters
+$products = $productModel->getAllProducts($limit, $offset, $orderBy, $category, $brandId, $size);
+$brands = $productModel->getAllBrands();
+$sizes = $productModel->getAllSizes();
 // Ensure $products is an array
-// if (!$products) {
-//     $products = [];
-// }
+if (!$products) {
+    $products = [];
+}
+
+// Get total products for pagination
 $totalProducts = $productModel->getTotalProducts();
 $totalPages = ceil($totalProducts / $limit);
+
+// Return the products as JSON (for AJAX requests)
+// header('Content-Type: application/json');
+// echo json_encode([
+//     'products' => $products,
+//     'totalPages' => $totalPages,
+//     'currentPage' => $page
+// ]);
 
 

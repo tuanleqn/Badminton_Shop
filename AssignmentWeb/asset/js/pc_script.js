@@ -2,7 +2,11 @@ let cart = JSON.parse(localStorage.getItem("cart")) || [];
 document.addEventListener("DOMContentLoaded", () => {
     console.log("DOM fully loaded and parsed");
     
-    
+    if (typeof productId === "undefined" || !productId) {
+        console.error("Product ID is not defined!");
+        return;
+    }
+
 
     const existingProductIndex = cart.findIndex((item) => item.id === productId);
     if (existingProductIndex === -1) {
@@ -79,43 +83,43 @@ function renderCart() {
         const itemTotalPrice = parseFloat(price) * item.quantity;
 
         const cartItemHTML = `
-    <div class="col-12 mb-3">
-        <div class="card p-3">
-            <div class="row align-items-center">
-                <!-- Checkbox -->
-                <div class="col-auto">
-                    <div class="form-check">
-                        <input class="form-check-input product-checkbox" type="checkbox" value="${itemTotalPrice}" id="product${index}" checked>
+            <div class="col-12 mb-3">
+                <div class="card p-3">
+                    <div class="row align-items-center">
+                        <!-- Checkbox -->
+                        <div class="col-auto">
+                            <div class="form-check">
+                                <input class="form-check-input product-checkbox" type="checkbox" value="${itemTotalPrice}" id="product${index}" checked>
+                            </div>
+                        </div>
+                        <!-- Product Image -->
+                        <div class="col-auto">
+                            <img src="/Shop-badminton/AssignmentWeb/${item.image}" alt="${item.name}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
+                        </div>
+                        <!-- Product Details -->
+                        <div class="col">
+                            <h5 class="mb-1">${item.name}</h5>
+                            <p class="mb-1">Màu sắc: ${item.color || "Không có"}</p>
+                            <p class="mb-1">Size: ${item.size || "N/A"}</p>
+                            <p class="mb-1">Giá: ${item.price}</p>
+                        </div>
+                        <!-- Quantity Controls -->
+                        <div class="col-auto">
+                            <div class="quantity-controls d-flex align-items-center">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="decreaseQuantity(${index})">-</button>
+                                <input type="text" id="quantityInput${index}" value="${item.quantity}" readonly class="form-control text-center mx-1" style="width: 50px;">
+                                <button class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity(${index})">+</button>
+                            </div>
+                        </div>
+                        <!-- Total Price and Delete Button -->
+                        <div class="col-auto text-end">
+                            <strong>${itemTotalPrice.toLocaleString("vi-VN")} đ</strong>
+                            <button class="btn btn-danger btn-sm mt-2" onclick="deleteProduct(${index})">Xóa</button>
+                        </div>
                     </div>
-                </div>
-                <!-- Product Image -->
-                <div class="col-auto">
-                    <img src="/Shop-badminton/AssignmentWeb/${item.image}" alt="${item.name}" class="img-fluid" style="width: 100px; height: 100px; object-fit: cover;">
-                </div>
-                <!-- Product Details -->
-                <div class="col">
-                    <h5 class="mb-1">${item.name}</h5>
-                    <p class="mb-1">Màu sắc: ${item.color || "Không có"}</p>
-                    <p class="mb-1">Size: ${item.size || "N/A"}</p>
-                    <p class="mb-1">Giá: ${item.price}</p>
-                </div>
-                <!-- Quantity Controls -->
-                <div class="col-auto">
-                    <div class="quantity-controls d-flex align-items-center">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="decreaseQuantity(${index})">-</button>
-                        <input type="text" id="quantityInput${index}" value="${item.quantity}" readonly class="form-control text-center mx-1" style="width: 50px;">
-                        <button class="btn btn-outline-secondary btn-sm" onclick="increaseQuantity(${index})">+</button>
-                    </div>
-                </div>
-                <!-- Total Price and Delete Button -->
-                <div class="col-auto text-end">
-                    <strong>${itemTotalPrice.toLocaleString("vi-VN")} đ</strong>
-                    <button class="btn btn-danger btn-sm mt-2" onclick="deleteProduct(${index})">Xóa</button>
                 </div>
             </div>
-        </div>
-    </div>
-`;
+        `;
         cartItemsContainer.innerHTML += cartItemHTML;
     });
 
@@ -125,8 +129,10 @@ function renderCart() {
             return;
         }
     
+        console.log("Checking user authentication...");
+    
         // Collect selected products
-        fetch("/Shop-badminton/AssignmentWeb/public/auth/checkUser", {
+        fetch("/Shop-badminton/AssignmentWeb/app/controllers/auth.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",
@@ -134,24 +140,16 @@ function renderCart() {
             body: "action=checkUser",
         })
             .then((response) => {
+                console.log("Response received:", response);
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
-                // First check the content type of the response
-                const contentType = response.headers.get("content-type");
-                if (contentType && contentType.includes("application/json")) {
-                    return response.json();
-                } else {
-                    // If not JSON, get the text and try to determine the result from the response
-                    return response.text().then(text => {
-                        // Check if the response contains any indication of success
-                        // This is a fallback in case the server doesn't return proper JSON
-                        return { exists: !text.includes("not logged in") && !text.includes("error") };
-                    });
-                }
+                return response.json(); // Parse the response as JSON
             })
             .then((data) => {
+                console.log("User authentication data:", data);
                 if (data.exists) {
+                    console.log("User authenticated. Processing order...");
                     processOrder();
                 } else {
                     alert("Bạn chưa có tài khoản. Vui lòng đăng ký trước khi đặt hàng.");
@@ -165,6 +163,55 @@ function renderCart() {
     });
     attachEventListeners();
 }
+
+function populateSelectedProducts() {
+    const selectedProductsContainer = document.getElementById("selectedProductsContainer");
+    const modalTotalPrice = document.getElementById("modalTotalPrice");
+
+    // Clear the container
+    selectedProductsContainer.innerHTML = '';
+
+    // Fetch selected products from the cart
+    const selectedProducts = cart.filter((item, index) => {
+        const checkbox = document.getElementById(`product${index}`);
+        return checkbox && checkbox.checked;
+    });
+
+    if (selectedProducts.length === 0) {
+        selectedProductsContainer.innerHTML = '<p>Không có sản phẩm nào được chọn.</p>';
+        modalTotalPrice.textContent = '0 đ';
+        return;
+    }
+
+    // Populate the container with selected products
+    let totalPrice = 0;
+    selectedProducts.forEach(product => {
+        const productElement = document.createElement('div');
+        productElement.classList.add('selected-product', 'mb-3');
+        productElement.innerHTML = `
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <img src="/Shop-badminton/AssignmentWeb/${product.image}" alt="${product.name}" class="img-thumbnail" style="width: 50px; height: 50px;">
+                    <span>${product.name} (x${product.quantity})</span>
+                </div>
+                <div>${(product.price * product.quantity).toLocaleString()} đ</div>
+            </div>
+        `;
+        selectedProductsContainer.appendChild(productElement);
+
+        // Calculate total price
+        totalPrice += product.price * product.quantity;
+    });
+
+    // Update total price in the modal
+    modalTotalPrice.textContent = `${totalPrice.toLocaleString()} đ`;
+}
+
+// Attach the function to the modal's show event
+document.addEventListener('DOMContentLoaded', function () {
+    const paymentModal = document.getElementById('paymentModal');
+    paymentModal.addEventListener('show.bs.modal', populateSelectedProducts);
+});
 
 function attachEventListeners() {
     const checkAllProducts = document.getElementById("checkAllProducts");
@@ -206,6 +253,10 @@ function calculateTotalPayment() {
 }
 
 function processOrder() {
+    console.log("Processing order...");
+
+
+    let isValid = true;
     const fullNameElement = document.getElementById("fullName");
     const phoneNumberElement = document.getElementById("phoneNumber");
     const houseNumberElement = document.getElementById("houseNumber");
@@ -214,29 +265,64 @@ function processOrder() {
     const wardElement = document.getElementById("ward");
     const emailElement = document.getElementById("email");
 
-    // Log the elements to debug
-    console.log("Full Name Element:", fullNameElement);
-    console.log("Phone Number Element:", phoneNumberElement);
-    console.log("House Number Element:", houseNumberElement);
-    console.log("City Element:", cityElement);
-    console.log("District Element:", districtElement);
-    console.log("Ward Element:", wardElement);
-    console.log("Email Element:", emailElement);
-
+    // Validate required fields
     if (
-        !fullNameElement ||
-        !phoneNumberElement ||
-        !houseNumberElement ||
-        !cityElement ||
-        !districtElement ||
-        !wardElement ||
-        !emailElement
+        !fullNameElement.value.trim() ||
+        !phoneNumberElement.value.trim() ||
+        !houseNumberElement.value.trim() ||
+        !cityElement.value ||
+        !districtElement.value ||
+        !wardElement.value ||
+        !emailElement.value.trim()
     ) {
         alert("Vui lòng điền đầy đủ thông tin người nhận!");
         return;
     }
 
-    // Combine address fields
+    if (fullNameElement.value.trim() === '' || fullNameElement.value.trim().length < 3 || fullNameElement.value.trim().length > 50) {
+        document.getElementById('fullNameError').textContent = 'Họ và tên không được để trống và phải từ 3 đến 50 ký tự.';
+        isValid = false;
+    } else {
+        const fullNameRegex = /^[a-zA-ZÀ-ỹ\s]+$/; // Chỉ cho phép chữ cái, dấu tiếng Việt và khoảng trắng
+        if (!fullNameRegex.test(fullNameElement.value.trim())) {
+            document.getElementById('fullNameError').textContent = 'Họ và tên không được chứa ký tự đặc biệt.';
+            isValid = false;
+        }
+    }
+
+    const phoneRegex = /^[0-9]{10,11}$/; // Accepts 10-11 digit numbers
+    if (!phoneRegex.test(phoneNumberElement.value.trim())) {
+        document.getElementById('phoneNumberError').textContent = 'Số điện thoại không hợp lệ.';
+        isValid = false;
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // regex email
+    if (!emailRegex.test(emailElement.value.trim())) {
+        document.getElementById('emailError').textContent = 'Email không hợp lệ.';
+        isValid = false;
+    }
+
+
+    if (houseNumberElement.value.trim() === '') {
+        document.getElementById('houseNumberError').textContent = 'Số nhà và tên đường không được để trống.';
+        isValid = false;
+    }
+
+    if (cityElement.value.trim() === '') {
+        document.getElementById('cityError').textContent = 'Vui lòng chọn thành phố/tỉnh.';
+        isValid = false;
+    }
+
+    if (districtElement.value.trim() === '') {
+        document.getElementById('districtError').textContent = 'Vui lòng chọn quận/huyện.';
+        isValid = false;
+    }
+
+    if (wardElement.value.trim() === '') {
+        document.getElementById('wardError').textContent = 'Vui lòng chọn phường/xã.';
+        isValid = false;
+    }
+
     const address = `${houseNumberElement.value.trim()}, ${wardElement.options[wardElement.selectedIndex].text.trim()}, ${districtElement.options[districtElement.selectedIndex].text.trim()}, ${cityElement.options[cityElement.selectedIndex].text.trim()}`;
 
     const receiverInfo = {
@@ -264,12 +350,19 @@ function processOrder() {
     const formattedCart = cart.map((item) => ({
         productId: item.id,
         name: item.name,
-        size: item.size || "N/A", // Default to 'N/A' if size is not provided
-        color: item.color || "N/A", // Default to 'N/A' if color is not provided
+        size: item.size || "N/A",
+        color: item.color || "N/A",
         quantity: item.quantity,
-        price: parseFloat(item.price.replace(/[^\d.-]/g, "")), // Ensure price is a number
-        image: item.image || null, // Default to null if image is not provided
+        price: parseFloat(item.price.replace(/[^\d.-]/g, "")),
+        image: item.image || null,
     }));
+
+    console.log("Order details:", {
+        receiverInfo,
+        paymentMethod,
+        totalPayment,
+        cart: formattedCart,
+    });
 
     fetch("/Shop-badminton/AssignmentWeb/app/controllers/order.php", {
         method: "POST",
@@ -286,6 +379,7 @@ function processOrder() {
     })
         .then((response) => response.json())
         .then((data) => {
+            console.log("Order response:", data);
             if (data.success) {
                 alert("Đặt hàng thành công!");
                 localStorage.removeItem("cart"); // Clear the cart

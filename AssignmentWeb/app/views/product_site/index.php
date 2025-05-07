@@ -33,9 +33,12 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                     <h5>Keywords</h5>
                     <input type="text" class="form-control mb-3" placeholder="Search..." id="searchInput">
                     <div class="keyword-display" id="keywordDisplay"></div>
-                    <h5>Categories</h5>
+                    <h5>Filters</h5>
+
+                    <!-- Case 1: Filter by Category + Size -->
+                    <h6>Categories</h6>
                     <div id="categoryContainer">
-                    <?php
+                        <?php
                         if (!empty($displayedCategories)) {
                             foreach ($displayedCategories as $category) {
                                 echo "
@@ -48,6 +51,46 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                             }
                         } else {
                             echo "<p>No categories available.</p>";
+                        }
+                        ?>
+                    </div>
+
+                    <!-- Case 2: Filter by Brand + Category + Size -->
+                    <h6>Brands</h6>
+                    <div id="brandContainer">
+                        <?php
+                        if (!empty($brands)) {
+                            foreach ($brands as $brand) {
+                                echo "
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='checkbox' value='" . strtolower($brand['id']) . "' id='brand-" . strtolower($brand['id']) . "'>
+                                    <label class='form-check-label' for='brand-" . strtolower($brand['id']) . "'>
+                                        " . htmlspecialchars($brand['name']) . "
+                                    </label>
+                                </div>";
+                            }
+                        } else {
+                            echo "<p>No brands available.</p>";
+                        }
+                        ?>
+                    </div>
+
+                    <!-- Case 3: Filter by Size -->
+                    <h6>Sizes</h6>
+                    <div id="sizeContainer">
+                        <?php
+                        if (!empty($sizes)) {
+                            foreach ($sizes as $size) {
+                                echo "
+                                <div class='form-check'>
+                                    <input class='form-check-input' type='checkbox' value='" . strtolower($size) . "' id='size-" . strtolower($size) . "'>
+                                    <label class='form-check-label' for='size-" . strtolower($size) . "'>
+                                        " . htmlspecialchars($size) . "
+                                    </label>
+                                </div>";
+                            }
+                        } else {
+                            echo "<p>No sizes available.</p>";
                         }
                         ?>
                     </div>
@@ -129,7 +172,7 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                 <div class="search-sort-container d-flex justify-content-between align-items-center mb-3">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb" id="breadcrumb">
-                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<?php echo URL::to('public/home'); ?>">Home</a></li>
                             <li class="breadcrumb-item active" aria-current="page" id="currentPage">Products</li>
                         </ol>
                     </nav>
@@ -164,22 +207,26 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                         if (!empty($products)) {
                             foreach ($products as $product) {
                                 // Extract product details
-                                $name = htmlspecialchars($product['name']);
-                                $price = htmlspecialchars($product['price']);
-                                $category = htmlspecialchars($product['category']);
-                                $description = htmlspecialchars($product['description']);
+                                $brand = isset($product['brandId']) ? htmlspecialchars($product['brandId']) : 'Unknown'; // Default to 'Unknown' if brandId is not set
+                                $size = isset($product['size']) ? htmlspecialchars($product['size']) : 'Unknown'; // Default to 'Unknown' if size is not set
+                                $name = isset($product['name']) ? htmlspecialchars($product['name']) : 'No Name'; // Default to 'No Name' if name is not set                                $price = isset($product['price']) ? htmlspecialchars($product['price']) : '0.00'; // Default to '0.00' if price is not set
+                                $category = isset($product['category']) ? htmlspecialchars($product['category']) : 'Uncategorized'; // Default to 'Uncategorized' if category is not set
+                                $description = isset($product['description']) ? htmlspecialchars($product['description']) : 'No description available'; // Default to 'No description available' if description is not set
                                 $image = !empty($product['image_path']) 
-                                    ? '/Shop-badminton/AssignmentWeb/app/' . htmlspecialchars($product['image_path']) 
-                                    : '/Shop-badminton/AssignmentWeb/app/uploads/placeholder.jpg';
+                                    ? '/Shop-badminton/AssignmentWeb/' . htmlspecialchars($product['image_path']) 
+                                    : '/Shop-badminton/AssignmentWeb/uploads/placeholder.jpg';
                                 $averageRating = isset($product['average_rating']) ? round($product['average_rating'], 1) : 0;
                                 // Generate the product card
                                 echo "
                                     <div class='col-6 col-md-4 col-lg-3 mb-4'>
                                         <div class='product-card card h-100 d-flex flex-column' 
                                             data-id='" . $product['id'] . "' 
+                                            data-name='" . htmlspecialchars($product['name']) . "'
                                             data-price='" . $product['price'] . "' 
                                             data-rating='" . (isset($product['average_rating']) ? $product['average_rating'] : 0) . "' 
-                                            data-category='" . strtolower($product['category']) . "'>
+                                            data-brand='" . (isset($product['brand_name']) && $product['brand_name'] !== null ? strtolower($product['brand_name']) : '') . "' 
+                                            data-category='" . strtolower($product['category']) . "' 
+                                            data-size='" . strtolower($product['size']) . "'>
                                             <img src='" . $image . "' alt='Product Image' class='card-img-top img-fluid' style='width: 250px; height: 300px; object-fit: cover; align-self: center;'>
                                             <div class='card-body'>
                                                 <h6 class='card-title'>" . htmlspecialchars($product['name']) . "</h6>
