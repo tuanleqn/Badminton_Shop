@@ -181,6 +181,14 @@ th {
     justify-content: space-between;
 }
 
+.product-card .card-text.category {
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden;    /* Hide overflowing text */
+    text-overflow: ellipsis; /* Add "..." for truncated text */
+    display: block;      /* Ensure it behaves like a block element */
+    max-width: 100%;     /* Ensure it doesn't exceed the card width */
+}
+
 
 body a {
     text-decoration: none;

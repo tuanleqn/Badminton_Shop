@@ -64,7 +64,7 @@ function sortProducts(criteria) {
                         <h6 class='card-title'>${name}</h6>
                         <p class='card-text'>$${price}</p>
                         <div>Rating: ${starsHTML} </div>
-                        <p class='card-text'>Category: ${category}</p>
+                        <p class='card-text category'>Category: ${category}</p>
                         <a href='productdetail?id=${id}' class='btn btn-custom' style='background-color: #f98850;'>Buy Now</a>
                     </div>
                 </div>

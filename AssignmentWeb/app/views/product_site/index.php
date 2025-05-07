@@ -249,7 +249,7 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                                     }
 
                                     echo " (" . number_format($product['average_rating'], 1) . ")</div>
-                                                <p class='card-text'>Category: " . htmlspecialchars($product['category']) . "</p>
+                                                <p class='card-text category'>Category: " . htmlspecialchars($product['category']) . "</p>
                                                 <a href='" . URL::to('public/ProductSite/productdetail?id=' . $product['id']) . "' class='btn btn-custom' style='background-color: #f98850;'>Buy Now</a>
                                             </div>
                                         </div>
