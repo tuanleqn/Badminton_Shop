@@ -499,4 +499,17 @@ class SiteModel {
         return $result->fetch_assoc()['total'];
     }
 
+    public function getProductCountsByCategory() {
+        $query = "SELECT category, COUNT(*) as count 
+                  FROM product 
+                  GROUP BY category";
+        $result = $this->db->query($query);
+        
+        $counts = [];
+        while ($row = $result->fetch_assoc()) {
+            $counts[$row['category']] = $row['count'];
+        }
+        return $counts;
+    }
+
 }

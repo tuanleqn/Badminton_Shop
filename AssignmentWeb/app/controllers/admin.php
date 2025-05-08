@@ -15,14 +15,35 @@ class Admin extends Controller {
     public function index() {
         $this->session->checkSession();
         $userData = $this->session->get('user');
+        
+        // Get user and customer data
         $user = $this->model('User');
         $customer = $user->getAllCustomer();
+        
+        // Get response data
         $response = $this->model('Response');
         $responseData = $response->getNumberOfNewest(2);
+        
+        // Get order counts and data
+        $orderModel = $this->model('OrderModel');
+        $totalOrders = $orderModel->getTotalOrders();
+        $orders = $orderModel->getOrders(); // Keep this for other dashboard features if needed
+        $topSpenders = $orderModel->getTopSpenders();
+        
+        // Get product information
+        $siteModel = $this->model('SiteModel');
+        $productTypes = $siteModel->getProductCountsByCategory();
+        $totalProducts = $siteModel->getTotalProducts();
+        
         $data = [
             'user' => $userData,
             'customer' => $customer,
-            'response' => $responseData
+            'response' => $responseData,
+            'orders' => $orders,
+            'totalOrders' => $totalOrders,
+            'productTypes' => $productTypes,
+            'totalProducts' => $totalProducts,
+            'topSpenders' => $topSpenders
         ];
 
         $this->view('admin/index', $data);
@@ -522,5 +543,16 @@ class Admin extends Controller {
     public function uploaddata() {
         $this->view('admin/uploaddata');
     }
-   
+
+    // Get User data
+    public function getData() {
+        // ... existing code ...
+        
+        $orderModel = new OrderModel();
+        $data['totalOrders'] = $orderModel->getTotalOrders();
+        $data['topSpenders'] = $orderModel->getTopSpenders();
+        
+        // ... rest of existing code ...
+        return $data;
+    }
 }

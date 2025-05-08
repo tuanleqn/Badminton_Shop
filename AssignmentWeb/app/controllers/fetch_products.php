@@ -29,14 +29,16 @@ switch ($sort) {
         break;
 }
 
-$category = isset($_GET['category']) ? $_GET['category'] : null;
-$brandId = isset($_GET['brand_id']) ? (int)$_GET['brand_id'] : null;
-$size = isset($_GET['size']) ? $_GET['size'] : null;
+// Convert single values to arrays for filtering
+$categories = isset($_GET['category']) ? [$_GET['category']] : null;
+$brands = isset($_GET['brand_id']) ? [(int)$_GET['brand_id']] : null;
+$sizes = isset($_GET['size']) ? [$_GET['size']] : null;
 
 // Fetch products based on the filters
-$products = $productModel->getAllProducts($limit, $offset, $orderBy, $category, $brandId, $size);
-$brands = $productModel->getAllBrands();
-$sizes = $productModel->getAllSizes();
+$products = $productModel->getAllProducts($limit, $offset, $orderBy, $categories, $brands, $sizes);
+$allBrands = $productModel->getAllBrands();
+$allSizes = $productModel->getAllSizes();
+
 // Ensure $products is an array
 if (!$products) {
     $products = [];
