@@ -41,10 +41,11 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                         <?php
                         if (!empty($displayedCategories)) {
                             foreach ($displayedCategories as $category) {
+                                $categoryValue = $category !== null ? strtolower($category) : '';
                                 echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='" . strtolower($category) . "' id='category-" . strtolower($category) . "'>
-                                    <label class='form-check-label' for='category-" . strtolower($category) . "'>
+                                    <input class='form-check-input' type='checkbox' value='" . $categoryValue . "' id='category-" . $categoryValue . "'>
+                                    <label class='form-check-label' for='category-" . $categoryValue . "'>
                                         $category
                                     </label>
                                 </div>";
@@ -61,10 +62,11 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                         <?php
                         if (!empty($brands)) {
                             foreach ($brands as $brand) {
+                                $brandId = isset($brand['id']) && $brand['id'] !== null ? strtolower($brand['id']) : '';
                                 echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='" . strtolower($brand['id']) . "' id='brand-" . strtolower($brand['id']) . "'>
-                                    <label class='form-check-label' for='brand-" . strtolower($brand['id']) . "'>
+                                    <input class='form-check-input' type='checkbox' value='" . $brandId . "' id='brand-" . $brandId . "'>
+                                    <label class='form-check-label' for='brand-" . $brandId . "'>
                                         " . htmlspecialchars($brand['name']) . "
                                     </label>
                                 </div>";
@@ -81,10 +83,11 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                         <?php
                         if (!empty($sizes)) {
                             foreach ($sizes as $size) {
+                                $sizeValue = $size !== null ? strtolower($size) : '';
                                 echo "
                                 <div class='form-check'>
-                                    <input class='form-check-input' type='checkbox' value='" . strtolower($size) . "' id='size-" . strtolower($size) . "'>
-                                    <label class='form-check-label' for='size-" . strtolower($size) . "'>
+                                    <input class='form-check-input' type='checkbox' value='" . $sizeValue . "' id='size-" . $sizeValue . "'>
+                                    <label class='form-check-label' for='size-" . $sizeValue . "'>
                                         " . htmlspecialchars($size) . "
                                     </label>
                                 </div>";
@@ -101,20 +104,20 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
             
                     <h5>Sort By</h5>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sortCriteria" id="New" onclick="sortProducts('New')">
-                        <label class="form-check-label" for="New">New</label>
+                        <input class='form-check-input' type='radio' name='sortCriteria' id='New' onclick="sortProducts('New')">
+                        <label class='form-check-label' for='New'>New</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sortCriteria" id="Price-ascending" onclick="sortProducts('Price-ascending')">
-                        <label class="form-check-label" for="Price-ascending">Price ascending</label>
+                        <input class='form-check-input' type='radio' name='sortCriteria' id='Price-ascending' onclick="sortProducts('Price-ascending')">
+                        <label class='form-check-label' for='Price-ascending'>Price ascending</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sortCriteria" id="Price-descending" onclick="sortProducts('Price-descending')">
-                        <label class="form-check-label" for="Price-descending">Price descending</label>
+                        <input class='form-check-input' type='radio' name='sortCriteria' id='Price-descending' onclick="sortProducts('Price-descending')">
+                        <label class='form-check-label' for='Price-descending'>Price descending</label>
                     </div>
                     <div class="form-check">
-                        <input class="form-check-input" type="radio" name="sortCriteria" id="Rating" onclick="sortProducts('Rating')">
-                        <label class="form-check-label" for="Rating">Rating</label>
+                        <input class='form-check-input' type='radio' name='sortCriteria' id='Rating' onclick="sortProducts('Rating')">
+                        <label class='form-check-label' for='Rating'>Rating</label>
                     </div>
                 </div>
             </div>
@@ -224,9 +227,9 @@ $displayedCategories = !empty($products) ? array_unique(array_map(function ($pro
                                             data-name='" . htmlspecialchars($product['name']) . "'
                                             data-price='" . $product['price'] . "' 
                                             data-rating='" . (isset($product['average_rating']) ? $product['average_rating'] : 0) . "' 
-                                            data-brand='" . (isset($product['brand_name']) && $product['brand_name'] !== null ? strtolower($product['brand_name']) : '') . "' 
-                                            data-category='" . strtolower($product['category']) . "' 
-                                            data-size='" . strtolower($product['size']) . "'>
+                                            data-brand='" . (isset($product['brand_name']) ? ($product['brand_name'] !== null ? strtolower($product['brand_name']) : '') : '') . "' 
+                                            data-category='" . (isset($product['category']) ? ($product['category'] !== null ? strtolower($product['category']) : '') : '') . "' 
+                                            data-size='" . (isset($product['size']) ? ($product['size'] !== null ? strtolower($product['size']) : '') : '') . "'>
                                             <img src='" . $image . "' alt='Product Image' class='card-img-top img-fluid' style='width: 250px; height: 300px; object-fit: cover; align-self: center;'>
                                             <div class='card-body'>
                                                 <h6 class='card-title'>" . htmlspecialchars($product['name']) . "</h6>

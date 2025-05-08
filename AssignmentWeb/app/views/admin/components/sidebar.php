@@ -94,24 +94,6 @@
                     </ul>
                     
 
-                </li>
-                <li class="sidebar-item has-sub <?php echo isMenuActive('/admin/products') ? 'active' : ''; ?>">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Products</span>
-                    </a>
-                    <ul class="submenu">
-                        <li class="submenu-item <?php echo isMenuActive('/admin/products/list') ? 'active' : ''; ?>">
-                            <a href="<?= URL::to('public/admin/products') ?>" class="submenu-link">All Products</a>
-                        </li>
-                        <li class="submenu-item <?php echo isMenuActive('/admin/products/add') ? 'active' : ''; ?>">
-                            <a href="<?= URL::to('public/admin/products/add') ?>" class="submenu-link">Add Product</a>
-                        </li>
-                        <li class="submenu-item <?php echo isMenuActive('/admin/categories') ? 'active' : ''; ?>">
-                            <a href="<?= URL::to('public/admin/categories') ?>" class="submenu-link">Categories</a>
-                        </li>
-                    </ul>
-                </li>
 
                 <li
                     class="sidebar-item has-sub sidebar-item has-sub <?php echo isMenuActive('/admin/productlist') || isMenuActive('/admin/reviews') ? 'active' : ''; ?>">
@@ -147,19 +129,6 @@
                     </ul>
                 </li>
 
-                <li class="sidebar-item <?php echo isMenuActive('/admin/orders') ? 'active' : ''; ?>">
-                    <a href="<?= URL::to('public/admin/orders') ?>" class='sidebar-link'>
-                        <i class="bi bi-cart-fill"></i>
-                        <span>Orders</span>
-                    </a>
-                </li>
-
-                <li class="sidebar-item <?php echo isMenuActive('/admin/customers') ? 'active' : ''; ?>">
-                    <a href="<?= URL::to('public/admin/customers') ?>" class='sidebar-link'>
-                        <i class="bi bi-people-fill"></i>
-                        <span>Customers</span>
-                    </a>
-                </li>
                 <li class="sidebar-item <?php echo isMenuActive('/admin/response') ? 'active' : ''; ?>">
                     <a href="<?= URL::to('public/admin/response') ?>" class='sidebar-link'>
                         <i class="bi bi-people-fill"></i>

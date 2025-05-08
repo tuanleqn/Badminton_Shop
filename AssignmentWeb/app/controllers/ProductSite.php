@@ -13,9 +13,35 @@ class ProductSite extends Controller
 
     public function index()
     {
-        // $data['products'] = $this->product_model->get_all_products();
-        // $data['sites'] = $this->site_model->get_all_sites();
-        $this->view('product_site/index');
+        $userData = Session::getInstance()->get('user');
+        if ($userData === false) {
+            $userData = null;
+        }
+
+        // Get all products for pagination
+        $page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        $limit = 12; // Products per page
+        $offset = ($page - 1) * $limit;
+        
+        $products = $this->site_model->getAllProducts($limit, $offset);
+        $totalProducts = $this->site_model->getTotalProducts();
+        $totalPages = ceil($totalProducts / $limit);
+        
+        // Get brands and sizes for filtering
+        $brands = $this->site_model->getAllBrands();
+        $sizes = $this->site_model->getAllSizes();
+
+        $data = [
+            'user' => $userData,
+            'products' => $products,
+            'brands' => $brands,
+            'sizes' => $sizes,
+            'page' => $page,
+            'totalPages' => $totalPages,
+            'siteModel' => $this->site_model
+        ];
+        
+        $this->view('product_site/index', $data);
     }
     public function productdetail()
     {

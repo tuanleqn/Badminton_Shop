@@ -24,14 +24,32 @@ $page = isset($_GET['page']) ? max(1, intval($_GET['page'])) : 1;
 $offset = ($page - 1) * $itemsPerPage;
 
 // Lấy tổng số bài viết
-$stmtTotal = $pdo->query("SELECT COUNT(*) FROM bang_tin_tuc");
+if (isset($_GET['tu_khoa']) && !empty(trim($_GET['tu_khoa']))) {
+    $tu_khoa = trim($_GET['tu_khoa']);
+    $stmtTotal = $pdo->prepare("SELECT COUNT(*) FROM bang_tin_tuc WHERE Noi_dung_tin LIKE :tu_khoa");
+    $stmtTotal->bindValue(':tu_khoa', "%$tu_khoa%", PDO::PARAM_STR);
+    $stmtTotal->execute();
+} else {
+    $stmtTotal = $pdo->query("SELECT COUNT(*) FROM bang_tin_tuc");
+}
+
 $totalItems = $stmtTotal->fetchColumn();
 $totalPages = ceil($totalItems / $itemsPerPage);
 
 // Lấy bài viết theo trang
-$stmt = $pdo->prepare("SELECT * FROM bang_tin_tuc ORDER BY Ngay_viet DESC LIMIT :offset, :limit");
+if (isset($_GET['tu_khoa']) && !empty(trim($_GET['tu_khoa']))) {
+    $tu_khoa = trim($_GET['tu_khoa']);
+    $stmt = $pdo->prepare("SELECT * FROM bang_tin_tuc WHERE Noi_dung_tin LIKE :tu_khoa ORDER BY Ngay_viet DESC LIMIT :offset, :limit");
+    $stmt->bindValue(':tu_khoa', "%$tu_khoa%", PDO::PARAM_STR);
+} else {
+    $stmt = $pdo->prepare("SELECT * FROM bang_tin_tuc ORDER BY Ngay_viet DESC LIMIT :offset, :limit");
+}
+
+// Gắn giá trị phân trang
 $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
 $stmt->bindValue(':limit', $itemsPerPage, PDO::PARAM_INT);
+
+// Thực thi truy vấn
 $stmt->execute();
 $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

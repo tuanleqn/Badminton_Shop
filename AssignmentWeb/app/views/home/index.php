@@ -1,4 +1,8 @@
-<?php require_once __DIR__ . '/../../helper/URL.php'; ?>
+<?php 
+require_once __DIR__ . '/../../helper/URL.php';
+require_once __DIR__ . '/../../helper/config.php';
+require_once __DIR__ . '/../news_site/config.php';
+?>
 <!DOCTYPE html>
 <html lang="vi">
 <?php require_once dirname(__DIR__) . '/header_footer/header.php'; ?>
@@ -92,118 +96,38 @@
                     <p>Khám phá các sản phẩm cầu lông chất lượng cao</p>
                 </div>
                 <div class="row product-banner">
+                    <?php 
+                    $categoryData = [
+                        ['name' => 'Vợt cầu lông', 'image' => '1.1.webp', 'category' => 'Vợt cầu lông'],
+                        ['name' => 'Giày cầu lông', 'image' => '2_1.webp', 'category' => 'Giày cầu lông'],
+                        ['name' => 'Áo cầu lông', 'image' => '3_1.webp', 'category' => 'Áo cầu lông'],
+                        ['name' => 'Quần cầu lông', 'image' => '4.webp', 'category' => 'Quần cầu lông'],
+                        ['name' => 'Túi vợt', 'image' => '5.webp', 'category' => 'Túi vợt'],
+                        ['name' => 'Balo thể thao', 'image' => '6.webp', 'category' => 'Balo thể thao'],
+                        ['name' => 'Phụ kiện', 'image' => '7.webp', 'category' => 'Phụ kiện'],
+                        ['name' => 'Quả cầu', 'image' => '8.webp', 'category' => 'Quả cầu']
+                    ];
+                    
+                    $productCounts = $data['siteModel']->getProductCountsByCategory();
+                    
+                    foreach ($categoryData as $category): 
+                        $count = isset($productCounts[$category['category']]) ? $productCounts[$category['category']] : 0;
+                    ?>
                     <div class="col-lg-3 col-md-4 col-sm-6 col-6">
                         <div class="category-card">
                             <div class="category-img">
-                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" class="card-img-top" alt="Vợt cầu lông">
+                                <img src="<?php echo URL::asset('images/' . $category['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($category['name']); ?>">
                                 <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
+                                    <a href="<?php echo URL::to('public/ProductSite/index?category=' . urlencode($category['category'])); ?>" class="btn-view">Xem ngay</a>
                                 </div>
                             </div>
                             <div class="category-title">
-                                <h4>Vợt cầu lông</h4>
-                                <span>24 sản phẩm</span>
+                                <h4><?php echo htmlspecialchars($category['name']); ?></h4>
+                                <span><?php echo $count; ?> sản phẩm</span>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" class="card-img-top" alt="Giày cầu lông">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Giày cầu lông</h4>
-                                <span>18 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" class="card-img-top" alt="Áo cầu lông">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Áo cầu lông</h4>
-                                <span>32 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/4.webp'); ?>" class="card-img-top" alt="Quần cầu lông">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Quần cầu lông</h4>
-                                <span>15 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/5.webp'); ?>" class="card-img-top" alt="Túi vợt">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Túi vợt</h4>
-                                <span>12 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/6.webp'); ?>" class="card-img-top" alt="Balo thể thao">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Balo thể thao</h4>
-                                <span>8 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/7.webp'); ?>" class="card-img-top" alt="Phụ kiện">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Phụ kiện</h4>
-                                <span>28 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-md-4 col-sm-6 col-6">
-                        <div class="category-card">
-                            <div class="category-img">
-                                <img src="<?php echo URL::asset('images/8.webp'); ?>" class="card-img-top" alt="Quả cầu">
-                                <div class="category-overlay">
-                                    <a href="#" class="btn-view">Xem ngay</a>
-                                </div>
-                            </div>
-                            <div class="category-title">
-                                <h4>Quả cầu</h4>
-                                <span>6 sản phẩm</span>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
@@ -278,7 +202,7 @@
                             <div class="banner-content">
                                 <h3>Vợt cầu lông cao cấp</h3>
                                 <p>Bộ sưu tập tất cả vợt Yonex</p>
-                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                                <a href="<?php echo URL::to('public/ProductSite/index?category=' . urlencode('Vợt cầu lông') . '&brand=' . urlencode('Yonex')); ?>" class="btn-shop-now">Mua ngay</a>
                             </div>
                         </div>
                     </div>
@@ -288,7 +212,7 @@
                             <div class="banner-content">
                                 <h3>Giày cầu lông chính hãng</h3>
                                 <p>Bộ sưu tập mới nhất từ Li-Ning</p>
-                                <a href="#" class="btn-shop-now">Mua ngay</a>
+                                <a href="<?php echo URL::to('public/ProductSite/index?category=' . urlencode('Giày cầu lông') . '&brand=' . urlencode('Li-Ning')); ?>" class="btn-shop-now">Mua ngay</a>
                             </div>
                         </div>
                     </div>
@@ -304,69 +228,48 @@
                     <p>Cập nhật thông tin mới nhất về cầu lông</p>
                 </div>
                 <div class="row">
+                    <?php
+                    // Fetch the 3 most recent news articles
+                    $stmt = $pdo->prepare("SELECT * FROM bang_tin_tuc ORDER BY Ngay_viet DESC LIMIT 3");
+                    $stmt->execute();
+                    $news = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+                    foreach($news as $article):
+                        // Convert date to day and month
+                        $date = new DateTime($article['Ngay_viet']);
+                        $day = $date->format('d');
+                        $month = 'Tháng ' . $date->format('n');
+                    ?>
                     <div class="col-lg-4 col-md-6 mb-4">
                         <div class="news-card">
                             <div class="news-img">
-                                <img src="<?php echo URL::asset('images/1.1.webp'); ?>" alt="Tin tức">
+                                <img src="<?php echo URL::to('app/views/news_site/' . $article['Link_anh']); ?>" alt="<?php echo htmlspecialchars($article['Title']); ?>">
                                 <div class="news-date">
-                                    <span class="day">15</span>
-                                    <span class="month">Tháng 4</span>
+                                    <span class="day"><?php echo $day; ?></span>
+                                    <span class="month"><?php echo $month; ?></span>
                                 </div>
                             </div>
                             <div class="news-body">
                                 <div class="news-meta">
-                                    <span><i class="fas fa-user"></i> Admin</span>
-                                    <span><i class="fas fa-comments"></i> 5 bình luận</span>
+                                    <span><i class="fas fa-user"></i> <?php echo htmlspecialchars($article['Nguoi_viet']); ?></span>
+                                    <?php
+                                    // Get comment count for this article
+                                    $stmt_comments = $pdo->prepare("SELECT COUNT(*) FROM bang_cmt WHERE ID_tin = ?");
+                                    $stmt_comments->execute([$article['ID_tin']]);
+                                    $comment_count = $stmt_comments->fetchColumn();
+                                    ?>
+                                    <span><i class="fas fa-comments"></i> <?php echo $comment_count; ?> bình luận</span>
                                 </div>
-                                <h5 class="news-title">Sản phẩm mới ra mắt</h5>
-                                <p class="news-text">Khám phá bộ sưu tập vợt cầu lông mới nhất với công nghệ tiên tiến giúp nâng cao hiệu suất chơi.</p>
-                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
+                                <h5 class="news-title"><?php echo htmlspecialchars($article['Title']); ?></h5>
+                                <p class="news-text"><?php echo mb_substr(strip_tags($article['Noi_dung_tin']), 0, 100) . '...'; ?></p>
+                                <a href="<?php echo URL::to('public/News_site/chitiettin?ID_tin=' . $article['ID_tin']); ?>" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="news-card">
-                            <div class="news-img">
-                                <img src="<?php echo URL::asset('images/2_1.webp'); ?>" alt="Tin tức">
-                                <div class="news-date">
-                                    <span class="day">12</span>
-                                    <span class="month">Tháng 4</span>
-                                </div>
-                            </div>
-                            <div class="news-body">
-                                <div class="news-meta">
-                                    <span><i class="fas fa-user"></i> Admin</span>
-                                    <span><i class="fas fa-comments"></i> 3 bình luận</span>
-                                </div>
-                                <h5 class="news-title">Giải đấu sắp diễn ra</h5>
-                                <p class="news-text">Thông tin về các giải đấu cầu lông sắp diễn ra trong tháng tới và cách đăng ký tham gia.</p>
-                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-md-6 mb-4">
-                        <div class="news-card">
-                            <div class="news-img">
-                                <img src="<?php echo URL::asset('images/3_1.webp'); ?>" alt="Tin tức">
-                                <div class="news-date">
-                                    <span class="day">10</span>
-                                    <span class="month">Tháng 4</span>
-                                </div>
-                            </div>
-                            <div class="news-body">
-                                <div class="news-meta">
-                                    <span><i class="fas fa-user"></i> Admin</span>
-                                    <span><i class="fas fa-comments"></i> 8 bình luận</span>
-                                </div>
-                                <h5 class="news-title">Kỹ thuật cầu lông cơ bản</h5>
-                                <p class="news-text">Hướng dẫn các kỹ thuật cơ bản dành cho người mới bắt đầu chơi cầu lông từ các chuyên gia.</p>
-                                <a href="#" class="btn-read-more">Xem thêm <i class="fas fa-arrow-right"></i></a>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
                 <div class="text-center mt-4">
-                    <a href="#" class="btn-view-all">Xem tất cả tin tức <i class="fas fa-arrow-right"></i></a>
+                    <a href="<?php echo URL::to('public/News_site/tintuc'); ?>" class="btn-view-all">Xem tất cả tin tức <i class="fas fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>

@@ -2,6 +2,12 @@
 // filepath: d:\Tieu_Anh\xampp\htdocs\Shop-badminton\AssignmentWeb\app\models\OrderModel.php
 require_once __DIR__ . '/../helper/config.php';
 class OrderModel extends db {
+    protected $conn;
+    public function __construct() {
+        parent::__construct();
+        $this->conn = $this->connect;
+    }
+
     public function saveOrder($userId, $receiverInfo, $paymentMethod, $totalPayment, $cart) {
         try {
             // Start transaction
@@ -258,5 +264,26 @@ class OrderModel extends db {
             return ['success' => false, 'message' => 'An error occurred while updating the order status'];
         }
     }
-    
+
+    public function getTopSpenders($limit = 3) {
+        $query = "SELECT u.name, u.id, SUM(o.totalPayment) as total_spent 
+                 FROM user u 
+                 JOIN `order` o ON u.id = o.userId 
+                 GROUP BY u.id, u.name 
+                 ORDER BY total_spent DESC 
+                 LIMIT ?";
+        
+        $stmt = mysqli_prepare($this->conn, $query);
+        mysqli_stmt_bind_param($stmt, "i", $limit);
+        mysqli_stmt_execute($stmt);
+        
+        $result = mysqli_stmt_get_result($stmt);
+        $topSpenders = [];
+        
+        while ($row = mysqli_fetch_assoc($result)) {
+            $topSpenders[] = $row;
+        }
+        
+        return $topSpenders;
+    }
 }
