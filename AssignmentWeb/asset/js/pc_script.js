@@ -132,7 +132,7 @@ function renderCart() {
         console.log("Checking user authentication...");
     
         // Collect selected products
-        fetch("/Shop-badminton/AssignmentWeb/app/controllers/auth.php", {
+        fetch("/Shop-badminton/AssignmentWeb/app/controllers/process_order.php", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded",

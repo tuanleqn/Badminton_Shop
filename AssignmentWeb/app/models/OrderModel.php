@@ -1,3 +1,4 @@
+
 <?php
 // filepath: d:\Tieu_Anh\xampp\htdocs\Shop-badminton\AssignmentWeb\app\models\OrderModel.php
 require_once __DIR__ . '/../helper/config.php';
@@ -6,13 +7,13 @@ class OrderModel extends db {
         try {
             // Start transaction
             mysqli_begin_transaction($this->connect);
-
-            $status = 'Pending';
+    
+            $status = "pending";
             $query = "INSERT INTO `order` (userId, receiverName, receiverPhone, receiverAddress, receiverEmail, paymentMethod, totalPayment, status)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->connect->prepare($query);
             $stmt->bind_param(
-                "issssssd",
+                "isssssds", // Data types: i = integer, s = string, d = double
                 $userId,
                 $receiverInfo['name'],
                 $receiverInfo['phone'],
@@ -24,23 +25,21 @@ class OrderModel extends db {
             );
             $stmt->execute();
             $orderId = $this->connect->insert_id;
-
+    
             // Insert into `order_details` table
             $query = "INSERT INTO `order_details` (orderId, productId, name, size, color, quantity, price, image)
                       VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             $stmt = $this->connect->prepare($query);
-
+    
             foreach ($cart as $item) {
-                // Assign array values to temporary variables
                 $productId = $item['productId'];
                 $name = $item['name'];
-                $size = $item['size'] ?? 'N/A'; // Default to 'N/A' if size is not provided
-                $color = $item['color'] ?? 'N/A'; // Default to 'N/A' if color is not provided
+                $size = $item['size'] ?? 'N/A';
+                $color = $item['color'] ?? 'N/A';
                 $quantity = $item['quantity'];
                 $price = $item['price'];
-                $image = $item['image'] ?? null; // Default to null if image is not provided
-
-                // Bind parameters
+                $image = $item['image'] ?? null;
+    
                 $stmt->bind_param(
                     "iisssids",
                     $orderId,
@@ -54,7 +53,7 @@ class OrderModel extends db {
                 );
                 $stmt->execute();
             }
-
+    
             // Commit transaction
             mysqli_commit($this->connect);
             return $orderId;
@@ -179,16 +178,22 @@ class OrderModel extends db {
                 if (!empty($row['products'])) {
                     $productDetails = explode('|', $row['products']);
                     foreach ($productDetails as $productDetail) {
-                        list($productId, $name, $size, $color, $quantity, $price, $image) = explode(':', $productDetail);
-                        $products[] = [
-                            'productId' => $productId,
-                            'name' => $name,
-                            'size' => $size,
-                            'color' => $color,
-                            'quantity' => $quantity,
-                            'price' => $price,
-                            'image' => $image
-                        ];
+                        $parts = explode(':', $productDetail);
+                        if (count($parts) === 7) { // Ensure there are exactly 7 parts
+                            list($productId, $name, $size, $color, $quantity, $price, $image) = $parts;
+                            $products[] = [
+                                'productId' => $productId,
+                                'name' => $name,
+                                'size' => $size,
+                                'color' => $color,
+                                'quantity' => $quantity,
+                                'price' => $price,
+                                'image' => $image
+                            ];
+                        } else {
+                            // Handle invalid product detail format (optional)
+                            error_log("Invalid product detail format: " . $productDetail);
+                        }
                     }
                 }
     

@@ -336,6 +336,10 @@ class Admin extends Controller {
     {
         $this->view('admin/product/manage_reviews');
     }
+    public function orders()
+    {
+        $this->view('admin/product/manage_order');
+    }
 
     public function introduce()
     {

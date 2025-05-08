@@ -1,4 +1,6 @@
 <?php
+require_once __DIR__ . '/../core/Controller.php';
+
 class Auth extends Controller {
     private $userAuth;
     private $session;
@@ -130,6 +132,32 @@ class Auth extends Controller {
             }
             exit();
         }
+    }
+    public function handleRequest() {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+            $action = $_POST['action'];
+            $auth = new Auth();
+            if ($action === 'checkUser') {
+                $auth->checkUser();
+            } else {
+                echo json_encode(['error' => 'Invalid action']);
+            }
+            exit();
+        }
+        
+        if (isset($_SERVER['REQUEST_URI'])) {
+            $auth = new Auth();
+            if (strpos($_SERVER['REQUEST_URI'], '/auth/register') !== false) {
+                $auth->register();
+                exit();
+            } elseif (strpos($_SERVER['REQUEST_URI'], '/auth/login') !== false) {
+                $auth->login();
+                exit();
+            }
+        }
+        
+        http_response_code(404);
+        echo "Page not found.";
     }
 }
 
