@@ -5,6 +5,17 @@ require_once __DIR__ . '/../../helper/URL.php';
 require_once __DIR__ . '/../../helper/config.php';
 require_once __DIR__ . '/../../helper/session.php'; 
 require_once dirname(__DIR__) . '/header_footer/header.php'; 
+
+// Initialize session
+$session = Session::getInstance();
+$userData = $session->get('user');
+
+// Check if user is logged in and is admin
+if (!$userData || $userData['role'] !== 'admin') {
+    header('Location: ' . URL::to('public/auth/login'));
+    exit();
+}
+
 // Cấu hình kết nối
 require 'config.php';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -36,15 +47,17 @@ if (isset($_FILES['file-anh']) && $_FILES['file-anh']['error'] === UPLOAD_ERR_OK
     // Di chuyển file ảnh vào thư mục image
     if (move_uploaded_file($file_tmp, $target_path)) {
         // Chèn thủ công cả ID_tin
-        $sql = "INSERT INTO bang_tin_tuc (ID_tin, Title, Noi_dung_tin, Ngay_viet, Link_anh) 
-                VALUES (:idtin, :tieude, :content, :ngayviet, :linkanh)";
+        $sql = "INSERT INTO bang_tin_tuc (ID_tin, Title, Noi_dung_tin, Ngay_viet, Nguoi_viet, Link_anh, ID_nguoi_viet) 
+                VALUES (:idtin, :tieude, :content, :ngayviet, :nguoiviet, :linkanh, :idnguoiviet)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([
-            ':idtin'    => $id_tin,
-            ':tieude'   => $tieude,
-            ':content'  => $content,
-            ':ngayviet' => $ngay_viet,
-            ':linkanh'  => $link_anh
+            ':idtin'       => $id_tin,
+            ':tieude'      => $tieude,
+            ':content'     => $content,
+            ':ngayviet'    => $ngay_viet,
+            ':nguoiviet'   => $userData['name'],
+            ':linkanh'     => $link_anh,
+            ':idnguoiviet' => $userData['id']
         ]);
 
         header("Location:  admintintuc");
