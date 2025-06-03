@@ -22,7 +22,7 @@ A web-based e-commerce platform for badminton equipment and accessories.
 1. Access project repository on GitHub: Shop Badminton
 2. Download source code by clicking Code > Download ZIP or using command:
 ```
-git clone https://github.com/Sierraaaaaaaaaaa/Shop-badminton.git
+git clone https://github.com/tuanleqn/Badminton_Shop.git
 ```
 3. Extract (if downloaded as ZIP) and move project folder to XAMPP's htdocs directory (typically C:\xampp\htdocs)
 
